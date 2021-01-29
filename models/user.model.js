@@ -1,16 +1,10 @@
 const db = require("../utils/database");
-const TABLE_NAME = "users";
+const TABLE_NAME = "user";
 
 module.exports = {
-  all() {
+  //---------------------default query----------------------------
+  getAll() {
     return db.load(`select * from ${TABLE_NAME}`);
-  },
-
-  //function to disable an user by param id of this user
-  disableUser(id) {
-    return db.load(
-      `update ${TABLE_NAME} set isdisable=not(isdisable) where id=${id}`
-    );
   },
 
   add(newObj) {
@@ -27,6 +21,7 @@ module.exports = {
     return db.update(Obj, condition, TABLE_NAME);
   },
 
+  //---------------------others select----------------------------
   //get an single user by user id
   async getSingle(id) {
     const rows = await db.load(`select * from ${TABLE_NAME} where id = ${id} `);
@@ -48,5 +43,27 @@ module.exports = {
     );
     if (rows.length === 0) return null;
     return rows[0];
+  },
+
+  async getPassByUsername(username) {
+    const rows = await db.load(
+      `select password from ${TABLE_NAME} where username = "${username}" `
+    );
+    if (rows.length === 0) return null;
+    return rows[0];
+  },
+
+  //---------------------others update----------------------------
+
+  //function to flip state disable
+  flipDisable(id) {
+    return db.load(
+      `update ${TABLE_NAME} set isdisable=not(isdisable) where id=${id}`
+    );
+  },
+
+  //function to set isVerified = true
+  setVerified(id) {
+    return db.load(`update ${TABLE_NAME} set isverified =true where id=${id}`);
   },
 };
