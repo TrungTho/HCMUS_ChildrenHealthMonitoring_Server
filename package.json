@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node app.js",
+    "nodemonstart":"nodemon ./app.js localhost 3500"
+
   },
   "repository": {
     "type": "git",
@@ -25,6 +27,7 @@
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
     "nodemailer": "^6.4.17",
+    "nodemon": "^2.0.7",
     "numeral": "^2.0.6"
   }
 }

@@ -5,7 +5,7 @@ module.exports = function (app) {
   //tao ra tai nguyen web
   //req - request tu client, res - response tu server
 
-  app.use("/", require("../routes/client/home.route"));
+  // app.use("/", require("../routes/client/home.route"));
 
   // app.use(
   //   "/admin/categories",
@@ -20,4 +20,6 @@ module.exports = function (app) {
   // app.use("/my-course", isAuth, require("../routes/client/my-course.route"));
   // app.use("/wishlist", isAuth, require("../routes/client/wishlist.route"));
   // app.use("/cart", isAuth, require("../routes/client/cart.route"));
+
+  app.use("/test", require("../routes/test.route"));
 };
