@@ -20,5 +20,5 @@ require("./middlewares/errors.mdw")(app);
 //lang nghe o cong
 const PORT = 3500;
 app.listen(PORT, () => {
-  console.log(`Example app listening at http://localhost:${PORT}`);
+  //console.log(`Example app listening at http://localhost:${PORT}`);
 });
