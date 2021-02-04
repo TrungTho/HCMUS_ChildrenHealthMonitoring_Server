@@ -13,7 +13,14 @@ router.get("/", async function (req, res) {
 });
 
 router.get("/connection", async function (req, res) {
-  res.send("ok!!! :)");
+  const item = {
+    host: process.env.DB_HOST,
+    username: process.env.DB_USERNAME,
+    pass: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+  };
+  console.log(item);
+  res.send(item);
 });
 
 module.exports = router;

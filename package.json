@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "nodemonstart":"nodemon ./app.js localhost 3500"
-
+    "nodemonstart": "nodemon ./app.js localhost 3500"
   },
   "repository": {
     "type": "git",
@@ -21,6 +20,7 @@
   "homepage": "https://github.com/TrungTho/HCMUS_ChildrenHealthMonitoring_Server#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "moment": "^2.29.1",
