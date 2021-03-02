@@ -2,7 +2,20 @@ const bcrypt = require("bcryptjs");
 const moment = require("moment");
 const multer = require("multer");
 const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
 const userModel = require("../../../models/user.model");
+
+const encodedToken = (userID) => {
+  return jwt.sign(
+    {
+      iss: "HCMUSStudents",
+      sub: userID,
+      iat: new Date().getTime(),
+      exp: Math.floor(Date.now() / 1000) + 60 * 60,
+    },
+    process.env.JWT_SECRET_OR_KEY
+  );
+};
 
 module.exports = accountController = {
   register: async function (req, res) {
@@ -15,6 +28,7 @@ module.exports = accountController = {
       const convertedDOB = moment(req.body.dob, "DD/MM/YYYY").format(
         "YYYY-MM-DD"
       );
+
       const newUser = {
         username: req.body.username,
         password: hashedPass,
