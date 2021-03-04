@@ -15,8 +15,10 @@ app.use(
 // require("./middlewares/view.mdw")(app);
 // require("./middlewares/session.mdw")(app);
 // require("./middlewares/local.mdw")(app);
-require("./middlewares/routes.mdw")(app);
-require("./middlewares/errors.mdw")(app);
+
+// require("./middlewares/schedule-task.mdw")(app); //mdw to do anything scheduled automatically without client's req
+require("./middlewares/routes.mdw")(app); //mdw for routing
+require("./middlewares/errors.mdw")(app); //mdw for err handling
 
 //lang nghe o cong
 const PORT = process.env.LISTENPORT;

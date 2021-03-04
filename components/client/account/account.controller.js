@@ -44,31 +44,31 @@ module.exports = accountController = {
       //add user data to db
       await userModel.add(newUser);
 
-      // //send email confirm
-      // var transporter = nodemailer.createTransport({
-      //   service: "gmail",
-      //   auth: {
-      //     user: "cloneemail1104@gmail.com",
-      //     pass: "contact1104",
-      //   },
-      // });
+      //send email confirm
+      var transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.CONTACT_EMAIL,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      });
 
-      // let otp = Math.random().toString(36).substring(7);
+      let otp = Math.random().toString(36).substring(7);
 
-      // var mailOptions = {
-      //   from: "cloneemail1104@gmail.com",
-      //   to: req.body.EMAIL,
-      //   subject: "Youdemu confirm account",
-      //   text: "You just created new account on Youdemu! Your OTP is: " + otp,
-      // };
+      var mailOptions = {
+        from: process.env.CONTACT_EMAIL,
+        to: req.body.EMAIL,
+        subject: "Children Health Monitoring confirm account",
+        text: "Welcome to our community. Here is your otp " + otp,
+      };
 
-      // transporter.sendMail(mailOptions, function (error, info) {
-      //   if (error) {
-      //     console.log(error);
-      //   } else {
-      //     console.log("Email sent: " + info.response);
-      //   }
-      // });
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
 
       res.json(true);
     } catch (error) {
