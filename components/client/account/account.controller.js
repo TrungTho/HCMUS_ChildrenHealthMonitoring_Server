@@ -19,60 +19,73 @@ const encodedToken = (userID) => {
 
 module.exports = accountController = {
   register: async function (req, res) {
-    try {
-      const hashedPass = bcrypt.hashSync(
-        req.body.password,
-        parseInt(process.env.ACCOUNT_TIMEHASHPASS)
-      );
-      //const hashedPass = req.body.password;
-      const convertedDOB = moment(req.body.dob, "DD/MM/YYYY").format(
-        "YYYY-MM-DD"
-      );
+    const checkEmail = await userModel.getSingleByEmail(req.body.mail);
+    const checkUsername = await userModel.getSingleByUsername(
+      req.body.username
+    );
 
-      const newUser = {
-        username: req.body.username,
-        password: hashedPass,
-        dob: convertedDOB,
-        fullname: req.body.fullname,
-        email: req.body.mail,
-        permission: 0, //normal user
-        isDisable: 0,
-        isVerified: 0,
-      };
-      console.log(newUser);
+    if (checkEmail === null) {
+      if (checkUsername === null) {
+        try {
+          const hashedPass = bcrypt.hashSync(
+            req.body.password,
+            parseInt(process.env.ACCOUNT_TIMEHASHPASS)
+          );
+          //const hashedPass = req.body.password;
+          const convertedDOB = moment(req.body.dob, "DD/MM/YYYY").format(
+            "YYYY-MM-DD"
+          );
 
-      //add user data to db
-      await userModel.add(newUser);
+          const newUser = {
+            username: req.body.username,
+            password: hashedPass,
+            dob: convertedDOB,
+            fullname: req.body.fullname,
+            email: req.body.mail,
+            permission: 0, //normal user
+            isDisable: 0,
+            isVerified: 0,
+          };
+          console.log(newUser);
 
-      //send email confirm
-      var transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: process.env.CONTACT_EMAIL,
-          pass: process.env.EMAIL_PASSWORD,
-        },
-      });
+          //add user data to db
+          await userModel.add(newUser);
 
-      let otp = Math.random().toString(36).substring(7);
+          //send email confirm
+          var transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+              user: process.env.CONTACT_EMAIL,
+              pass: process.env.EMAIL_PASSWORD,
+            },
+          });
 
-      var mailOptions = {
-        from: process.env.CONTACT_EMAIL,
-        to: req.body.EMAIL,
-        subject: "Children Health Monitoring confirm account",
-        text: "Welcome to our community. Here is your otp " + otp,
-      };
+          let otp = Math.random().toString(36).substring(7);
 
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("Email sent: " + info.response);
+          var mailOptions = {
+            from: process.env.CONTACT_EMAIL,
+            to: req.body.mail,
+            subject: "Children Health Monitoring confirm account",
+            text: "Welcome to our community. Here is your otp: " + otp,
+          };
+
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log("Email sent: " + info.response);
+            }
+          });
+
+          res.json({ success: true });
+        } catch (error) {
+          res.json({ success: false, err_message: error });
         }
-      });
-
-      res.json(true);
-    } catch (error) {
-      res.json(false);
+      } else {
+        res.json({ success: false, err_message: "existed username" });
+      }
+    } else {
+      res.json({ success: false, err_message: "existed email" });
     }
   },
 };
