@@ -20,6 +20,7 @@
   "homepage": "https://github.com/TrungTho/HCMUS_ChildrenHealthMonitoring_Server#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
@@ -30,6 +31,9 @@
     "node-cron": "^2.0.3",
     "nodemailer": "^6.4.17",
     "nodemon": "^2.0.7",
-    "numeral": "^2.0.6"
+    "numeral": "^2.0.6",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
   }
 }

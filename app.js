@@ -1,6 +1,7 @@
 const express = require("express");
 require("express-async-errors");
 const dotenv = require("dotenv").config();
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
@@ -10,6 +11,7 @@ app.use(
     extended: true,
   })
 );
+app.use(cookieParser());
 
 // app.use("/public", express.static("public"));
 // require("./middlewares/view.mdw")(app);
