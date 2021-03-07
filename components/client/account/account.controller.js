@@ -19,7 +19,12 @@ const encodedToken = (dataToEncoded) => {
 };
 
 module.exports = accountController = {
-  changeAvatar: async function (req, res) {},
+  changeAvatar: async function (req, res) {
+    const fileUploaded = req.files;
+    const checkCode = req.body.checkCode;
+    console.log(fileUploaded);
+    res.send({ success: true, checkCode: checkCode });
+  },
 
   getProfile: async function (req, res) {
     req.user.dob = moment(req.user.dob, "YYYY-MM-DD").format("DD/MM/YYYY"); //convert from db's format to user's friendly format
