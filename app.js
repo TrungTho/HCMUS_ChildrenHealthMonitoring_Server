@@ -2,7 +2,7 @@ const express = require("express");
 require("express-async-errors");
 const dotenv = require("dotenv").config();
 const cookieParser = require("cookie-parser");
-
+const cors = require("cors");
 const app = express();
 
 //parser
@@ -11,7 +11,14 @@ app.use(
     extended: true,
   })
 );
+app.use(express.json());
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: process.env.REACT_SERVER, //block all except this domain
+    credentials: true, //turn on cookie http through cors
+  })
+);
 
 // app.use("/public", express.static("public"));
 // require("./middlewares/view.mdw")(app);

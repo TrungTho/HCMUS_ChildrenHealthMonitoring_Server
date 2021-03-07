@@ -1,15 +1,35 @@
 const passport = require("passport");
-const jwtStrategy = require("passport-jwt").Strategy;
+const JwtStrategy = require("passport-jwt").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const { ExtractJwt } = require("passport-jwt");
 const bcrypt = require("bcryptjs");
 const userModel = require("../models/user.model");
 
+const cookieExtractor = function (req) {
+  let token = null;
+  if (req && req.cookies) {
+    token = req.cookies.auth_token;
+  }
+  return token;
+};
+
+passport.serializeUser((user, done) => {
+  done(null, user.username);
+});
+
+passport.deserializeUser(async (username, done) => {
+  const datum = await userModel.getSingleByUsername(username);
+  if (datum !== null) {
+    done(null, datum);
+  }
+});
+
 passport.use(
-  new jwtStrategy(
+  new JwtStrategy(
     {
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), //local storage
-      secretOrKey: "privateKey",
+      //jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), //local storage
+      jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]), //cookie
+      secretOrKey: process.env.JWT_SECRET_OR_KEY,
     },
     async (payload, done) => {
       try {
@@ -33,7 +53,7 @@ passport.use(
       const datum = await userModel.getSingleByUsername(username);
 
       if (datum !== null) {
-        const ret = bcrypt.compareSync(password, datum.f_Password);
+        const ret = bcrypt.compareSync(password, datum.password);
 
         if (ret) {
           return done(null, datum);

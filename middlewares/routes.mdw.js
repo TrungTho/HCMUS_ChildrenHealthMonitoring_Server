@@ -17,6 +17,7 @@ module.exports = function (app) {
   // app.use("/my-course", isAuth, require("../routes/client/my-course.route"));
   // app.use("/wishlist", isAuth, require("../routes/client/wishlist.route"));
   // app.use("/cart", isAuth, require("../routes/client/cart.route"));
+
   app.use("/test", require("../components/client/test/test.route"));
   app.use("/account", require("../components/client/account/account.route"));
 };

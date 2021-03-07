@@ -5,19 +5,78 @@ const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const userModel = require("../../../models/user.model");
 
-const encodedToken = (userID) => {
+//function to generate new jwt token
+const encodedToken = (dataToEncoded) => {
   return jwt.sign(
     {
-      iss: "HCMUSStudents",
-      sub: userID,
+      iss: process.env.DEVELOPERS,
+      sub: dataToEncoded,
       iat: new Date().getTime(),
-      exp: Math.floor(Date.now() / 1000) + 60 * 60,
+      exp: Math.floor(Date.now() / 1000) + 60 * 60, //an hour
     },
     process.env.JWT_SECRET_OR_KEY
   );
 };
 
 module.exports = accountController = {
+  getProfile: async function (req, res) {
+    req.user.dob = moment(req.user.dob, "YYYY-MM-DD").format("DD/MM/YYYY"); //convert from db's format to user's friendly format
+    res.send({ userInfor: req.user });
+  },
+
+  updateProfile: async function (req, res) {
+    //first check if user in token is user want to update profile or not?
+    if (req.user.username === req.body.username) {
+      try {
+        //check if password is valid or not
+        if (bcrypt.compareSync(req.body.password, req.user.password)) {
+          const newUser = {
+            id: req.user.id,
+            username: req.user.username, //username cant be changed
+            password: req.user.password,
+            dob: moment(req.body.dob, "DD/MM/YYYY").format("YYYY-MM-DD"),
+            fullname: req.body.fullname,
+            email: req.body.mail,
+            permission: req.user.permission,
+            isDisable: req.user.isDisable,
+            isVerified: req.user.isVerified,
+          };
+
+          //update user data in db
+          await userModel.update(newUser);
+
+          //send success message to client
+          res.send({ success: true, userInfor: newUser });
+        } else {
+          res.send({ success: false, err_message: "wrong password" });
+        }
+      } catch (error) {
+        res.send({ success: false, err_message: error });
+      }
+    } else {
+      res.send({ success: false, err_message: "invalid token" });
+    }
+  },
+
+  login: async function (req, res) {
+    if (req.user == "Unauthorized") {
+      res.send({ success: false });
+    } else {
+      const token = encodedToken(req.user.username);
+
+      //res.setHeader("Authorization", token);
+      res.cookie("auth_token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60, //1hour
+      });
+      res.send({ success: true });
+    }
+  },
+
+  logout: async function (req, res) {
+    res.clearCookie(process.env.COOKIE_NAME).send({ success: true });
+  },
+
   register: async function (req, res) {
     const checkEmail = await userModel.getSingleByEmail(req.body.mail);
     const checkUsername = await userModel.getSingleByUsername(
