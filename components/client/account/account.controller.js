@@ -19,9 +19,30 @@ const encodedToken = (dataToEncoded) => {
 };
 
 module.exports = accountController = {
+  changeAvatar: async function (req, res) {},
+
   getProfile: async function (req, res) {
     req.user.dob = moment(req.user.dob, "YYYY-MM-DD").format("DD/MM/YYYY"); //convert from db's format to user's friendly format
     res.send({ userInfor: req.user });
+  },
+
+  login: async function (req, res) {
+    if (req.user == "Unauthorized") {
+      res.send({ success: false });
+    } else {
+      const token = encodedToken(req.user.username);
+
+      //res.setHeader("Authorization", token);
+      res.cookie("auth_token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60, //1hour
+      });
+      res.send({ success: true });
+    }
+  },
+
+  logout: async function (req, res) {
+    res.clearCookie(process.env.COOKIE_NAME).send({ success: true });
   },
 
   updateProfile: async function (req, res) {
@@ -56,25 +77,6 @@ module.exports = accountController = {
     } else {
       res.send({ success: false, err_message: "invalid token" });
     }
-  },
-
-  login: async function (req, res) {
-    if (req.user == "Unauthorized") {
-      res.send({ success: false });
-    } else {
-      const token = encodedToken(req.user.username);
-
-      //res.setHeader("Authorization", token);
-      res.cookie("auth_token", token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60, //1hour
-      });
-      res.send({ success: true });
-    }
-  },
-
-  logout: async function (req, res) {
-    res.clearCookie(process.env.COOKIE_NAME).send({ success: true });
   },
 
   register: async function (req, res) {

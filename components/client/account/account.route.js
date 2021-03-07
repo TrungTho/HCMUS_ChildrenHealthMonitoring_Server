@@ -6,6 +6,12 @@ const isAdmin = require("../../../middlewares/admin.mdw");
 const router = express.Router();
 
 router.post(
+  "/change-avatar",
+  passport.authenticate("jwt", { session: false }),
+  accountController.changeAvatar
+);
+
+router.post(
   "/login",
   passport.authenticate("local", { session: false }),
   accountController.login
