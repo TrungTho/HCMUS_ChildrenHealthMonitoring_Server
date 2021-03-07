@@ -3,7 +3,7 @@ require("express-async-errors");
 const dotenv = require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const fileupload = require("express-fileupload");
+const fileUpload = require("express-fileupload");
 const app = express();
 
 //parser
@@ -15,7 +15,12 @@ app.use(
 );
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
-app.use(fileupload());
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
 app.use(
   cors({
     origin: process.env.REACT_SERVER, //block all except this domain

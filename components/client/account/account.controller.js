@@ -4,6 +4,7 @@ const multer = require("multer");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const userModel = require("../../../models/user.model");
+const cloudinary = require("../../../middlewares/cloudinary.mdw");
 
 //function to generate new jwt token
 const encodedToken = (dataToEncoded) => {
@@ -20,10 +21,30 @@ const encodedToken = (dataToEncoded) => {
 
 module.exports = accountController = {
   changeAvatar: async function (req, res) {
-    const fileUploaded = req.files;
-    const checkCode = req.body.checkCode;
-    console.log(fileUploaded);
-    res.send({ success: true, checkCode: checkCode });
+    try {
+      const fileUploaded = req.files.uploadImg;
+      //check if client sent image is null or not
+      if (!fileUploaded) {
+      } else {
+        //upload file to cloudinary
+        const uploadResponse = await cloudinary.uploader.upload(
+          fileUploaded.tempFilePath,
+          {
+            upload_preset: process.env.CLOUD_UPLOAD_PRESET,
+          }
+        );
+
+        //update avatar link in db
+        await userModel.setAvatar(req.user.id, uploadResponse.url);
+
+        res.send({
+          success: true,
+          url: uploadResponse.url,
+        });
+      }
+    } catch (error) {
+      res.send({ success: false, err_message: error || "null image" });
+    }
   },
 
   getProfile: async function (req, res) {

@@ -66,4 +66,9 @@ module.exports = {
   setVerified(id) {
     return db.load(`update ${TABLE_NAME} set isverified =true where id=${id}`);
   },
+
+  //function to set isVerified = true
+  setAvatar(id, link) {
+    return db.load(`update ${TABLE_NAME} set avatar ='${link}' where id=${id}`);
+  },
 };
