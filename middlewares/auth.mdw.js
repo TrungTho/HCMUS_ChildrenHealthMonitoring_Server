@@ -1,9 +1,12 @@
+const diaryModel = require("../models/diary.model");
+const userModel = require("../models/user.model");
+
 //middleware function to check right of client to access profile
+module.exports = function DiaryAuth(req, res, next) {
+  const diaryInfor=await diaryModel.getSingle(req.query.id); //get diary want to access
+  //compare user_id of this diary with log in user
+  if (req.user.id!==diaryInfor.id_user) {return;} 
 
-module.exports = function Auth(req, res, next) {
-  if (req.session.isLogin === false) {
-    return res.redirect("/account/login"); //if client still not logged in -> require login
-  }
-
+  //allow to access if this diary belong to this user
   next();
 };
