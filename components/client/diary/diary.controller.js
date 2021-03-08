@@ -1,7 +1,36 @@
 const diaryModel = require("../../../models/diary.model");
+const moment = require("moment");
 
-module.exports = accountController = {
-  newDiary: async function (req, res) {},
+//function to generate the current date in db's format
+const getCurrentDate = () => {
+  var today = new Date();
+  return (
+    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
+  );
+};
+
+module.exports = diaryController = {
+  newDiary: async function (req, res) {
+    try {
+      //create new diary according to user input
+      const newDiary = {
+        id_user: req.user.id, //id of log in account
+        fullname: req.body.fullname,
+        gender: req.body.gender,
+        dob: moment(req.body.dob, "DD/MM/YYYY").format("YYYY-MM-DD"),
+        createdate: moment(getCurrentDate(), "YYYY-MM-DD").format("YYYY-MM-DD"),
+        avatar: "",
+      };
+
+      //add new diary to db
+      await diaryModel.add(newDiary);
+
+      //send success message to client
+      res.send({ success: true, diaryInfor: newDiary });
+    } catch (error) {
+      res.send({ success: false, err_message: error });
+    }
+  },
 
   getDiary: async function (req, res) {
     try {
