@@ -1,5 +1,5 @@
-const isAuth = require("./auth.mdw");
 const isAdmin = require("./admin.mdw");
+const passport = require("../middlewares/passport.mdw");
 
 module.exports = function (app) {
   //tao ra tai nguyen web
@@ -20,4 +20,9 @@ module.exports = function (app) {
 
   app.use("/test", require("../components/client/test/test.route"));
   app.use("/account", require("../components/client/account/account.route"));
+  app.use(
+    "/diary",
+    passport.authenticate("jwt", { session: false }),
+    require("../components/client/diary/diary.route")
+  );
 };
