@@ -52,7 +52,7 @@ module.exports = diaryController = {
     }
   },
 
-  getDiaryByTimeLine: async function (req, res) {
+  getAllRecordByTimeLine: async function (req, res) {
     try {
       const vaccine_diaries = await diaryVaccineModel.getAllByDiaryId(
         req.query.id
