@@ -29,7 +29,7 @@ module.exports = accountController = {
         const uploadResponse = await cloudinary.uploader.upload(
           fileUploaded.tempFilePath,
           {
-            upload_preset: process.env.CLOUD_PROFILE_PRESET,
+            upload_preset: process.env.CLOUD_PROFILE_PRESET, //choose configed preset to store image
           }
         );
 

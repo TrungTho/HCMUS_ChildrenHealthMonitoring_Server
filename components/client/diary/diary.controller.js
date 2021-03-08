@@ -3,6 +3,7 @@ const diaryVaccineModel = require("../../../models/diary-vaccine.model");
 const diaryWeightHeightModel = require("../../../models/diary-weight-height.model");
 const diairyTeethModel = require("../../../models/diairy-teeth.model");
 const moment = require("moment");
+const cloudinary = require("../../../middlewares/cloudinary.mdw");
 
 //function to generate the current date in db's format
 const getCurrentDate = () => {
@@ -13,6 +14,35 @@ const getCurrentDate = () => {
 };
 
 module.exports = diaryController = {
+  changeDiaryAvatar: async function (req, res) {
+    try {
+      const fileUploaded = req.files.uploadImg;
+      //check if client sent image is null or not
+      if (!fileUploaded) {
+      } else {
+        //upload file to cloudinary
+        const uploadResponse = await cloudinary.uploader.upload(
+          fileUploaded.tempFilePath,
+          {
+            upload_preset: process.env.CLOUD_DIARY_PRESET, //choose configed preset to store image
+          }
+        );
+
+        console.log("uploadResponse ", uploadResponse);
+
+        //update avatar link in db
+        await diaryModel.setAvatar(req.query.id, uploadResponse.url);
+
+        res.send({
+          success: true,
+          url: uploadResponse.url,
+        });
+      }
+    } catch (error) {
+      res.send({ success: false, err_message: error || "null image" });
+    }
+  },
+
   getAllDiaries: async function (req, res) {
     try {
       const data = await diaryModel.getAllByUserId(req.user.id);
@@ -55,7 +85,7 @@ module.exports = diaryController = {
     }
   },
 
-  getProfile: async function (req, res) {
+  getDiaryProfile: async function (req, res) {
     try {
       //get datum from db
       const datum = await diaryModel.getSingle(req.query.id);
@@ -83,6 +113,14 @@ module.exports = diaryController = {
 
       //send success message to client
       res.send({ success: true, diaryInfor: newDiary });
+    } catch (error) {
+      res.send({ success: false, err_message: error });
+    }
+  },
+
+  template: async function (req, res) {
+    try {
+      res.send({ success: true });
     } catch (error) {
       res.send({ success: false, err_message: error });
     }
