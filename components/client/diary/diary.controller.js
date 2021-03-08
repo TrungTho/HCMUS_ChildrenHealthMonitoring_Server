@@ -54,6 +54,18 @@ module.exports = diaryController = {
       res.send({ success: false, err_message: error });
     }
   },
+
+  getProfile: async function (req, res) {
+    try {
+      //get datum from db
+      const datum = await diaryModel.getSingle(req.query.id);
+
+      res.send({ success: true, diaryInfor: datum });
+    } catch (error) {
+      res.send({ success: false, err_message: error });
+    }
+  },
+
   newDiary: async function (req, res) {
     try {
       //create new diary according to user input
