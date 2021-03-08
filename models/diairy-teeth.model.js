@@ -1,5 +1,5 @@
 const db = require("../utils/database");
-const TABLE_NAME = "weightandheight";
+const TABLE_NAME = "diary_teeth";
 
 module.exports = {
   //---------------------default query----------------------------

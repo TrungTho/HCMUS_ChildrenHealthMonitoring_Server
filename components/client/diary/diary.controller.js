@@ -1,4 +1,7 @@
 const diaryModel = require("../../../models/diary.model");
+const diaryVaccineModel = require("../../../models/diary-vaccine.model");
+const diaryWeightHeightModel = require("../../../models/diary-weight-height.model");
+const diairyTeethModel = require("../../../models/diairy-teeth.model");
 const moment = require("moment");
 
 //function to generate the current date in db's format
@@ -10,6 +13,15 @@ const getCurrentDate = () => {
 };
 
 module.exports = diaryController = {
+  getAllDiaries: async function (req, res) {
+    try {
+      const data = await diaryModel.getAllByUserId(req.user.id);
+      res.send({ success: true, diaries: data });
+    } catch (error) {
+      res.send({ success: false, err_message: error });
+    }
+  },
+
   newDiary: async function (req, res) {
     try {
       //create new diary according to user input
@@ -27,15 +39,6 @@ module.exports = diaryController = {
 
       //send success message to client
       res.send({ success: true, diaryInfor: newDiary });
-    } catch (error) {
-      res.send({ success: false, err_message: error });
-    }
-  },
-
-  getDiary: async function (req, res) {
-    try {
-      const data = await diaryModel.getAllByUserId(req.user.id);
-      res.send({ success: true, diaries: data });
     } catch (error) {
       res.send({ success: false, err_message: error });
     }
