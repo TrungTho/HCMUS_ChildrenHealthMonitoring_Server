@@ -1,8 +1,6 @@
 const express = require("express");
 const accountController = require("./account.controller");
-const passport = require("passport");
-require("../../../middlewares/passport.mdw");
-const isAdmin = require("../../../middlewares/admin.mdw");
+const passport = require("../../../middlewares/passport.mdw");
 const router = express.Router();
 
 router.post(

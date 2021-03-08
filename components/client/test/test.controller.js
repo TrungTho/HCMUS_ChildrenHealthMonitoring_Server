@@ -18,7 +18,7 @@ module.exports = testController = {
       pass: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
     };
-    console.log(item);
+    // console.log(item);
     res.send(item);
   },
 };

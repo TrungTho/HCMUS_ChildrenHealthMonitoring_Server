@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
-const multer = require("multer");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const userModel = require("../../../models/user.model");
