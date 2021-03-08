@@ -22,6 +22,38 @@ module.exports = diaryController = {
     }
   },
 
+  getDiaryByTimeLine: async function (req, res) {
+    try {
+      const vaccine_diaries = await diaryVaccineModel.getAllByDiaryId(
+        req.query.id
+      );
+
+      const w_h_diaries = await diaryWeightHeightModel.getAllByDiaryId(
+        req.query.id
+      );
+
+      const teeth_diaries = await diairyTeethModel.getAllByDiaryId(
+        req.query.id
+      );
+
+      if (
+        vaccine_diaries.length ||
+        w_h_diaries.length ||
+        teeth_diaries.length
+      ) {
+        res.send({
+          success: true,
+          vaccine: vaccine_diaries,
+          weight_height: w_h_diaries,
+          teeth: teeth_diaries,
+        });
+      } else {
+        res.send({ success: false, err_message: "no record" });
+      }
+    } catch (error) {
+      res.send({ success: false, err_message: error });
+    }
+  },
   newDiary: async function (req, res) {
     try {
       //create new diary according to user input
