@@ -7,9 +7,10 @@ router.get("/", diaryController.getAllDiaries);
 
 router.post("/change-avatar", userAuth, diaryController.changeDiaryAvatar);
 
-router.get("/time-line", userAuth, diaryController.getAllRecordByTimeLine);
+router.get("/time-line", userAuth, diaryController.getAllEventByTimeLine);
 
 router.get("/profile", userAuth, diaryController.getDiaryProfile);
+router.post("/profile", userAuth, diaryController.updateDiaryProfile);
 
 router.post("/new-diary", diaryController.newDiary);
 

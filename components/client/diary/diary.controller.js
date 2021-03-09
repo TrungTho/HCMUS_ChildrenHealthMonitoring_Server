@@ -52,7 +52,7 @@ module.exports = diaryController = {
     }
   },
 
-  getAllRecordByTimeLine: async function (req, res) {
+  getAllEventByTimeLine: async function (req, res) {
     try {
       const vaccine_diaries = await diaryVaccineModel.getAllByDiaryId(
         req.query.id
@@ -113,6 +113,29 @@ module.exports = diaryController = {
 
       //send success message to client
       res.send({ success: true, diaryInfor: newDiary });
+    } catch (error) {
+      res.send({ success: false, err_message: error });
+    }
+  },
+
+  updateDiaryProfile: async function (req, res) {
+    try {
+      //create diary according to user input
+      const updatedDiary = {
+        id: req.query.id,
+        id_user: req.user.id, //id of log in account
+        fullname: req.body.fullname,
+        gender: req.body.gender,
+        dob: moment(req.body.dob, "DD/MM/YYYY").format("YYYY-MM-DD"),
+      };
+
+      //update data in db
+      await diaryModel.update(updatedDiary);
+
+      //get updated datum to send
+      const datum = await diaryModel.getSingle(req.query.id);
+
+      res.send({ success: true, diaryInfor: datum });
     } catch (error) {
       res.send({ success: false, err_message: error });
     }
