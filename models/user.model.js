@@ -24,6 +24,14 @@ module.exports = {
   },
 
   //---------------------others select----------------------------
+  getAllBasisUser() {
+    return db.load(`select * from ${TABLE_NAME} where permission=0`);
+  },
+
+  getAllEditor() {
+    return db.load(`select * from ${TABLE_NAME} where permission=2`);
+  },
+
   //get an single user by user id
   async getSingle(id) {
     const rows = await db.load(`select * from ${TABLE_NAME} where id = ${id} `);
