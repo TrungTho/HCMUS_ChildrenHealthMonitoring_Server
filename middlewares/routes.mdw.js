@@ -1,4 +1,4 @@
-const isAdmin = require("./admin.mdw");
+const adminAuth = require("./admin.mdw");
 const passport = require("../middlewares/passport.mdw");
 
 module.exports = function (app) {
@@ -24,5 +24,11 @@ module.exports = function (app) {
     "/diary",
     passport.authenticate("jwt", { session: false }),
     require("../components/client/diary/diary.route")
+  );
+  app.use(
+    "/admin/user",
+    passport.authenticate("jwt", { session: false }),
+    adminAuth,
+    require("../components/admin/account/user.route")
   );
 };

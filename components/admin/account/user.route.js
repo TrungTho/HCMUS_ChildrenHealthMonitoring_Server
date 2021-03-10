@@ -8,6 +8,6 @@ router.get("/editor", userController.getEditor);
 
 router.post("/diable-user", userController.disableUser);
 
-router.post("/register", userController.register);
+router.post("/register", userController.registerUser);
 
 module.exports = router;

@@ -4,7 +4,9 @@ const TABLE_NAME = "user";
 module.exports = {
   //---------------------default query----------------------------
   getAll() {
-    return db.load(`select * from ${TABLE_NAME}`);
+    return db.load(
+      `select * from ${TABLE_NAME} where username != '${process.env.ADMIN_USERNAME}'` //you will never can get data of admin from server
+    );
   },
 
   add(newObj) {
