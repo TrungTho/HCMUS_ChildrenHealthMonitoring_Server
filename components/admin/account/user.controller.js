@@ -33,7 +33,8 @@ module.exports = accountController = {
 
   getEditor: async function (req, res) {
     try {
-      res.send({ success: true });
+      const data = await userModel.getAllEditor();
+      res.send({ success: true, data: data });
     } catch (error) {
       res.send({ success: false, err_message: error });
     }
