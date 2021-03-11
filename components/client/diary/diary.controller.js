@@ -59,20 +59,18 @@ module.exports = diaryController = {
         req.query.id
       );
 
-      if (
-        vaccine_diaries.length ||
-        w_h_diaries.length ||
-        teeth_diaries.length
-      ) {
-        res.send({
-          success: true,
-          vaccine: vaccine_diaries,
-          weight_height: w_h_diaries,
-          teeth: teeth_diaries,
-        });
-      } else {
-        res.send({ success: false, err_message: "no record" });
-      }
+      //join 3 arrays to one
+      let dataDiaries = vaccine_diaries
+        .concat(w_h_diaries)
+        .concat(teeth_diaries);
+
+      //sort data
+      dataDiaries.sort(utilFuncs.compareDesc); //sort descending
+
+      res.send({
+        success: true,
+        dataDiaries,
+      });
     } catch (error) {
       res.send({ success: false, err_message: error });
     }
