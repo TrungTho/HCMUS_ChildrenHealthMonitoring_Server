@@ -68,7 +68,7 @@ module.exports = {
   //function to flip state disable
   flipDisable(id) {
     return db.load(
-      `update ${TABLE_NAME} set isdisable=not(isdisable) where id=${id}`
+      `update ${TABLE_NAME} set isdisable=not(isdisable) where id=${id} and username != '${process.env.ADMIN_USERNAME}'`
     );
   },
 
