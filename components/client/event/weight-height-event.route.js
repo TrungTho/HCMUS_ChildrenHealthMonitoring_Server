@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.get("/", weightHeightController.getAllEvent);
 
-router.post("/new-event", weightHeightController.newEvent);
-router.post("/update-event", weightHeightController.updateEvent);
-router.post("/delete-event", weightHeightController.deleteEvent);
+router.post("/new-event", userAuth, weightHeightController.newEvent);
+router.post("/update-event", userAuth, weightHeightController.updateEvent);
+router.post("/delete-event", userAuth, weightHeightController.deleteEvent);
 
 module.exports = router;
