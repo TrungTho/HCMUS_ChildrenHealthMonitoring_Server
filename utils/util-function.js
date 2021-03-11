@@ -21,4 +21,18 @@ module.exports = {
       today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
     );
   },
+
+  compareAsc: (a, b) => {
+    if (a.createDate > b.createDate) return 1;
+    if (b.createDate > a.createDate) return -1;
+
+    return 0;
+  },
+
+  compareDesc: (a, b) => {
+    if (a.createDate > b.createDate) return -1;
+    if (b.createDate > a.createDate) return 1;
+
+    return 0;
+  },
 };
