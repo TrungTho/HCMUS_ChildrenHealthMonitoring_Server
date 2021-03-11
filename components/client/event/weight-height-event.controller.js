@@ -49,10 +49,12 @@ module.exports = diaryController = {
       };
 
       //add new diary to db
-      await diaryWeightHeightModel.add(newDiary);
+      const ret = await diaryWeightHeightModel.add(newEvent);
+
+      const datum = await diaryWeightHeightModel.getSingle(ret.insertId);
 
       //send success message to client
-      res.send({ success: true, eventInfor: newEvent });
+      res.send({ success: true, eventInfor: datum });
     } catch (error) {
       res.send({ success: false, err_message: error });
     }
@@ -60,7 +62,30 @@ module.exports = diaryController = {
 
   updateEvent: async function (req, res) {
     try {
-      res.send({ success: true });
+      const fileUploaded = req.files.uploadImg;
+      //upload file to cloudinary
+      const uploadResponse = await cloudinary.uploader.upload(
+        fileUploaded.tempFilePath,
+        {
+          upload_preset: process.env.CLOUD_DIARY_WEIGHT_HEIGHT_PRESET, //choose configed preset to store image
+        }
+      );
+
+      //create new event according to user input
+      const newEvent = {
+        id_diary: req.query.id, //id of log in account
+        weight: req.body.weight,
+        height: req.body.height,
+        log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
+        note: req.body.note,
+        image: uploadResponse.url || "",
+      };
+
+      //add new diary to db
+      await diaryWeightHeightModel.add(newDiary);
+
+      //send success message to client
+      res.send({ success: true, eventInfor: newEvent });
     } catch (error) {
       res.send({ success: false, err_message: error });
     }
