@@ -4,14 +4,7 @@ const diaryWeightHeightModel = require("../../../models/diary-weight-height.mode
 const diairyTeethModel = require("../../../models/diairy-teeth.model");
 const moment = require("moment");
 const cloudinary = require("../../../middlewares/cloudinary.mdw");
-
-//function to generate the current date in db's format
-const getCurrentDate = () => {
-  var today = new Date();
-  return (
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
-  );
-};
+const utilFuncs = require("../../../utils/util-function");
 
 module.exports = diaryController = {
   changeDiaryAvatar: async function (req, res) {
@@ -104,7 +97,9 @@ module.exports = diaryController = {
         fullname: req.body.fullname,
         gender: req.body.gender,
         dob: moment(req.body.dob, "DD/MM/YYYY").format("YYYY-MM-DD"),
-        createdate: moment(getCurrentDate(), "YYYY-MM-DD").format("YYYY-MM-DD"),
+        createdate: moment(utilFuncs.getCurrentDate(), "YYYY-MM-DD").format(
+          "YYYY-MM-DD"
+        ),
         avatar: "",
       };
 

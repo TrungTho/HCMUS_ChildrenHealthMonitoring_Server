@@ -1,22 +1,9 @@
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
 const nodemailer = require("nodemailer");
-const jwt = require("jsonwebtoken");
 const userModel = require("../../../models/user.model");
 const cloudinary = require("../../../middlewares/cloudinary.mdw");
-
-//function to generate new jwt token
-const encodedToken = (dataToEncoded) => {
-  return jwt.sign(
-    {
-      iss: process.env.DEVELOPERS,
-      sub: dataToEncoded,
-      iat: new Date().getTime(),
-      exp: Math.floor(Date.now() / 1000) + 60 * 60, //an hour
-    },
-    process.env.JWT_SECRET_OR_KEY
-  );
-};
+const utilFuncs = require("../../../utils/util-function");
 
 module.exports = accountController = {
   changeAvatar: async function (req, res) {
@@ -53,9 +40,9 @@ module.exports = accountController = {
 
   login: async function (req, res) {
     if (req.user == "Unauthorized") {
-      res.send({ success: false });
+      //res.send({ success: false });
     } else {
-      const token = encodedToken(req.user.username);
+      const token = utilFuncs.encodedToken(req.user.username);
 
       //res.setHeader("Authorization", token);
       res.cookie("auth_token", token, {
