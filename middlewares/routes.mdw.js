@@ -18,6 +18,7 @@ module.exports = function (app) {
   // app.use("/wishlist", isAuth, require("../routes/client/wishlist.route"));
   // app.use("/cart", isAuth, require("../routes/client/cart.route"));
 
+  //--------------------client route-----------------
   app.use("/test", require("../components/client/test/test.route"));
   app.use("/account", require("../components/client/account/account.route"));
   app.use(
@@ -25,6 +26,13 @@ module.exports = function (app) {
     passport.authenticate("jwt", { session: false }),
     require("../components/client/diary/diary.route")
   );
+
+  app.use(
+    "/event/weight-height",
+    passport.authenticate("jwt", { session: false }),
+    require("../components/client/event/weight-height-event.route")
+  );
+  //---------------------admin route------------------
   app.use(
     "/admin/user",
     passport.authenticate("jwt", { session: false }),
