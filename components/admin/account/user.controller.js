@@ -7,6 +7,8 @@ const cloudinary = require("../../../middlewares/cloudinary.mdw");
 module.exports = accountController = {
   disableUser: async function (req, res) {
     try {
+      const userid = req.body.id;
+      await userModel.flipDisable(userid);
       res.send({ success: true });
     } catch (error) {
       res.send({ success: false, err_message: error });
