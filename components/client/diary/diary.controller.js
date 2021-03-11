@@ -21,7 +21,7 @@ module.exports = diaryController = {
           }
         );
 
-        console.log("uploadResponse ", uploadResponse);
+        // console.log("uploadResponse ", uploadResponse);
 
         //update avatar link in db
         await diaryModel.setAvatar(req.query.id, uploadResponse.url);
