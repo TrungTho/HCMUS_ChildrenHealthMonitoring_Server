@@ -7,8 +7,11 @@ module.exports = async function DiaryAuth(req, res, next) {
   try {
     const eventIdDiary = await diaryWeightHeightModel.getIdDiary(req.body.id);
     //compare user_id of this diary with log in user
-    if (req.query.id !== eventIdDiary) {
-      res.send({ success: false, err_message: "invalid request" });
+    if (parseInt(req.query.id) !== eventIdDiary) {
+      res.send({
+        success: false,
+        err_message: "invalid request1",
+      });
     }
   } catch (error) {
     res.send({ success: false, err_message: "invalid request" });

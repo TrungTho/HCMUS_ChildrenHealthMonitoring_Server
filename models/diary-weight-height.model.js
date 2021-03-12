@@ -35,7 +35,7 @@ module.exports = {
       `select id_diary from ${TABLE_NAME} where id = ${id} `
     );
     if (rows.length === 0) return null;
-    return rows[0];
+    return rows[0].id_diary;
   },
 
   getAllByDiaryId(id) {
@@ -43,9 +43,13 @@ module.exports = {
   },
 
   //---------------------others update----------------------------
-
   //function to update avatar link with id and link
   changeImage(id, link) {
     return db.load(`update ${TABLE_NAME} set image='${link}' where id=${id}`);
+  },
+
+  //function delete event "logically"
+  setDelete(id) {
+    return db.load(`update ${TABLE_NAME} set isDel=true where id=${id}`);
   },
 };
