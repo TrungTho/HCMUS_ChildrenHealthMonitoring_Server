@@ -29,6 +29,15 @@ module.exports = {
     return rows[0];
   },
 
+  //get diary id by event's id to authentication
+  async getIdDiary(id) {
+    const rows = await db.load(
+      `select id_diary from ${TABLE_NAME} where id = ${id} `
+    );
+    if (rows.length === 0) return null;
+    return rows[0];
+  },
+
   getAllByDiaryId(id) {
     return db.load(`select * from ${TABLE_NAME} where id_diary=${id}`);
   },
