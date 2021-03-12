@@ -7,6 +7,7 @@ const { updateLocale } = require("moment");
 module.exports = diaryController = {
   deleteEvent: async function (req, res) {
     try {
+      await diaryWeightHeightModel.setDelete(req.body.id);
       res.send({ success: true });
     } catch (error) {
       res.send({ success: false, err_message: error });
