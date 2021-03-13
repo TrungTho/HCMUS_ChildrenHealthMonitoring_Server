@@ -32,6 +32,13 @@ module.exports = function (app) {
     passport.authenticate("jwt", { session: false }),
     require("../components/client/event/weight-height-event.route")
   );
+
+  app.use(
+    "/event/vaccine",
+    passport.authenticate("jwt", { session: false }),
+    require("../components/client/event/vaccine-event.route")
+  );
+
   //---------------------admin route------------------
   app.use(
     "/admin/user",
