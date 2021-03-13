@@ -3,7 +3,7 @@
 module.exports = function adminAuth(req, res, next) {
   if (req.user.username === process.env.ADMIN_USERNAME) {
   } else {
-    res.send({ success: false, err_message: "invalid request" });
+    return res.send({ success: false, err_message: "invalid request" });
   }
 
   next();

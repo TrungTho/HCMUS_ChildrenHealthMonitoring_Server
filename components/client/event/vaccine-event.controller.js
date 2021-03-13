@@ -41,7 +41,7 @@ module.exports = diaryController = {
 
       //create new event according to user input
       const newEvent = {
-        id_diary: req.query.id, //id of log in account
+        id_diary: req.query.id,
         log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
         note: req.body.note,
         image: uploadResponse.url || "",
@@ -64,3 +64,46 @@ module.exports = diaryController = {
     }
   },
 
+  updateEvent: async function (req, res) {
+    try {
+      const fileUploaded = req.files.uploadImg;
+      //upload file to cloudinary
+      const uploadResponse = await cloudinary.uploader.upload(
+        fileUploaded.tempFilePath,
+        {
+          upload_preset: process.env.CLOUD_DIARY_WEIGHT_HEIGHT_PRESET, //choose configed preset to store image
+        }
+      );
+
+      //create new event according to user input
+      const updatedEvent = {
+        id: req.body.id, //id of event
+        id_diary: req.query.id, //id of log in account
+        log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
+        note: req.body.note,
+        image: uploadResponse.url || "",
+        vaccine: req.body.vaccine,
+        vaccineName: req.body.vaccineName,
+        doctor: req.body.doctor,
+      };
+
+      //add new diary to db
+      await diaryVaccineModel.update(updatedEvent);
+
+      const datum = await diaryVaccineModel.getSingle(req.body.id);
+
+      //send success message to client
+      res.send({ success: true, eventInfor: datum });
+    } catch (error) {
+      res.send({ success: false, err_message: error });
+    }
+  },
+
+  template: async function (req, res) {
+    try {
+      res.send({ success: true });
+    } catch (error) {
+      res.send({ success: false, err_message: error });
+    }
+  },
+};

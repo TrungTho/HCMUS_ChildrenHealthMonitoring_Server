@@ -75,7 +75,7 @@ module.exports = diaryController = {
 
       //create new event according to user input
       const updatedEvent = {
-        id: req.body.id,
+        id: req.body.id, //id of event
         weight: req.body.weight,
         height: req.body.height,
         log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),

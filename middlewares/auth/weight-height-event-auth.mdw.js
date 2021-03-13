@@ -8,13 +8,13 @@ module.exports = async function DiaryAuth(req, res, next) {
     const eventIdDiary = await diaryWeightHeightModel.getIdDiary(req.body.id);
     //compare user_id of this diary with log in user
     if (parseInt(req.query.id) !== eventIdDiary) {
-      res.send({
+      return res.send({
         success: false,
         err_message: "invalid request1",
       });
     }
   } catch (error) {
-    res.send({ success: false, err_message: "invalid request" });
+    return res.send({ success: false, err_message: "invalid request" });
   }
 
   //allow to access if this event belong to this diary
