@@ -1,4 +1,4 @@
-const adminAuth = require("./admin.mdw");
+const adminAuth = require("./auth/admin-auth.mdw");
 const passport = require("../middlewares/passport.mdw");
 
 module.exports = function (app) {

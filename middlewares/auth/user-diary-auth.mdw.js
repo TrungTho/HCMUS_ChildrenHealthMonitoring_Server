@@ -1,4 +1,4 @@
-const diaryModel = require("../models/diary.model");
+const diaryModel = require("../../models/diary.model");
 
 //middleware function to check right of client to access profile
 module.exports = async function DiaryAuth(req, res, next) {
