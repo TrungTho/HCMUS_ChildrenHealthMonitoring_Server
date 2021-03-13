@@ -49,7 +49,7 @@ module.exports = accountController = {
         httpOnly: true,
         maxAge: 1000 * 60 * 60, //1hour
       });
-      res.send({ success: true });
+      res.send({ success: true, userInfor: req.user });
     }
   },
 

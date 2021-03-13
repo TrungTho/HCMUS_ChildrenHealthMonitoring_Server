@@ -50,8 +50,13 @@ passport.use(
 passport.use(
   new LocalStrategy(async function (username, password, done) {
     try {
-      const datum = await userModel.getSingleByUsername(username);
-
+      let datum;
+      //check that user's input is email or username
+      if (username.indexOf("@") === -1) {
+        datum = await userModel.getSingleByUsername(username);
+      } else {
+        datum = await userModel.getSingleByEmail(username);
+      }
       if (datum !== null) {
         const ret = bcrypt.compareSync(password, datum.password);
 
