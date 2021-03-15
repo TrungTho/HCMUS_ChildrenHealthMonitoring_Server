@@ -39,6 +39,12 @@ module.exports = function (app) {
     require("../components/client/event/vaccine-event.route")
   );
 
+  app.use(
+    "/event/teeth",
+    passport.authenticate("jwt", { session: false }),
+    require("../components/client/event/teeth-event.route")
+  );
+
   //---------------------admin route------------------
   app.use(
     "/admin/user",
