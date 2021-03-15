@@ -1,24 +1,29 @@
 const express = require("express");
-const vaccineController = require("./vaccine-event.controller");
+const vaccineEventController = require("./vaccine-event.controller");
 const userAuth = require("../../../middlewares/auth/user-diary-auth.mdw"); //middle to allow user access only their own diaries
 const eventAuth = require("../../../middlewares/auth/vaccine-event-auth.mdw"); //middle to allow user access only their own diaries
 const router = express.Router();
 
-router.get("/", vaccineController.getAllEvent);
+router.get("/", vaccineEventController.getAllEvent);
 
-router.post("/detail", userAuth, eventAuth, vaccineController.getEventDetail);
-router.post("/new-event", userAuth, vaccineController.newEvent);
+router.post(
+  "/detail",
+  userAuth,
+  eventAuth,
+  vaccineEventController.getEventDetail
+);
+router.post("/new-event", userAuth, vaccineEventController.newEvent);
 router.post(
   "/update-event",
   userAuth,
   eventAuth,
-  vaccineController.updateEvent
+  vaccineEventController.updateEvent
 );
 router.post(
   "/delete-event",
   userAuth,
   eventAuth,
-  vaccineController.deleteEvent
+  vaccineEventController.deleteEvent
 );
 
 module.exports = router;
