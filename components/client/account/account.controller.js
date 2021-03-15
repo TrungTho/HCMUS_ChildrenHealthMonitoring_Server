@@ -8,7 +8,11 @@ const utilFuncs = require("../../../utils/util-function");
 module.exports = accountController = {
   changeAvatar: async function (req, res) {
     try {
-      const fileUploaded = req.files.uploadImg;
+      let fileUploaded = [];
+      if (req.files) {
+        fileUploaded = req.files.uploadImg;
+      }
+
       //check if client sent image is null or not
       if (!fileUploaded) {
       } else {
