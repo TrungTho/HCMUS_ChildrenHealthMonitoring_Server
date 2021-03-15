@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get("/", weightHeightController.getAllEvent);
 
+router.post("/detail", weightHeightController.getEventDetail);
 router.post("/new-event", userAuth, weightHeightController.newEvent);
 router.post(
   "/update-event",

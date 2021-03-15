@@ -155,10 +155,12 @@ module.exports = accountController = {
           res.json({ success: false, err_message: error });
         }
       } else {
-        res.json({ success: false, err_message: "existed username" });
+        res
+          .status(406)
+          .send({ success: false, err_message: "existed username" });
       }
     } else {
-      res.json({ success: false, err_message: "existed email" });
+      res.status(406).send({ success: false, err_message: "existed email" });
     }
   },
 };
