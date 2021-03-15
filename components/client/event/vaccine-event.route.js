@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get("/", vaccineController.getAllEvent);
 
+router.post("/detail", userAuth, eventAuth, vaccineController.getEventDetail);
 router.post("/new-event", userAuth, vaccineController.newEvent);
 router.post(
   "/update-event",

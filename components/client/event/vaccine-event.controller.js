@@ -28,6 +28,17 @@ module.exports = diaryController = {
     }
   },
 
+  getEventDetail: async function (req, res) {
+    try {
+      const data = await diaryVaccineModel.getSingle(req.body.id);
+
+      //send data to client
+      res.send({ success: true, eventInfor: data });
+    } catch (error) {
+      res.send({ success: false, err_message: error });
+    }
+  },
+
   newEvent: async function (req, res) {
     try {
       const fileUploaded = req.files.uploadImg;
