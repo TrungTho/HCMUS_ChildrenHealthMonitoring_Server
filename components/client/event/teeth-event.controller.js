@@ -10,7 +10,7 @@ module.exports = diaryController = {
       await diaryTeethModel.setDelete(req.body.id);
       res.send({ success: true });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
@@ -24,7 +24,7 @@ module.exports = diaryController = {
       //send data to client
       res.send({ success: true, events: data });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
@@ -35,7 +35,7 @@ module.exports = diaryController = {
       //send data to client
       res.send({ success: true, eventInfor: data });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
@@ -75,7 +75,7 @@ module.exports = diaryController = {
       //send success message to client
       res.send({ success: true, eventInfor: datum });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
@@ -117,7 +117,7 @@ module.exports = diaryController = {
       //send success message to client
       res.send({ success: true, eventInfor: datum });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
@@ -125,7 +125,7 @@ module.exports = diaryController = {
     try {
       res.send({ success: true });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 };

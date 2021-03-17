@@ -33,7 +33,9 @@ module.exports = accountController = {
         });
       }
     } catch (error) {
-      res.send({ success: false, err_message: error || "null image" });
+      res
+        .status(406)
+        .send({ success: false, err_message: error || "null image" });
     }
   },
 
@@ -44,7 +46,6 @@ module.exports = accountController = {
 
   login: async function (req, res) {
     if (req.user == "Unauthorized") {
-      //res.send({ success: false });
     } else {
       const token = utilFuncs.encodedToken(req.user.username);
 
@@ -53,7 +54,10 @@ module.exports = accountController = {
         httpOnly: true,
         maxAge: 1000 * 60 * 60, //1hour
       });
-      res.send({ success: true, userInfor: req.user });
+      res.send({
+        success: true,
+        userInfor: req.user,
+      });
     }
   },
 
@@ -85,13 +89,15 @@ module.exports = accountController = {
           //send success message to client
           res.send({ success: true, userInfor: newUser });
         } else {
-          res.send({ success: false, err_message: "wrong password" });
+          res
+            .status(406)
+            .send({ success: false, err_message: "wrong password" });
         }
       } catch (error) {
-        res.send({ success: false, err_message: error });
+        res.status(406).send({ success: false, err_message: error });
       }
     } else {
-      res.send({ success: false, err_message: "invalid token" });
+      res.status(406).send({ success: false, err_message: "invalid token" });
     }
   },
 

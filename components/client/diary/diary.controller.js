@@ -32,7 +32,9 @@ module.exports = diaryController = {
         });
       }
     } catch (error) {
-      res.send({ success: false, err_message: error || "null image" });
+      res
+        .status(406)
+        .send({ success: false, err_message: error || "null image" });
     }
   },
 
@@ -41,7 +43,7 @@ module.exports = diaryController = {
       const data = await diaryModel.getAllByUserId(req.user.id);
       res.send({ success: true, diaries: data });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
@@ -72,7 +74,7 @@ module.exports = diaryController = {
         dataDiaries,
       });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
@@ -83,7 +85,7 @@ module.exports = diaryController = {
 
       res.send({ success: true, diaryInfor: datum });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
@@ -107,7 +109,7 @@ module.exports = diaryController = {
       //send success message to client
       res.send({ success: true, diaryInfor: newDiary });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
@@ -130,7 +132,7 @@ module.exports = diaryController = {
 
       res.send({ success: true, diaryInfor: datum });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
@@ -138,7 +140,7 @@ module.exports = diaryController = {
     try {
       res.send({ success: true });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 };

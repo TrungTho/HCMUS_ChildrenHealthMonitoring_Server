@@ -11,7 +11,7 @@ module.exports = accountController = {
       await userModel.flipDisable(userid);
       res.send({ success: true });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
@@ -20,7 +20,7 @@ module.exports = accountController = {
       const data = await userModel.getAll();
       res.send({ success: true, data: data });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
@@ -29,7 +29,7 @@ module.exports = accountController = {
       const data = await userModel.getAllBasisUser();
       res.send({ success: true, data: data });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
@@ -38,7 +38,7 @@ module.exports = accountController = {
       const data = await userModel.getAllEditor();
       res.send({ success: true, data: data });
     } catch (error) {
-      res.send({ success: false, err_message: error });
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
