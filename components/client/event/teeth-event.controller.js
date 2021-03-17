@@ -91,6 +91,7 @@ module.exports = diaryController = {
         isDel: 0,
       };
 
+      //image update process
       let fileUploaded = [],
         uploadResponse = { url: "" };
 

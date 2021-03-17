@@ -82,15 +82,6 @@ module.exports = diaryController = {
 
   updateEvent: async function (req, res) {
     try {
-      const fileUploaded = req.files.uploadImg;
-      //upload file to cloudinary
-      const uploadResponse = await cloudinary.uploader.upload(
-        fileUploaded.tempFilePath,
-        {
-          upload_preset: process.env.CLOUD_DIARY_WEIGHT_HEIGHT_PRESET, //choose configed preset to store image
-        }
-      );
-
       //create new event according to user input
       const updatedEvent = {
         id: req.body.id, //id of event
@@ -98,9 +89,26 @@ module.exports = diaryController = {
         height: req.body.height,
         log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
         note: req.body.note,
-        image: uploadResponse.url || "",
         id_diary: req.query.id, //id of log in account
       };
+
+      //image update process
+      let fileUploaded = [],
+        uploadResponse = { url: "" };
+
+      //check if req.file is existed or not
+      if (req.body.isImageChange === "true") {
+        fileUploaded = req.files.uploadImg;
+        //upload file to cloudinary
+        uploadResponse = await cloudinary.uploader.upload(
+          fileUploaded.tempFilePath,
+          {
+            upload_preset: process.env.CLOUD_DIARY_WEIGHT_HEIGHT_PRESET, //choose configed preset to store image
+          }
+        );
+
+        updatedEvent.image = uploadResponse.url;
+      }
 
       //add new diary to db
       await diaryWeightHeightModel.update(updatedEvent);

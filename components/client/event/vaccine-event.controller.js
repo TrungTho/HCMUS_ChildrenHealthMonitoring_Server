@@ -95,6 +95,7 @@ module.exports = diaryController = {
         doctor: req.body.doctor,
       };
 
+      //image update process
       let fileUploaded = [],
         uploadResponse = { url: "" };
 
