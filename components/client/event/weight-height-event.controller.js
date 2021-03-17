@@ -43,6 +43,8 @@ module.exports = diaryController = {
     try {
       let fileUploaded = [],
         uploadResponse = { url: "" };
+
+      //check if req.file is existed or not
       if (req.files) {
         fileUploaded = req.files.uploadImg;
 
@@ -54,8 +56,6 @@ module.exports = diaryController = {
           }
         );
       }
-
-      console.log(uploadResponse.url);
 
       //create new event according to user input
       const newEvent = {

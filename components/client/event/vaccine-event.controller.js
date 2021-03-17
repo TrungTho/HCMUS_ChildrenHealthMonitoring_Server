@@ -41,15 +41,21 @@ module.exports = diaryController = {
 
   newEvent: async function (req, res) {
     try {
-      const fileUploaded = req.files.uploadImg;
-      //upload file to cloudinary
-      const uploadResponse = await cloudinary.uploader.upload(
-        fileUploaded.tempFilePath,
-        {
-          upload_preset: process.env.CLOUD_DIARY_VACCINE_TRACK_PRESET, //choose configed preset to store image
-        }
-      );
+      let fileUploaded = [],
+        uploadResponse = { url: "" };
 
+      //check if req.file is existed or not
+      if (req.files) {
+        fileUploaded = req.files.uploadImg;
+
+        //upload file to cloudinary
+        uploadResponse = await cloudinary.uploader.upload(
+          fileUploaded.tempFilePath,
+          {
+            upload_preset: process.env.CLOUD_DIARY_VACCINE_TRACK_PRESET, //choose configed preset to store image
+          }
+        );
+      }
       //create new event according to user input
       const newEvent = {
         id_diary: req.query.id,
