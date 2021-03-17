@@ -41,14 +41,21 @@ module.exports = diaryController = {
 
   newEvent: async function (req, res) {
     try {
-      const fileUploaded = req.files.uploadImg;
-      //upload file to cloudinary
-      const uploadResponse = await cloudinary.uploader.upload(
-        fileUploaded.tempFilePath,
-        {
-          upload_preset: process.env.CLOUD_DIARY_WEIGHT_HEIGHT_PRESET, //choose configed preset to store image
-        }
-      );
+      let fileUploaded = [],
+        uploadResponse = { url: "" };
+      if (req.files) {
+        fileUploaded = req.files.uploadImg;
+
+        //upload file to cloudinary
+        uploadResponse = await cloudinary.uploader.upload(
+          fileUploaded.tempFilePath,
+          {
+            upload_preset: process.env.CLOUD_DIARY_WEIGHT_HEIGHT_PRESET, //choose configed preset to store image
+          }
+        );
+      }
+
+      console.log(uploadResponse.url);
 
       //create new event according to user input
       const newEvent = {
@@ -57,7 +64,7 @@ module.exports = diaryController = {
         height: req.body.height,
         log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
         note: req.body.note,
-        image: uploadResponse.url || "",
+        image: uploadResponse.url,
         isDel: 0,
       };
 
