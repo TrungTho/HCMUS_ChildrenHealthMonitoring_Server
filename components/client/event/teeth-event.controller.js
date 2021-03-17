@@ -79,3 +79,52 @@ module.exports = diaryController = {
     }
   },
 
+  updateEvent: async function (req, res) {
+    try {
+      //create new event according to user input
+      const updatedEvent = {
+        id: req.body.id, //id of event
+        id_diary: req.query.id,
+        log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
+        numberOfTeeth: req.body.numberOfTeeth,
+        note: req.body.note,
+        isDel: 0,
+      };
+
+      let fileUploaded = [],
+        uploadResponse = { url: "" };
+
+      //check if req.file is existed or not
+      if (req.body.isImageChange === "true") {
+        fileUploaded = req.files.uploadImg;
+        //upload file to cloudinary
+        uploadResponse = await cloudinary.uploader.upload(
+          fileUploaded.tempFilePath,
+          {
+            upload_preset: process.env.CLOUD_DIARY_WEIGHT_HEIGHT_PRESET, //choose configed preset to store image
+          }
+        );
+
+        updatedEvent.image = uploadResponse.url;
+      }
+
+      //add new diary to db
+      await diaryTeethModel.update(updatedEvent);
+
+      const datum = await diaryTeethModel.getSingle(req.body.id);
+
+      //send success message to client
+      res.send({ success: true, eventInfor: datum });
+    } catch (error) {
+      res.send({ success: false, err_message: error });
+    }
+  },
+
+  template: async function (req, res) {
+    try {
+      res.send({ success: true });
+    } catch (error) {
+      res.send({ success: false, err_message: error });
+    }
+  },
+};
