@@ -52,7 +52,7 @@ module.exports = diaryController = {
         uploadResponse = await cloudinary.uploader.upload(
           fileUploaded.tempFilePath,
           {
-            upload_preset: process.env.CLOUD_DIARY_VACCINE_TRACK_PRESET, //choose configed preset to store image
+            upload_preset: process.env.CLOUD_DIARY_TEETH_PRESET, //choose configed preset to store image
           }
         );
       }
@@ -101,7 +101,7 @@ module.exports = diaryController = {
         uploadResponse = await cloudinary.uploader.upload(
           fileUploaded.tempFilePath,
           {
-            upload_preset: process.env.CLOUD_DIARY_WEIGHT_HEIGHT_PRESET, //choose configed preset to store image
+            upload_preset: process.env.CLOUD_DIARY_TEETH_PRESET, //choose configed preset to store image
           }
         );
 
