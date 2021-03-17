@@ -56,7 +56,12 @@ module.exports = accountController = {
       });
       res.send({
         success: true,
-        userInfor: req.user,
+        userInfor: {
+          username: req.user.username,
+          fullname: req.user.fullname,
+          avatar: req.user.avatar,
+          email: req.user.email,
+        },
       });
     }
   },
