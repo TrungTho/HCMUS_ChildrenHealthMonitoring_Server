@@ -56,12 +56,13 @@ module.exports = diaryController = {
           }
         );
       }
+
       //create new event according to user input
       const newEvent = {
         id_diary: req.query.id,
         log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
         note: req.body.note,
-        image: uploadResponse.url || "",
+        image: uploadResponse.url,
         vaccine: req.body.vaccine,
         vaccineName: req.body.vaccineName,
         doctor: req.body.doctor,

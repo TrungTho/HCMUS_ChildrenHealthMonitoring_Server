@@ -1,5 +1,5 @@
 const express = require("express");
-const teethEventController = require("./vaccine-event.controller");
+const teethEventController = require("./teeth-event.controller");
 const userAuth = require("../../../middlewares/auth/user-diary-auth.mdw"); //middle to allow user access only their own diaries
 const eventAuth = require("../../../middlewares/auth/teeth-event-auth.mdw"); //middle to allow user access only their own diaries
 const router = express.Router();
