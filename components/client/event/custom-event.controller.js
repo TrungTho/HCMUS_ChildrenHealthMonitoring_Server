@@ -4,6 +4,15 @@ const utilFuncs = require("../../../utils/util-function");
 const { updateLocale } = require("moment");
 
 module.exports = diaryController = {
+  deleteEvent: async function (req, res) {
+    try {
+      await diaryCustomModel.setDelete(req.body.id);
+      res.send({ success: true });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
   getAllEvent: async function (req, res) {
     try {
       const data = await diaryCustomModel.getAllByDiaryId(req.query.id);
