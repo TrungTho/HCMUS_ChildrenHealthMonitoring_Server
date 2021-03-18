@@ -1,6 +1,22 @@
 const jwt = require("jsonwebtoken");
+const cloudinary = require("../middlewares/cloudinary.mdw");
 
 module.exports = {
+  //parameter func to compare array's element
+  compareAsc: (a, b) => {
+    if (a.createDate > b.createDate) return 1;
+    if (b.createDate > a.createDate) return -1;
+
+    return 0;
+  },
+
+  compareDesc: (a, b) => {
+    if (a.createDate > b.createDate) return -1;
+    if (b.createDate > a.createDate) return 1;
+
+    return 0;
+  },
+
   //function to generate new jwt token
   encodedToken: (dataToEncoded) => {
     return jwt.sign(
@@ -22,17 +38,23 @@ module.exports = {
     );
   },
 
-  compareAsc: (a, b) => {
-    if (a.createDate > b.createDate) return 1;
-    if (b.createDate > a.createDate) return -1;
+  uploadImage: async function (req, preset) {
+    let fileUploaded = [],
+      uploadResponse = { url: "" };
 
-    return 0;
-  },
+    //check if req.file is existed or not
+    if (req.files) {
+      fileUploaded = req.files.uploadImg;
 
-  compareDesc: (a, b) => {
-    if (a.createDate > b.createDate) return -1;
-    if (b.createDate > a.createDate) return 1;
+      //upload file to cloudinary
+      uploadResponse = await cloudinary.uploader.upload(
+        fileUploaded.tempFilePath,
+        {
+          upload_preset: preset, //choose configed preset to store image
+        }
+      );
+    }
 
-    return 0;
+    return uploadResponse;
   },
 };
