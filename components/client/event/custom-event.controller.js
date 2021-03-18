@@ -1,6 +1,5 @@
 const diaryCustomModel = require("../../../models/diairy-custom.model");
 const moment = require("moment");
-const cloudinary = require("../../../middlewares/cloudinary.mdw");
 const utilFuncs = require("../../../utils/util-function");
 const { updateLocale } = require("moment");
 
@@ -59,4 +58,44 @@ module.exports = diaryController = {
     }
   },
 
+  updateEvent: async function (req, res) {
+    try {
+      //create new event according to user input
+      const updatedEvent = {
+        id: req.body.id, //id of event
+        id_diary: req.query.id,
+        log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
+        note: req.body.note,
+        isDel: 0,
+      };
+
+      //check if user want to change images or not
+      if (req.body.isImageChange === "true") {
+        const uploadResponse = await utilFuncs.uploadImage(
+          req,
+          process.env.CLOUD_CUSTOM_PRESET
+        );
+
+        updatedEvent.image = uploadResponse.url;
+      }
+
+      //add new diary to db
+      await diaryCustomModel.update(updatedEvent);
+
+      const datum = await diaryCustomModel.getSingle(req.body.id);
+
+      //send success message to client
+      res.send({ success: true, eventInfor: datum });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
+  template: async function (req, res) {
+    try {
+      res.send({ success: true });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
 };
