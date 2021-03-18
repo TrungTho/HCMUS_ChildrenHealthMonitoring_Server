@@ -41,21 +41,11 @@ module.exports = diaryController = {
 
   newEvent: async function (req, res) {
     try {
-      let fileUploaded = [],
-        uploadResponse = { url: "" };
-
-      //check if req.file is existed or not
-      if (req.files) {
-        fileUploaded = req.files.uploadImg;
-
-        //upload file to cloudinary
-        uploadResponse = await cloudinary.uploader.upload(
-          fileUploaded.tempFilePath,
-          {
-            upload_preset: process.env.CLOUD_DIARY_WEIGHT_HEIGHT_PRESET, //choose configed preset to store image
-          }
-        );
-      }
+      //call global function to upload image and return url if existed
+      const uploadResponse = await utilFuncs.uploadImage(
+        req,
+        process.env.CLOUD_DIARY_WEIGHT_HEIGHT_PRESET
+      );
 
       //create new event according to user input
       const newEvent = {
@@ -92,19 +82,11 @@ module.exports = diaryController = {
         id_diary: req.query.id, //id of log in account
       };
 
-      //image update process
-      let fileUploaded = [],
-        uploadResponse = { url: "" };
-
-      //check if req.file is existed or not
+      //check if user want to change images or not
       if (req.body.isImageChange === "true") {
-        fileUploaded = req.files.uploadImg;
-        //upload file to cloudinary
-        uploadResponse = await cloudinary.uploader.upload(
-          fileUploaded.tempFilePath,
-          {
-            upload_preset: process.env.CLOUD_DIARY_WEIGHT_HEIGHT_PRESET, //choose configed preset to store image
-          }
+        const uploadResponse = await utilFuncs.uploadImage(
+          req,
+          process.env.CLOUD_DIARY_WEIGHT_HEIGHT_PRESET
         );
 
         updatedEvent.image = uploadResponse.url;

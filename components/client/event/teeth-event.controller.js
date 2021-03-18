@@ -40,6 +40,7 @@ module.exports = diaryController = {
 
   newEvent: async function (req, res) {
     try {
+      //call global function to upload image and return url if existed
       const uploadResponse = await utilFuncs.uploadImage(
         req,
         process.env.CLOUD_DIARY_TEETH_PRESET
