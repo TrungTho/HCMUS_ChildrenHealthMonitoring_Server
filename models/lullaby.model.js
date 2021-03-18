@@ -4,7 +4,7 @@ const TABLE_NAME = "lullaby";
 module.exports = {
   //---------------------default query----------------------------
   getAll() {
-    return db.load(`select * from ${TABLE_NAME}`);
+    return db.load(`select * from ${TABLE_NAME} where isApproved=true`);
   },
 
   add(newObj) {
@@ -24,9 +24,16 @@ module.exports = {
   //---------------------others select----------------------------
   //get an single user by user id
   async getSingle(id) {
-    const rows = await db.load(`select * from ${TABLE_NAME} where id = ${id} `);
+    const rows = await db.load(
+      `select * from ${TABLE_NAME} where id = ${id}  and isApproved=true`
+    );
     if (rows.length === 0) return null;
     return rows[0];
+  },
+
+  //function to get all tus with any approval state
+  adminGetAll() {
+    return db.load(`select * from ${TABLE_NAME}`);
   },
 
   //fulltext search with querystring
@@ -40,6 +47,15 @@ module.exports = {
 
   //function to update avatar link with id and link
   setLink(id, link) {
-    return db.load(`update ${TABLE_NAME} set link='${link}' where id=${id}`);
+    return db.load(
+      `update ${TABLE_NAME} set link='${link}' where id=${id}  and isApproved=true`
+    );
+  },
+
+  //function to flip state approval of tus
+  flipApproval(id) {
+    return db.load(
+      `update ${TABLE_NAME} set isApproved=not(isApproved) where id=${id}`
+    );
   },
 };
