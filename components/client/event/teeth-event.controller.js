@@ -1,6 +1,5 @@
 const diaryTeethModel = require("../../../models/diairy-teeth.model");
 const moment = require("moment");
-const cloudinary = require("../../../middlewares/cloudinary.mdw");
 const utilFuncs = require("../../../utils/util-function");
 const { updateLocale } = require("moment");
 
@@ -41,21 +40,11 @@ module.exports = diaryController = {
 
   newEvent: async function (req, res) {
     try {
-      let fileUploaded = [],
-        uploadResponse = { url: "" };
+      const uploadResponse = await utilFuncs.uploadImage(
+        req,
+        process.env.CLOUD_DIARY_TEETH_PRESET
+      );
 
-      //check if req.file is existed or not
-      if (req.files) {
-        fileUploaded = req.files.uploadImg;
-
-        //upload file to cloudinary
-        uploadResponse = await cloudinary.uploader.upload(
-          fileUploaded.tempFilePath,
-          {
-            upload_preset: process.env.CLOUD_DIARY_TEETH_PRESET, //choose configed preset to store image
-          }
-        );
-      }
       //create new event according to user input
       const newEvent = {
         id_diary: req.query.id,
@@ -91,19 +80,11 @@ module.exports = diaryController = {
         isDel: 0,
       };
 
-      //image update process
-      let fileUploaded = [],
-        uploadResponse = { url: "" };
-
-      //check if req.file is existed or not
+      //check if user want to change images or not
       if (req.body.isImageChange === "true") {
-        fileUploaded = req.files.uploadImg;
-        //upload file to cloudinary
-        uploadResponse = await cloudinary.uploader.upload(
-          fileUploaded.tempFilePath,
-          {
-            upload_preset: process.env.CLOUD_DIARY_TEETH_PRESET, //choose configed preset to store image
-          }
+        const uploadResponse = await utilFuncs.uploadImage(
+          req,
+          process.env.CLOUD_DIARY_TEETH_PRESET
         );
 
         updatedEvent.image = uploadResponse.url;
