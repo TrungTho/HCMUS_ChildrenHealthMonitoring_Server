@@ -97,9 +97,10 @@ module.exports = diaryController = {
         fullname: req.body.fullname,
         gender: req.body.gender,
         dob: moment(req.body.dob, "DD/MM/YYYY").format("YYYY-MM-DD"),
-        createdate: moment(utilFuncs.getCurrentDate(), "YYYY-MM-DD").format(
+        createdate: moment(
+          await utilFuncs.getCurrentDate(),
           "YYYY-MM-DD"
-        ),
+        ).format("YYYY-MM-DD"),
         avatar: "",
       };
 
