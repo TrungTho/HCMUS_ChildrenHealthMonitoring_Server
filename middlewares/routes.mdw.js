@@ -45,6 +45,12 @@ module.exports = function (app) {
     require("../components/client/event/teeth-event.route")
   );
 
+  app.use(
+    "/event/custom",
+    passport.authenticate("jwt", { session: false }),
+    require("../components/client/event/custom-event.route")
+  );
+
   //---------------------admin route------------------
   app.use(
     "/admin/user",
