@@ -5,6 +5,7 @@ const eventAuth = require("../../../middlewares/auth/weight-height-event-auth.md
 const router = express.Router();
 
 router.get("/", weightHeightEventController.getAllEvent);
+router.get("/standard-params", weightHeightEventController.getStandardParam);
 
 router.post(
   "/detail",

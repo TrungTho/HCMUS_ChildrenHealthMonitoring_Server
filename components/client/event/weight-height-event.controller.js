@@ -1,6 +1,6 @@
 const diaryWeightHeightModel = require("../../../models/diary-weight-height.model");
+const weightHeightStandardModel = require("../../../models/weight-height-standard.model");
 const moment = require("moment");
-const cloudinary = require("../../../middlewares/cloudinary.mdw");
 const utilFuncs = require("../../../utils/util-function");
 const { updateLocale } = require("moment");
 
@@ -34,6 +34,20 @@ module.exports = diaryController = {
 
       //send data to client
       res.send({ success: true, eventInfor: data });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
+  getStandardParam: async function (req, res) {
+    try {
+      const data = await weightHeightStandardModel.getAllByOption(
+        req.query.type,
+        req.query.gender
+      );
+
+      //send data to client
+      res.send({ success: true, standardParams: data });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }

@@ -32,7 +32,7 @@ module.exports = {
   //get all by type w - weight, h - height; and gender 0/false - male, 1/true - female
   getAllByOption(type, gender) {
     return db.load(
-      `select * from ${TABLE_NAME} where type = ${type} and gender= ${gender} order by month`
+      `select * from ${TABLE_NAME} where type = '${type}' and gender= ${gender} order by month`
     );
   },
 
