@@ -4,15 +4,15 @@ const cloudinary = require("../middlewares/cloudinary.mdw");
 module.exports = {
   //parameter func to compare array's element
   compareAsc: (a, b) => {
-    if (a.createDate > b.createDate) return 1;
-    if (b.createDate > a.createDate) return -1;
+    if (a.log_date > b.log_date) return 1;
+    if (b.log_date > a.log_date) return -1;
 
     return 0;
   },
 
   compareDesc: (a, b) => {
-    if (a.createDate > b.createDate) return -1;
-    if (b.createDate > a.createDate) return 1;
+    if (a.log_date > b.log_date) return -1;
+    if (b.log_date > a.log_date) return 1;
 
     return 0;
   },

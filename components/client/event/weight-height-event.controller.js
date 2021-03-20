@@ -19,7 +19,7 @@ module.exports = diaryController = {
       const data = await diaryWeightHeightModel.getAllByDiaryId(req.query.id);
 
       //sort data by date descending
-      data.sort(utilFuncs.compareDesc);
+      data.sort(utilFuncs.compareAsc);
 
       //send data to client
       res.send({ success: true, events: data });
