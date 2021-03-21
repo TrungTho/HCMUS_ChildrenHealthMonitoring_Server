@@ -1,7 +1,7 @@
 //middleware function to check right of client to access profile
 
 module.exports = function editorAuth(req, res, next) {
-  if (req.user.permission === "2") {
+  if (parseInt(req.user.permission) === 2) {
   } else {
     return res
       .status(403)
