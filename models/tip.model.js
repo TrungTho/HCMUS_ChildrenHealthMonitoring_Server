@@ -36,6 +36,13 @@ module.exports = {
     return db.load(`select * from ${TABLE_NAME}`);
   },
 
+  //get all post of editor by user id
+  editorGetAllById(id) {
+    return db.load(
+      `select * from ${TABLE_NAME} join editor_post on ${TABLE_NAME}.id=editor_post.id_post where id_user=${id}`
+    );
+  },
+
   //fulltext search with querystring
   searchAll(querystring) {
     return db.load(
