@@ -1,4 +1,5 @@
 const adminAuth = require("./auth/admin-auth.mdw");
+const editorAuth = require("./auth/editor-auth.mdw");
 const passport = require("../middlewares/passport.mdw");
 
 module.exports = function (app) {
@@ -49,6 +50,14 @@ module.exports = function (app) {
     "/event/custom",
     passport.authenticate("jwt", { session: false }),
     require("../components/client/event/custom-event.route")
+  );
+
+  //---------------------editor route------------------
+  app.use(
+    "/editor/post/tip",
+    passport.authenticate("jwt", { session: false }),
+    editorAuth,
+    require("../components/editor/tip/tip.route")
   );
 
   //---------------------admin route------------------
