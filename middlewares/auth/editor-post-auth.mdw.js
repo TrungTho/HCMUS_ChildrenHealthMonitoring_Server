@@ -3,7 +3,7 @@ const editorPostModel = require("../../models/editor-post.model");
 //middleware function to check right of client to access profile
 module.exports = async function DiaryAuth(req, res, next) {
   try {
-    const userId = await editorPostModel.getEditorIdByPostId(req.query.id);
+    const userId = await editorPostModel.getEditorIdByPostId(req.body.id);
     //compare user_id of this diary with log in user
     if (req.user.id !== userId) {
       return res

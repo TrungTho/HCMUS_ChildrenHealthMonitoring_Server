@@ -62,3 +62,43 @@ module.exports = diaryController = {
     }
   },
 
+  updatePost: async function (req, res) {
+    try {
+      //create new Post according to user input
+      const updatedPost = {
+        id: req.body.id,
+        shortDes: req.body.shortDes,
+        fullDes: req.body.fullDes,
+        isApproved: 0,
+      };
+
+      //check if user want to change images or not
+      if (req.body.isImageChange === "true") {
+        const uploadResponse = await utilFuncs.uploadImage(
+          req,
+          process.env.CLOUD_CUSTOM_PRESET
+        );
+
+        updatedPost.image = uploadResponse.url;
+      }
+
+      //add new diary to db
+      await tipModel.update(updatedPost);
+
+      const datum = await tipModel.editorGetSingle(req.body.id);
+
+      //send success message to client
+      res.send({ success: true, postInfor: datum });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
+  template: async function (req, res) {
+    try {
+      res.send({ success: true });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+};
