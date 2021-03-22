@@ -37,13 +37,15 @@ module.exports = diaryController = {
 
   getEventDetail: async function (req, res) {
     try {
-      const data = await diaryWeightHeightModel.getSingle(req.body.id);
+      const datum = await diaryWeightHeightModel.getSingle(req.body.id);
 
       //format log_date for client's usage
-      data.log_date = moment(data.log_date, "YYYY-MM-DD").format("DD/MM/YYYY");
+      datum.log_date = moment(datum.log_date, "YYYY-MM-DD").format(
+        "DD/MM/YYYY"
+      );
 
-      //send data to client
-      res.send({ success: true, eventInfor: data });
+      //send datum to client
+      res.send({ success: true, eventInfor: datum });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }

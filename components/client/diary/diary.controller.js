@@ -41,6 +41,15 @@ module.exports = diaryController = {
   getAllDiaries: async function (req, res) {
     try {
       const data = await diaryModel.getAllByUserId(req.user.id);
+
+      //format date base data for client's usage
+      data.forEach((element) => {
+        element.createdate = moment(element.createdate, "YYYY-MM-DD").format(
+          "DD/MM/YYYY"
+        );
+        element.dob = moment(element.dob, "YYYY-MM-DD").format("DD/MM/YYYY");
+      });
+
       res.send({ success: true, diaries: data });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
@@ -69,6 +78,13 @@ module.exports = diaryController = {
       //sort data
       dataDiaries.sort(utilFuncs.compareDesc); //sort descending
 
+      //format log_date for client's usage
+      dataDiaries.forEach((element) => {
+        element.log_date = moment(element.log_date, "YYYY-MM-DD").format(
+          "DD/MM/YYYY"
+        );
+      });
+
       res.send({
         success: true,
         dataDiaries,
@@ -82,6 +98,12 @@ module.exports = diaryController = {
     try {
       //get datum from db
       const datum = await diaryModel.getSingle(req.query.id);
+
+      //format log_date for client's usage
+      datum.createdate = moment(datum.createdate, "YYYY-MM-DD").format(
+        "DD/MM/YYYY"
+      );
+      datum.dob = moment(datum.dob, "YYYY-MM-DD").format("DD/MM/YYYY");
 
       res.send({ success: true, diaryInfor: datum });
     } catch (error) {
@@ -107,6 +129,12 @@ module.exports = diaryController = {
       //add new diary to db
       await diaryModel.add(newDiary);
 
+      //format log_date for client's usage
+      newDiary.createdate = moment(newDiary.createdate, "YYYY-MM-DD").format(
+        "DD/MM/YYYY"
+      );
+      newDiary.dob = req.body.dob;
+
       //send success message to client
       res.send({ success: true, diaryInfor: newDiary });
     } catch (error) {
@@ -131,6 +159,13 @@ module.exports = diaryController = {
       //get updated datum to send
       const datum = await diaryModel.getSingle(req.query.id);
 
+      //format date base data for client's usage
+      datum.createdate = moment(datum.createdate, "YYYY-MM-DD").format(
+        "DD/MM/YYYY"
+      );
+      datum.dob = moment(datum.dob, "YYYY-MM-DD").format("DD/MM/YYYY");
+
+      //send data to client
       res.send({ success: true, diaryInfor: datum });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
