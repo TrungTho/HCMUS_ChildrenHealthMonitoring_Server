@@ -39,48 +39,6 @@ module.exports = diaryController = {
     }
   },
 
-  deleteDiary: async function (req, res) {
-    try {
-      //set delete diary in db
-      await diaryModel.setDelete(req.query.id);
-
-      //set all event of this diary deleted in db
-      //vaccine events
-      const vaccine_diaries = await diaryVaccineModel.getAllByDiaryId(
-        req.query.id
-      );
-      vaccine_diaries.forEach(async (element) => {
-        await diaryVaccineModel.setDelete(element.id);
-      });
-
-      //weight&height events
-      const w_h_diaries = await diaryWeightHeightModel.getAllByDiaryId(
-        req.query.id
-      );
-      w_h_diaries.forEach(async (element) => {
-        await diaryWeightHeightModel.setDelete(element.id);
-      });
-
-      //teeth events
-      const teeth_diaries = await diaryTeethModel.getAllByDiaryId(req.query.id);
-      teeth_diaries.forEach(async (element) => {
-        await diaryTeethModel.setDelete(element.id);
-      });
-
-      //custom event
-      const custom_diaries = await diaryCustomModel.getAllByDiaryId(
-        req.query.id
-      );
-      custom_diaries.forEach(async (element) => {
-        await diaryCustomModel.setDelete(element.id);
-      });
-
-      res.send({ success: true });
-    } catch (error) {
-      res.status(406).send({ success: false, err_message: error });
-    }
-  },
-
   getAllDiaries: async function (req, res) {
     try {
       const data = await diaryModel.getAllByUserId(req.user.id);
