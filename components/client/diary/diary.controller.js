@@ -1,10 +1,11 @@
 const diaryModel = require("../../../models/diary.model");
 const diaryVaccineModel = require("../../../models/diary-vaccine.model");
 const diaryWeightHeightModel = require("../../../models/diary-weight-height.model");
-const diairyTeethModel = require("../../../models/diairy-teeth.model");
+const diaryTeethModel = require("../../../models/diary-teeth.model");
 const moment = require("moment");
 const cloudinary = require("../../../middlewares/cloudinary.mdw");
 const utilFuncs = require("../../../utils/util-function");
+const diaryCustomModel = require("../../../models/diary-custom.model");
 
 module.exports = diaryController = {
   changeDiaryAvatar: async function (req, res) {
@@ -66,14 +67,17 @@ module.exports = diaryController = {
         req.query.id
       );
 
-      const teeth_diaries = await diairyTeethModel.getAllByDiaryId(
+      const teeth_diaries = await diaryTeethModel.getAllByDiaryId(req.query.id);
+
+      const custom_diaries = await diaryCustomModel.getAllByDiaryId(
         req.query.id
       );
 
       //join 3 arrays to one
       let dataDiaries = vaccine_diaries
         .concat(w_h_diaries)
-        .concat(teeth_diaries);
+        .concat(teeth_diaries)
+        .concat(custom_diaries);
 
       //sort data
       dataDiaries.sort(utilFuncs.compareDesc); //sort descending

@@ -1,4 +1,4 @@
-const diaryCustomModel = require("../../../models/diairy-custom.model");
+const diaryCustomModel = require("../../../models/diary-custom.model");
 const moment = require("moment");
 const utilFuncs = require("../../../utils/util-function");
 const { updateLocale } = require("moment");

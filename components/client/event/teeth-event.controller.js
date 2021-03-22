@@ -1,4 +1,4 @@
-const diaryTeethModel = require("../../../models/diairy-teeth.model");
+const diaryTeethModel = require("../../../models/diary-teeth.model");
 const moment = require("moment");
 const utilFuncs = require("../../../utils/util-function");
 const { updateLocale } = require("moment");

@@ -1,4 +1,4 @@
-const teethDiaryModel = require("../../models/diairy-teeth.model");
+const teethDiaryModel = require("../../models/diary-teeth.model");
 
 //middleware function to check right of client to access event
 //user req has id_diary in req.param.id & id of event in req.body.id
