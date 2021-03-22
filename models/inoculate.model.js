@@ -38,8 +38,8 @@ module.exports = {
   },
 
   //get all kind of vaccine
-  getAll() {
-    return db.load(`select vaccine from ${TABLE_NAME}`);
+  getAllVaccine() {
+    return db.load(`select DISTINCT vaccine from ${TABLE_NAME}`);
   },
 
   //fulltext search with querystring

@@ -1,8 +1,8 @@
 const diaryVaccineModel = require("../../../models/diary-vaccine.model");
 const moment = require("moment");
-const cloudinary = require("../../../middlewares/cloudinary.mdw");
 const utilFuncs = require("../../../utils/util-function");
 const { updateLocale } = require("moment");
+const inoculateModel = require("../../../models/inoculate.model");
 
 module.exports = diaryController = {
   deleteEvent: async function (req, res) {
@@ -30,6 +30,15 @@ module.exports = diaryController = {
 
       //send data to client
       res.send({ success: true, events: data });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
+  getAllVaccine: async function (req, res) {
+    try {
+      const data = inoculateModel.getAllVaccine();
+      res.send({ success: true, vaccines: data });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }

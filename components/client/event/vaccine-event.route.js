@@ -5,6 +5,7 @@ const eventAuth = require("../../../middlewares/auth/vaccine-event-auth.mdw"); /
 const router = express.Router();
 
 router.get("/", vaccineEventController.getAllEvent);
+router.get("/vaccines", vaccineEventController.getAllVaccine);
 
 router.post(
   "/detail",
