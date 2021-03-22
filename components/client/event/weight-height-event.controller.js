@@ -21,6 +21,13 @@ module.exports = diaryController = {
       //sort data by date descending
       data.sort(utilFuncs.compareAsc);
 
+      //format log_date for client's usage
+      data.forEach((element) => {
+        element.log_date = moment(element.log_date, "YYYY-MM-DD").format(
+          "DD/MM/YYYY"
+        );
+      });
+
       //send data to client
       res.send({ success: true, events: data });
     } catch (error) {
@@ -31,6 +38,9 @@ module.exports = diaryController = {
   getEventDetail: async function (req, res) {
     try {
       const data = await diaryWeightHeightModel.getSingle(req.body.id);
+
+      //format log_date for client's usage
+      data.log_date = moment(data.log_date, "YYYY-MM-DD").format("DD/MM/YYYY");
 
       //send data to client
       res.send({ success: true, eventInfor: data });
@@ -76,6 +86,9 @@ module.exports = diaryController = {
       const ret = await diaryWeightHeightModel.add(newEvent);
 
       const datum = await diaryWeightHeightModel.getSingle(ret.insertId);
+      datum.log_date = moment(datum.log_date, "YYYY-MM-DD").format(
+        "DD/MM/YYYY"
+      );
 
       //send success message to client
       res.send({ success: true, eventInfor: datum });
@@ -109,7 +122,13 @@ module.exports = diaryController = {
       //add new diary to db
       await diaryWeightHeightModel.update(updatedEvent);
 
+      //get just updated datum in db to send to client
       const datum = await diaryWeightHeightModel.getSingle(req.body.id);
+
+      //format log_date for client's usage
+      datum.log_date = moment(datum.log_date, "YYYY-MM-DD").format(
+        "DD/MM/YYYY"
+      );
 
       //send success message to client
       res.send({ success: true, eventInfor: datum });
