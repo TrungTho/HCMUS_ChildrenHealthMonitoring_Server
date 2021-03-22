@@ -2,7 +2,7 @@ const diaryModel = require("../../../models/diary.model");
 const lullabyModel = require("../../../models/lullaby.model");
 const newsModel = require("../../../models/news.model");
 const recipeModel = require("../../../models/recipe.model");
-const vaccineModel = require("../../../models/vaccine.model");
+const vaccineModel = require("../../../models/inoculate.model");
 
 module.exports = testController = {
   testFullText: async function (req, res) {

@@ -1,5 +1,5 @@
 const db = require("../utils/database");
-const TABLE_NAME = "vaccine";
+const TABLE_NAME = "inoculate";
 
 module.exports = {
   //---------------------default query----------------------------
@@ -35,6 +35,11 @@ module.exports = {
     );
     if (rows.length === 0) return null;
     return rows[0];
+  },
+
+  //get all kind of vaccine
+  getAll() {
+    return db.load(`select vaccine from ${TABLE_NAME}`);
   },
 
   //fulltext search with querystring
