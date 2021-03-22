@@ -25,7 +25,7 @@ module.exports = {
   //get an single user by user id
   async getSingle(id) {
     const rows = await db.load(
-      `select * from ${TABLE_NAME} where id = ${id} where isApproved=true`
+      `select * from ${TABLE_NAME} where id = ${id} and isApproved=true`
     );
     if (rows.length === 0) return null;
     return rows[0];
@@ -41,6 +41,12 @@ module.exports = {
     return db.load(
       `select * from ${TABLE_NAME} join editor_post on ${TABLE_NAME}.id=editor_post.id_post where id_user=${id}`
     );
+  },
+
+  async editorGetSingle(id) {
+    const rows = await db.load(`select * from ${TABLE_NAME} where id = ${id} `);
+    if (rows.length === 0) return null;
+    return rows[0];
   },
 
   //fulltext search with querystring
