@@ -45,4 +45,9 @@ module.exports = {
       `update ${TABLE_NAME} set avatar='${link}' where id=${id} and isDel=false`
     );
   },
+
+  //function delete event "logically"
+  setDelete(id) {
+    return db.load(`update ${TABLE_NAME} set isDel=true where id=${id}`);
+  },
 };
