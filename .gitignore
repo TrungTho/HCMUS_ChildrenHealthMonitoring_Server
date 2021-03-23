@@ -1,3 +1,4 @@
 
 node_modules/
 .env
+components/client/test/test.controller.js

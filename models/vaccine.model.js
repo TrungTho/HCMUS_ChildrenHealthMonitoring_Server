@@ -1,5 +1,5 @@
 const db = require("../utils/database");
-const TABLE_NAME = "inoculate";
+const TABLE_NAME = "vaccine";
 
 module.exports = {
   //---------------------default query----------------------------
@@ -29,15 +29,24 @@ module.exports = {
     return rows[0];
   },
 
+  //get description by vaccine's name
+  async getDescriptionByVaccineName(vaccineName) {
+    const rows = await db.load(
+      `select description from ${TABLE_NAME} where vaccineName = ${vaccineName} `
+    );
+    if (rows.length === 0) return null;
+    return rows[0];
+  },
+
   //get all kind of vaccine
-  getAllVaccine() {
-    return db.load(`select DISTINCT vaccine from ${TABLE_NAME}`);
+  getAllVaccineName() {
+    return db.load(`select DISTINCT vaccineName from ${TABLE_NAME}`);
   },
 
   //fulltext search with querystring
   searchAll(querystring) {
     return db.load(
-      `SELECT * FROM ${TABLE_NAME} WHERE MATCH (shortdes, name) AGAINST ('${querystring}' );`
+      `SELECT * FROM ${TABLE_NAME} WHERE MATCH (vaccineName, allocate, description) AGAINST ('${querystring}' );`
     );
   },
 
