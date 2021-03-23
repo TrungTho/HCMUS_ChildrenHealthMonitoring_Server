@@ -38,7 +38,7 @@ module.exports = diaryController = {
 
   getAllVaccine: async function (req, res) {
     try {
-      const data = inoculateModel.getAllVaccine();
+      const data = await inoculateModel.getAllVaccine();
       res.send({ success: true, vaccines: data });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
@@ -47,7 +47,7 @@ module.exports = diaryController = {
 
   getAllVaccineName: async function (req, res) {
     try {
-      const data = vaccineModel.getAllVaccineName;
+      const data = await vaccineModel.getAllVaccineName();
       res.send({ success: true, vaccines: data });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
