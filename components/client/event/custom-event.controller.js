@@ -61,6 +61,7 @@ module.exports = diaryController = {
       //create new event according to user input
       const newEvent = {
         id_diary: req.query.id,
+        description: req.body.description,
         log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
         note: req.body.note,
         image: uploadResponse.url,
@@ -89,6 +90,7 @@ module.exports = diaryController = {
       const updatedEvent = {
         id: req.body.id, //id of event
         id_diary: req.query.id,
+        description: req.body.description,
         log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
         note: req.body.note,
         isDel: 0,
