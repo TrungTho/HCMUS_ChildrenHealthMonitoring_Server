@@ -22,6 +22,7 @@ module.exports = function (app) {
   //--------------------client route-----------------
   app.use("/test", require("../components/client/test/test.route"));
   app.use("/account", require("../components/client/account/account.route"));
+  app.use("/handbook/tip", require("../components/client/handbook/tip.route"));
   app.use(
     "/diary",
     passport.authenticate("jwt", { session: false }),
