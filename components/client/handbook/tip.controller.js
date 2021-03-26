@@ -15,6 +15,17 @@ module.exports = diaryController = {
     }
   },
 
+  getPostDetail: async function (req, res) {
+    try {
+      const datum = await tipModel.getSingle(req.query.id);
+
+      //send data to client
+      res.send({ success: true, postDetail: datum });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
   template: async function (req, res) {
     try {
       res.send({ success: true });
