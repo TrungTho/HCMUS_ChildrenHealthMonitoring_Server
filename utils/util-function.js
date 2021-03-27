@@ -24,7 +24,7 @@ module.exports = {
         iss: process.env.DEVELOPERS,
         sub: dataToEncoded,
         iat: new Date().getTime(),
-        exp: Math.floor(Date.now() / 1000) + 60 * 60, //an hour
+        exp: Math.floor(Date.now() / 1000) + 8 * 60 * 60, //8 hours
       },
       process.env.JWT_SECRET_OR_KEY
     );

@@ -52,7 +52,7 @@ module.exports = accountController = {
       //res.setHeader("Authorization", token);
       res.cookie("auth_token", token, {
         httpOnly: true,
-        maxAge: 1000 * 60 * 60, //1hour
+        maxAge: 1000 * 60 * 60 * 8, //8 hours
       });
       res.send({
         success: true,
