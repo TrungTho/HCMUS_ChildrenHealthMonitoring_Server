@@ -3,6 +3,7 @@ const lullabyModel = require("../../../models/lullaby.model");
 const newsModel = require("../../../models/news.model");
 const recipeModel = require("../../../models/recipe.model");
 const vaccineModel = require("../../../models/inoculate.model");
+const axios = require("axios").default;
 
 module.exports = testController = {
   testFullText: async function (req, res) {
@@ -20,5 +21,22 @@ module.exports = testController = {
     };
     // console.log(item);
     res.send(item);
+  },
+
+  manualMail: async function (req, res) {
+    axios({
+      method: "post",
+      url:
+        process.env.MAIL_SERVER + "/vaccine-notification-mail/manual-send-mail",
+      withCredentials: true,
+    })
+      .then(function (response) {
+        // console.log(response);
+        return res.send({ success: true, datum: response.data });
+      })
+      .catch(function (error) {
+        // console.log(error);
+        return res.send({ success: false, error });
+      });
   },
 };

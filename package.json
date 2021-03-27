@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/TrungTho/HCMUS_ChildrenHealthMonitoring_Server#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.25.0",
     "cookie-parser": "^1.4.5",
