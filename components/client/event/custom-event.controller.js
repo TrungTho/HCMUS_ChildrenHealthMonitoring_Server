@@ -3,7 +3,7 @@ const moment = require("moment");
 const utilFuncs = require("../../../utils/util-function");
 const { updateLocale } = require("moment");
 
-module.exports = diaryController = {
+module.exports = customDiaryController = {
   deleteEvent: async function (req, res) {
     try {
       await diaryCustomModel.setDelete(req.body.id);

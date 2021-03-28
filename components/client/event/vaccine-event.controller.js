@@ -5,7 +5,7 @@ const { updateLocale } = require("moment");
 const inoculateModel = require("../../../models/inoculate.model");
 const vaccineModel = require("../../../models/vaccine.model");
 
-module.exports = diaryController = {
+module.exports = vaccineDiaryController = {
   deleteEvent: async function (req, res) {
     try {
       await diaryVaccineModel.setDelete(req.body.id);

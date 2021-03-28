@@ -4,7 +4,7 @@ const nodemailer = require("nodemailer");
 const userModel = require("../../../models/user.model");
 const cloudinary = require("../../../middlewares/cloudinary.mdw");
 
-module.exports = accountController = {
+module.exports = userController = {
   disableUser: async function (req, res) {
     try {
       const userid = req.body.id;

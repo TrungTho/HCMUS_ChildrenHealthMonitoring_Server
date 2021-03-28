@@ -4,7 +4,7 @@ const moment = require("moment");
 const utilFuncs = require("../../../utils/util-function");
 const { updateLocale } = require("moment");
 
-module.exports = diaryController = {
+module.exports = weightHeightDiaryController = {
   deleteEvent: async function (req, res) {
     try {
       await diaryWeightHeightModel.setDelete(req.body.id);

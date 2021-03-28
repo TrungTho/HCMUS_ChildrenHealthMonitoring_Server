@@ -4,7 +4,7 @@ const utilFuncs = require("../../../utils/util-function");
 const { updateLocale } = require("moment");
 const editorPostModel = require("../../../models/editor-post.model");
 
-module.exports = diaryController = {
+module.exports = tipController = {
   //we will consider an option to editor del post "logically"
   //send message to admin and admin will del it in db?
   // deletePost: async function (req, res) {
