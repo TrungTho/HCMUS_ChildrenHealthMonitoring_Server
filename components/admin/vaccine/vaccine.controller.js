@@ -4,7 +4,8 @@ const vaccineModel = require("../../../models/vaccine.model");
 module.exports = userController = {
   getAllInoculate: async function (req, res) {
     try {
-      res.send({ success: true });
+      const data = await inoculateModel.getAll();
+      res.send({ success: true, data });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
