@@ -13,7 +13,8 @@ module.exports = userController = {
 
   getAllVaccine: async function (req, res) {
     try {
-      res.send({ success: true });
+      const data = await vaccineModel.getAll();
+      res.send({ success: true, data });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
