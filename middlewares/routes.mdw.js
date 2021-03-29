@@ -72,4 +72,10 @@ module.exports = function (app) {
     adminAuth,
     require("../components/admin/account/user.route")
   );
+  app.use(
+    "/admin/vaccine",
+    passport.authenticate("jwt", { session: false }),
+    adminAuth,
+    require("../components/admin/vaccine/vaccine.route")
+  );
 };
