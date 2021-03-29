@@ -22,7 +22,8 @@ module.exports = userController = {
 
   getInoculateDetail: async function (req, res) {
     try {
-      res.send({ success: true });
+      const datum = await inoculateModel.getSingle(req.query.id);
+      res.send({ success: true, datum });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
@@ -30,7 +31,8 @@ module.exports = userController = {
 
   getVaccineDetail: async function (req, res) {
     try {
-      res.send({ success: true });
+      const datum = await vaccineModel.getSingle(req.query.id);
+      res.send({ success: true, datum });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
