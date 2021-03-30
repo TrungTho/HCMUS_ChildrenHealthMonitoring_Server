@@ -112,13 +112,34 @@ module.exports = userController = {
         description: req.body.description,
       };
 
-      console.log(updateItem);
-
       //add new item to db
       await vaccineModel.update(updateItem);
 
       //send datum to client
       res.send({ success: true, infor: updateItem });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
+  deleteInoculate: async function (req, res) {
+    try {
+      //delete datum in db
+      const ret = await inoculateModel.del({ id: req.body.id });
+
+      //send datum to client
+      res.send({ success: true, ret });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
+  deleteVaccine: async function (req, res) {
+    try {
+      //delete datum in db
+      await vaccineModel.del({ id: req.body.id });
+
+      res.send({ success: true });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
