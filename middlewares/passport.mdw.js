@@ -57,8 +57,10 @@ passport.use(
       } else {
         datum = await userModel.getSingleByEmail(username);
       }
+
+      const userPass = await userModel.getPassByUsername(datum.username);
       if (datum !== null) {
-        const ret = bcrypt.compareSync(password, datum.password);
+        const ret = bcrypt.compareSync(password, userPass);
 
         if (ret) {
           return done(null, datum);

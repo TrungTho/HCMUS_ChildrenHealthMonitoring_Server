@@ -5,7 +5,7 @@ module.exports = {
   //---------------------default query----------------------------
   getAll() {
     return db.load(
-      `select * from ${TABLE_NAME} where username != '${process.env.ADMIN_USERNAME}'` //you will never can get data of admin from server
+      `select id, username, email, dob, fullname, avatar, permission, isDisable, isVerified from ${TABLE_NAME} where username != '${process.env.ADMIN_USERNAME}'` //you will never can get data of admin from server
     );
   },
 
@@ -25,23 +25,29 @@ module.exports = {
 
   //---------------------others select----------------------------
   getAllBasisUser() {
-    return db.load(`select * from ${TABLE_NAME} where permission=0`);
+    return db.load(
+      `select id, username, email, dob, fullname, avatar, permission, isDisable, isVerified from ${TABLE_NAME} where permission=0`
+    );
   },
 
   getAllEditor() {
-    return db.load(`select * from ${TABLE_NAME} where permission=2`);
+    return db.load(
+      `select id, username, email, dob, fullname, avatar, permission, isDisable, isVerified from ${TABLE_NAME} where permission=2`
+    );
   },
 
   //get an single user by user id
   async getSingle(id) {
-    const rows = await db.load(`select * from ${TABLE_NAME} where id = ${id} `);
+    const rows = await db.load(
+      `select id, username, email, dob, fullname, avatar, permission, isDisable, isVerified from ${TABLE_NAME} where id = ${id} `
+    );
     if (rows.length === 0) return null;
     return rows[0];
   },
 
   async getSingleByUsername(username) {
     const rows = await db.load(
-      `select * from ${TABLE_NAME} where username = "${username}" and isDisable = 0`
+      `select id, username, email, dob, fullname, avatar from ${TABLE_NAME} where username = "${username}" and isDisable = 0`
     );
     if (rows.length === 0) return null;
     return rows[0];
@@ -49,7 +55,7 @@ module.exports = {
 
   async getSingleByEmail(email) {
     const rows = await db.load(
-      `select * from ${TABLE_NAME} where email = "${email}" `
+      `select id, username, email, dob, fullname, avatar from ${TABLE_NAME} where email = "${email}" `
     );
     if (rows.length === 0) return null;
     return rows[0];
@@ -60,7 +66,7 @@ module.exports = {
       `select password from ${TABLE_NAME} where username = "${username}" `
     );
     if (rows.length === 0) return null;
-    return rows[0];
+    return rows[0].password;
   },
 
   //---------------------others update----------------------------
