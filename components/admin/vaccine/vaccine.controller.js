@@ -61,7 +61,19 @@ module.exports = userController = {
 
   newVaccine: async function (req, res) {
     try {
-      res.send({ success: true });
+      //build new inoculate depends on user input
+      const newItem = {
+        vaccineName: req.body.vaccineName,
+        allocate: req.body.allocate,
+        description: req.body.description,
+      };
+
+      //add new item to db
+      const ret = await vaccineModel.add(newItem);
+
+      //get added datum to return to client
+      const datum = await vaccineModel.getSingle(ret.insertId);
+      res.send({ success: true, vaccineInfor: datum });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
