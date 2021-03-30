@@ -81,7 +81,22 @@ module.exports = userController = {
 
   updateInoculate: async function (req, res) {
     try {
-      res.send({ success: true });
+      //build new inoculate depends on user input
+      const updateItem = {
+        id: req.body.id,
+        vaccine: req.body.vaccine,
+        injectionAge: req.body.injectionAge,
+        loopSpan: req.body.loopSpan,
+        note: req.body.note,
+      };
+
+      console.log(updateItem);
+
+      //add new item to db
+      await inoculateModel.update(updateItem);
+
+      //send datum to client
+      res.send({ success: true, infor: updateItem });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
@@ -89,7 +104,21 @@ module.exports = userController = {
 
   updateVaccine: async function (req, res) {
     try {
-      res.send({ success: true });
+      //build new inoculate depends on user input
+      const updateItem = {
+        id: req.body.id,
+        vaccineName: req.body.vaccineName,
+        allocate: req.body.allocate,
+        description: req.body.description,
+      };
+
+      console.log(updateItem);
+
+      //add new item to db
+      await vaccineModel.update(updateItem);
+
+      //send datum to client
+      res.send({ success: true, infor: updateItem });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
