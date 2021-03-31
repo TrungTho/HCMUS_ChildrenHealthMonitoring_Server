@@ -116,7 +116,7 @@ module.exports = userController = {
       await vaccineModel.update(updateItem);
 
       //send datum to client
-      res.send({ success: true, infor: updateItem });
+      res.send({ success: true, vaccineInfor: updateItem });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
