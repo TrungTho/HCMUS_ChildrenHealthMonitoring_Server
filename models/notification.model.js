@@ -30,7 +30,9 @@ module.exports = {
   },
 
   async getAllByDestinationId(id) {
-    return db.load(`select * from ${TABLE_NAME} where id_to = ${id}`);
+    return db.load(
+      `select * from ${TABLE_NAME} where id_to = ${id} and isDel=false`
+    );
   },
 
   async getAllBySenderId(id) {
@@ -45,7 +47,7 @@ module.exports = {
   },
 
   //function to set isDel = true
-  setVerified(id) {
+  setDelete(id) {
     return db.load(`update ${TABLE_NAME} set isdel =true where id=${id}`);
   },
 };

@@ -37,6 +37,7 @@ module.exports = userController = {
 
   deleteNotification: async function (req, res) {
     try {
+      await notificationModel.setDelete(req.body.id);
       res.send({ success: true });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
