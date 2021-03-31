@@ -3,7 +3,8 @@ const notificationModel = require("../../../models/notification.model");
 module.exports = userController = {
   getAllNotification: async function (req, res) {
     try {
-      res.send({ success: true });
+      const data = await notificationModel.getAll();
+      res.send({ success: true, notifications: data });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
