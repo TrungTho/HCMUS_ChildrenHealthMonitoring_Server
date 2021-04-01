@@ -47,7 +47,7 @@ module.exports = accountController = {
   login: async function (req, res) {
     if (req.user == "Unauthorized") {
     } else {
-      const token = utilFuncs.encodedToken(req.user.username);
+      const token = utilFuncs.encodedToken(req.user.username, 8);
 
       //res.setHeader("Authorization", token);
       res.cookie("auth_token", token, {

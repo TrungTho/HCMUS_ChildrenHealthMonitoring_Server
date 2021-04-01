@@ -18,13 +18,13 @@ module.exports = {
   },
 
   //function to generate new jwt token
-  encodedToken: (dataToEncoded) => {
+  encodedToken: (dataToEncoded, numberOfHours) => {
     return jwt.sign(
       {
         iss: process.env.DEVELOPERS,
         sub: dataToEncoded,
         iat: new Date().getTime(),
-        exp: Math.floor(Date.now() / 1000) + 8 * 60 * 60, //8 hours
+        exp: Math.floor(Date.now() / 1000) + numberOfHours * 60 * 60, //8 hours
       },
       process.env.JWT_SECRET_OR_KEY
     );
