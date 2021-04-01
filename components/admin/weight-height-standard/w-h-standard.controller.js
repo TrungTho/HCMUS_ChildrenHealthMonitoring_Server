@@ -11,8 +11,8 @@ module.exports = userController = {
 
   getAllStandard: async function (req, res) {
     try {
-      const data = await notificationModel.getAll();
-      res.send({ success: true, notifications: data });
+      const data = await weightHeightStandardModel.getAll();
+      res.send({ success: true, standards: data });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
@@ -20,8 +20,8 @@ module.exports = userController = {
 
   getStandardDetail: async function (req, res) {
     try {
-      const data = await notificationModel.getAll();
-      res.send({ success: true, notifications: data });
+      const datum = await weightHeightStandardModel.getSingle(req.query.id);
+      res.send({ success: true, standard: datum });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
@@ -41,12 +41,12 @@ module.exports = userController = {
       };
 
       //add data to db
-      const ret = await notificationModel.add(newNoti);
+      const ret = await standardModel.add(newNoti);
 
       //get datum just added in db to client
-      const datum = await notificationModel.getSingle(ret.insertId);
+      const datum = await standardModel.getSingle(ret.insertId);
 
-      res.send({ success: true, notification: datum });
+      res.send({ success: true, standard: datum });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
@@ -54,7 +54,7 @@ module.exports = userController = {
 
   updateStandard: async function (req, res) {
     try {
-      await notificationModel.setDelete(req.body.id);
+      await standardModel.setDelete(req.body.id);
       res.send({ success: true });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
