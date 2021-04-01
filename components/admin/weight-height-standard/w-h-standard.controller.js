@@ -30,21 +30,20 @@ module.exports = userController = {
   newStandard: async function (req, res) {
     try {
       //build data from user input
-      const newNoti = {
-        id_from: req.user.id,
-        id_to: req.body.id_dest,
-        detail: req.body.detail,
-        sendDate: new Date(),
-        isRead: 0,
-        isDel: 0,
-        username_from: req.user.username,
+      const newItem = {
+        month: req.body.month,
+        gender: req.body.gender,
+        type: req.body.type,
+        lower_point: req.body.lower_point,
+        upper_point: req.body.upper_point,
+        average_point: req.body.average_point,
       };
 
       //add data to db
-      const ret = await standardModel.add(newNoti);
+      const ret = await weightHeightStandardModel.add(newItem);
 
       //get datum just added in db to client
-      const datum = await standardModel.getSingle(ret.insertId);
+      const datum = await weightHeightStandardModel.getSingle(ret.insertId);
 
       res.send({ success: true, standard: datum });
     } catch (error) {
@@ -54,7 +53,7 @@ module.exports = userController = {
 
   updateStandard: async function (req, res) {
     try {
-      await standardModel.setDelete(req.body.id);
+      await weightHeightStandardModel.setDelete(req.body.id);
       res.send({ success: true });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
