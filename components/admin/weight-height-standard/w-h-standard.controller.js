@@ -53,8 +53,21 @@ module.exports = userController = {
 
   updateStandard: async function (req, res) {
     try {
-      await weightHeightStandardModel.setDelete(req.body.id);
-      res.send({ success: true });
+      //build data from user input
+      const updateItem = {
+        id: req.body.id,
+        month: req.body.month,
+        gender: req.body.gender,
+        type: req.body.type,
+        lower_point: req.body.lower_point,
+        upper_point: req.body.upper_point,
+        average_point: req.body.average_point,
+      };
+
+      //add data to db
+      await weightHeightStandardModel.update(updateItem);
+
+      res.send({ success: true, standard: updateItem });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
