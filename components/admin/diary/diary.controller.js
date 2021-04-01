@@ -3,8 +3,8 @@ const diaryModel = require("../../../models/diary.model");
 module.exports = diaryController = {
   getAllDiary: async function (req, res) {
     try {
-      const data = await notificationModel.getAll();
-      res.send({ success: true, notifications: data });
+      const data = await diaryModel.adminGetAll();
+      res.send({ success: true, diaries: data });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }

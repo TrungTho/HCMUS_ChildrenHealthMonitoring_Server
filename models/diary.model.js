@@ -37,6 +37,10 @@ module.exports = {
     );
   },
 
+  adminGetAll() {
+    return db.load(`select * from ${TABLE_NAME} `);
+  },
+
   //---------------------others update----------------------------
 
   //function to update avatar link with id and link
