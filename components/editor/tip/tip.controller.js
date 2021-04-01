@@ -32,7 +32,7 @@ module.exports = tipController = {
       //call global function to upload main_cover
       const uploadResponse = await utilFuncs.uploadImage(
         req,
-        process.env.CLOUD_CUSTOM_PRESET
+        process.env.CLOUD_POST_PRESET
       );
 
       //create new Post according to user input
@@ -81,7 +81,7 @@ module.exports = tipController = {
       if (req.body.isImageChange === "true") {
         const uploadResponse = await utilFuncs.uploadImage(
           req,
-          process.env.CLOUD_CUSTOM_PRESET
+          process.env.CLOUD_POST_PRESET
         );
 
         updatedPost.image = uploadResponse.url;
