@@ -35,7 +35,7 @@ module.exports = recipeController = {
 
       //create new Post according to user input
       const newPost = {
-        shortDes: req.body.shortDes,
+        name: req.body.name,
         fullDes: req.body.fullDes,
         main_cover: uploadResponse.url,
         isApproved: 0,
@@ -49,7 +49,7 @@ module.exports = recipeController = {
       const newEditorPost = {
         id_user: req.user.id,
         id_post: ret.insertId,
-        typeOfPost: "tip",
+        typeOfPost: "recipe",
       };
 
       //add new diary to db
@@ -70,7 +70,7 @@ module.exports = recipeController = {
       //create new Post according to user input
       const updatedPost = {
         id: req.body.id,
-        shortDes: req.body.shortDes,
+        name: req.body.name,
         fullDes: req.body.fullDes,
         isApproved: 0,
       };
