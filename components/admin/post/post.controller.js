@@ -6,7 +6,42 @@ const utilFunction = require("../../../utils/util-function");
 module.exports = postController = {
   approvePost: async function (req, res) {
     try {
-      res.send({ success: true });
+      //get data from client's req
+      const typeOfPost = req.body.typeOfPost;
+      const postId = req.body.id;
+      let datum;
+
+      //check type of post needs to approve
+      switch (typeOfPost) {
+        case "tip":
+          //flip state of post
+          tipModel.flipApproval(postId);
+          //get new datum of post to send to client
+          datum = await tipModel.editorGetSingle(postId);
+          //send to client
+          res.send({ success: true, post: datum });
+          break;
+        case "news":
+          newsModel.flipApproval(postId);
+
+          datum = await newsModel.editorGetSingle(postId);
+          //send to client
+          res.send({ success: true, post: datum });
+          break;
+        case "recipe":
+          recipeModel.flipApproval(postId);
+
+          datum = await recipeModel.editorGetSingle(postId);
+          //send to client
+          res.send({ success: true, post: datum });
+          break;
+
+        default:
+          return res
+            .status(406)
+            .send({ success: false, err_message: "invalid type of post!" });
+          break;
+      }
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
@@ -50,7 +85,7 @@ module.exports = postController = {
       const vaccinePosts = await newsModel.adminGetAll();
 
       //send data to client
-      res.send({ success: true, vaccinePosts });
+      res.send({ success: true, newsPosts: vaccinePosts });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
