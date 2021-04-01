@@ -96,4 +96,10 @@ module.exports = function (app) {
     adminAuth,
     require("../components/admin/weight-height-standard/w-h-standards.route")
   );
+  app.use(
+    "/admin/diary",
+    passport.authenticate("jwt", { session: false }),
+    adminAuth,
+    require("../components/admin/diary/diary.route")
+  );
 };
