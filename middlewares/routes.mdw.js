@@ -57,6 +57,12 @@ module.exports = function (app) {
     require("../components/client/event/custom-event.route")
   );
 
+  app.use(
+    "/notification/",
+    passport.authenticate("jwt", { session: false }),
+    require("../components/client/notification/notification.route")
+  );
+
   //---------------------editor route------------------
   app.use(
     "/editor/post/tip",
