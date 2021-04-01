@@ -43,7 +43,9 @@ module.exports = {
 
   //function to set isRead = true
   setRead(id) {
-    return db.load(`update ${TABLE_NAME} set isread=true where id=${id}`);
+    return db.load(
+      `update ${TABLE_NAME} set isread=true where id=${id} and isDel=false`
+    );
   },
 
   //function to set isDel = true

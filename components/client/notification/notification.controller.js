@@ -36,6 +36,10 @@ module.exports = userController = {
 
   setReadNotification: async function (req, res) {
     try {
+      //update datum in db
+      await notificationModel.setRead(req.query.id);
+
+      //send status to client
       res.send({ success: true });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
