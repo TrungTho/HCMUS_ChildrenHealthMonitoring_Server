@@ -4,23 +4,30 @@ const newsModel = require("../../../models/news.model");
 const recipeModel = require("../../../models/recipe.model");
 const vaccineModel = require("../../../models/inoculate.model");
 const axios = require("axios").default;
+const jwt = require("jsonwebtoken");
+const utilFunction = require("../../../utils/util-function");
 
 module.exports = testController = {
   testFullText: async function (req, res) {
-    const query = req.query.a;
-    const ret = await vaccineModel.searchAll(query);
-    res.send(ret);
+    const token = utilFunction.encodedToken("hoho", 0.01);
+    res.send(token);
   },
 
   logConnectionStats: async function (req, res) {
-    const item = {
-      host: process.env.DB_HOST,
-      username: process.env.DB_USERNAME,
-      pass: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-    };
-    // console.log(item);
-    res.send(item);
+    // const item = {
+    //   host: process.env.DB_HOST,
+    //   username: process.env.DB_USERNAME,
+    //   pass: process.env.DB_PASSWORD,
+    //   database: process.env.DB_NAME,
+    // };
+    // // console.log(item);
+    try {
+      const token = req.query.token;
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_OR_KEY);
+      res.send(decoded);
+    } catch (error) {
+      res.send("hoho");
+    }
   },
 
   manualMail: async function (req, res) {
