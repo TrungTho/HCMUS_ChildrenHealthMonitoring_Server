@@ -1,15 +1,13 @@
-const tipModel = require("../../../models/tip.model");
-const moment = require("moment");
+const newsModel = require("../../../models/news.model");
 const utilFuncs = require("../../../utils/util-function");
-const { updateLocale } = require("moment");
 const editorPostModel = require("../../../models/editor-post.model");
 
-module.exports = tipController = {
+module.exports = newsController = {
   //we will consider an option to editor del post "logically"
   //send message to admin and admin will del it in db?
   // deletePost: async function (req, res) {
   //   try {
-  //     await tipModel.setDelete(req.body.id);
+  //     await newsModel.setDelete(req.body.id);
   //     res.send({ success: true });
   //   } catch (error) {
   //     res.status(406).send({ success: false, err_message: error });
@@ -18,7 +16,7 @@ module.exports = tipController = {
 
   getAllPost: async function (req, res) {
     try {
-      const data = await tipModel.editorGetAllById(req.user.id);
+      const data = await newsModel.editorGetAllById(req.user.id);
 
       //send data to client
       res.send({ success: true, posts: data });
@@ -45,20 +43,20 @@ module.exports = tipController = {
       };
 
       //add new diary to db
-      const ret = await tipModel.add(newPost);
+      const ret = await newsModel.add(newPost);
 
       //create new record link editor - post
       const newEditorPost = {
         id_user: req.user.id,
         id_post: ret.insertId,
-        typeOfPost: "tip",
+        typeOfPost: "news",
       };
 
       //add new diary to db
       await editorPostModel.add(newEditorPost);
 
       //get full datum back from db to check add successfully
-      const datum = await tipModel.editorGetSingle(ret.insertId);
+      const datum = await newsModel.editorGetSingle(ret.insertId);
 
       //send success message to client
       res.send({ success: true, postInfor: datum });
@@ -88,9 +86,9 @@ module.exports = tipController = {
       }
 
       //add new diary to db
-      await tipModel.update(updatedPost);
+      await newsModel.update(updatedPost);
 
-      const datum = await tipModel.editorGetSingle(req.body.id);
+      const datum = await newsModel.editorGetSingle(req.body.id);
 
       //send success message to client
       res.send({ success: true, postInfor: datum });

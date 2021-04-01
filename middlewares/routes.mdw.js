@@ -70,6 +70,12 @@ module.exports = function (app) {
     editorAuth,
     require("../components/editor/tip/tip.route")
   );
+  app.use(
+    "/editor/post/news",
+    passport.authenticate("jwt", { session: false }),
+    editorAuth,
+    require("../components/editor/news/news.route")
+  );
 
   //---------------------admin route------------------
   app.use(
