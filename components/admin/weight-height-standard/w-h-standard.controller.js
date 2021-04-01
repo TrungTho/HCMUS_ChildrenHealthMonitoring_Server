@@ -3,6 +3,7 @@ const weightHeightStandardModel = require("../../../models/weight-height-standar
 module.exports = userController = {
   deleteStandard: async function (req, res) {
     try {
+      await weightHeightStandardModel.del({ id: req.body.id });
       res.send({ success: true });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
