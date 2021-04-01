@@ -34,7 +34,11 @@ module.exports = postController = {
 
   getTipPost: async function (req, res) {
     try {
-      res.send({ success: true });
+      //get data from db
+      const tipPosts = await tipModel.adminGetAll();
+
+      //send data to client
+      res.send({ success: true, tipPosts });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
@@ -42,7 +46,11 @@ module.exports = postController = {
 
   getVaccinePost: async function (req, res) {
     try {
-      res.send({ success: true });
+      //get data from db
+      const vaccinePosts = await newsModel.adminGetAll();
+
+      //send data to client
+      res.send({ success: true, vaccinePosts });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
@@ -50,7 +58,11 @@ module.exports = postController = {
 
   getRecipePost: async function (req, res) {
     try {
-      res.send({ success: true });
+      //get data from db
+      const recipePosts = await recipeModel.adminGetAll();
+
+      //send data to client
+      res.send({ success: true, recipePosts });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
