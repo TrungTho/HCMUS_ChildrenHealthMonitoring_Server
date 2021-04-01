@@ -36,6 +36,19 @@ module.exports = {
     return db.load(`select * from ${TABLE_NAME}`);
   },
 
+  //get all post of editor by user id
+  editorGetAllById(id) {
+    return db.load(
+      `select * from ${TABLE_NAME} join editor_post on ${TABLE_NAME}.id=editor_post.id_post where id_user=${id}`
+    );
+  },
+
+  async editorGetSingle(id) {
+    const rows = await db.load(`select * from ${TABLE_NAME} where id = ${id} `);
+    if (rows.length === 0) return null;
+    return rows[0];
+  },
+
   //fulltext search with querystring
   searchAll(querystring) {
     return db.load(
