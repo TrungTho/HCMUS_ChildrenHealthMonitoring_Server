@@ -90,4 +90,10 @@ module.exports = function (app) {
     adminAuth,
     require("../components/admin/notification/notification.route")
   );
+  app.use(
+    "/admin/w-h-standards",
+    passport.authenticate("jwt", { session: false }),
+    adminAuth,
+    require("../components/admin/weight-height-standard/w-h-standards.route")
+  );
 };
