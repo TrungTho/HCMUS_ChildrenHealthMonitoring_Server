@@ -12,7 +12,10 @@ module.exports = userController = {
 
   getAllNotification: async function (req, res) {
     try {
-      const data = await notificationModel.getAll();
+      //get data from db
+      const data = await notificationModel.getAllByDestinationId(req.user.id);
+
+      //send to client
       res.send({ success: true, notifications: data });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
@@ -21,23 +24,10 @@ module.exports = userController = {
 
   getNotificationDetail: async function (req, res) {
     try {
-      //build data from user input
-      const newNoti = {
-        id_from: req.user.id,
-        id_to: req.body.id_dest,
-        detail: req.body.detail,
-        sendDate: new Date(),
-        isRead: 0,
-        isDel: 0,
-        username_from: req.user.username,
-      };
+      //get data from db
+      const datum = await notificationModel.getSingle(req.query.id);
 
-      //add data to db
-      const ret = await notificationModel.add(newNoti);
-
-      //get datum just added in db to client
-      const datum = await notificationModel.getSingle(ret.insertId);
-
+      //send to client
       res.send({ success: true, notification: datum });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
