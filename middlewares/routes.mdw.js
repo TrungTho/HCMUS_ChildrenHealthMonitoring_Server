@@ -102,4 +102,10 @@ module.exports = function (app) {
     adminAuth,
     require("../components/admin/diary/diary.route")
   );
+  app.use(
+    "/admin/post",
+    passport.authenticate("jwt", { session: false }),
+    adminAuth,
+    require("../components/admin/post/post.route")
+  );
 };
