@@ -76,6 +76,12 @@ module.exports = function (app) {
     editorAuth,
     require("../components/editor/news/news.route")
   );
+  app.use(
+    "/editor/post/recipe",
+    passport.authenticate("jwt", { session: false }),
+    editorAuth,
+    require("../components/editor/recipe/recipe.route")
+  );
 
   //---------------------admin route------------------
   app.use(
