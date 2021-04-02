@@ -9,7 +9,7 @@ const utilFunction = require("../../../utils/util-function");
 
 module.exports = testController = {
   testFullText: async function (req, res) {
-    const token = utilFunction.encodedToken("abc@gmail.com", 0.01);
+    const token = utilFunction.encodedToken("abc@gmail.com", 0);
     res.send(token);
   },
 

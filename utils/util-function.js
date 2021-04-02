@@ -29,6 +29,17 @@ module.exports = {
       process.env.JWT_SECRET_OR_KEY
     );
   },
+  //function to generate new jwt token
+  encodedTokenWithoutExpiration: (dataToEncoded) => {
+    return jwt.sign(
+      {
+        iss: process.env.DEVELOPERS,
+        sub: dataToEncoded,
+        iat: new Date().getTime(),
+      },
+      process.env.JWT_SECRET_OR_KEY
+    );
+  },
 
   //function to generate the current date in db's format
   getCurrentDate: () => {

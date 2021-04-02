@@ -194,7 +194,7 @@ module.exports = accountController = {
       //get user data from db depend on token's param
       const userData = await userModel.getSingleByEmail(decodedToken.sub);
 
-      console.log("userData", userData);
+      // console.log("userData", userData);
 
       //check user exist and verify account
       if (userData) {
