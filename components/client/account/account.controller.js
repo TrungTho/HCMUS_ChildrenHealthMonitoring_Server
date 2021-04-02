@@ -172,12 +172,22 @@ module.exports = accountController = {
       const userEmail = req.body.email;
 
       //get data from db to authen
-      const datum = userModel.getSingleByEmail(userEmail);
+      const datum = await userModel.getSingleByEmail(userEmail);
       if (datum) {
         //generate token with exp = 30 minutes
         const resetPassToken = utilFuncs.encodedToken(userEmail, 0.5);
 
-        res.send({ success: true });
+        //send reset pass mail to user's email
+        await utilFuncs.sendMail({
+          destination: userEmail,
+          subject:
+            "Children Health Monitoring reset account's password confirm",
+          html: `Here your change password link:
+          <a href="${process.env.ALLOW_ORIGIN}/account/change-password?token=${resetPassToken}" > Click me!
+          </a>`,
+        });
+
+        return res.send({ success: true });
       }
 
       res.status(406).send({ success: false, err_message: "invalid email!" });
