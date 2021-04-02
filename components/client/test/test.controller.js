@@ -9,7 +9,7 @@ const utilFunction = require("../../../utils/util-function");
 
 module.exports = testController = {
   testFullText: async function (req, res) {
-    const token = utilFunction.encodedToken("hoho", 0.01);
+    const token = utilFunction.encodedToken("abc@gmail.com", 0.01);
     res.send(token);
   },
 
@@ -26,7 +26,7 @@ module.exports = testController = {
       const decoded = jwt.verify(token, process.env.JWT_SECRET_OR_KEY);
       res.send(decoded);
     } catch (error) {
-      res.send("hoho");
+      res.send("expire");
     }
   },
 

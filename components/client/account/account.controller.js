@@ -4,6 +4,7 @@ const nodemailer = require("nodemailer");
 const userModel = require("../../../models/user.model");
 const cloudinary = require("../../../middlewares/cloudinary.mdw");
 const utilFuncs = require("../../../utils/util-function");
+const jwt = require("jsonwebtoken");
 
 module.exports = accountController = {
   changeAvatar: async function (req, res) {
@@ -176,6 +177,35 @@ module.exports = accountController = {
       }
     } else {
       res.status(406).send({ success: false, err_message: "existed email" });
+    }
+  },
+
+  verifyAccount: async function (req, res) {
+    try {
+      //get token from url and decode it
+      const token = req.query.verify_token;
+
+      //console.log("token", token);
+
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET_OR_KEY);
+
+      // console.log("decodedToken", decodedToken);
+
+      //get user data from db depend on token's param
+      const userData = await userModel.getSingleByEmail(decodedToken.sub);
+
+      console.log("userData", userData);
+
+      //check user exist and verify account
+      if (userData) {
+        await userModel.setVerified(userData.id);
+        //get data just update
+        const datum = await userModel.getSingle(userData.id);
+        return res.send({ success: true, user: datum });
+      }
+      res.send({ success: false, err_message: "invalid token" });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 };

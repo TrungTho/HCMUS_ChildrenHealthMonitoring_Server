@@ -35,4 +35,6 @@ router.post(
 
 router.post("/register", accountController.register);
 
+router.post("/verify-account", accountController.verifyAccount);
+
 module.exports = router;
