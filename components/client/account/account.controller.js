@@ -39,6 +39,50 @@ module.exports = accountController = {
     }
   },
 
+  changePassword: async function (req, res) {
+    try {
+      //get data from req
+      const changePassToken = req.query.token;
+      const newPassword = req.body.password;
+
+      //verify token
+      const decodedToken = jwt.verify(
+        changePassToken,
+        process.env.JWT_SECRET_OR_KEY
+      );
+
+      //get user data from db depend on token's param
+      const userData = await userModel.getSingleByEmail(decodedToken.sub);
+
+      //check user exist and verify account
+      if (userData) {
+        //set new password for data
+        userData.password = bcrypt.hashSync(
+          newPassword,
+          parseInt(process.env.ACCOUNT_TIMEHASHPASS)
+        );
+        //update data in db
+        await userModel.update(userData);
+
+        //get data just update
+        const datum = await userModel.getSingle(userData.id);
+        return res.send({
+          success: true,
+          userInfor: {
+            username: datum.username,
+            fullname: datum.fullname,
+            avatar: datum.avatar,
+            email: datum.email,
+          },
+        });
+      }
+
+      res.send({ success: false, err_message: "invalid token" });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
   getProfile: async function (req, res) {
     req.user.dob = moment(req.user.dob, "YYYY-MM-DD").format("DD/MM/YYYY"); //convert from db's format to user's friendly format
     res.send({ userInfor: req.user });

@@ -39,6 +39,6 @@ router.get("/verify-account", accountController.verifyAccount);
 
 router.post("/request-change-password", accountController.requestChangePass);
 
-router.post("/change-password", accountController.requestChangePass);
+router.post("/change-password", accountController.changePassword);
 
 module.exports = router;
