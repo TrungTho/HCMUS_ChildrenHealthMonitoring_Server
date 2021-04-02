@@ -155,7 +155,13 @@ module.exports = accountController = {
             from: process.env.CONTACT_EMAIL,
             to: req.body.mail,
             subject: "Children Health Monitoring confirm account",
-            text: "Welcome to our community. Here is your otp: " + otp,
+            html: `Here your verify link:
+            <a href="${
+              process.env.ALLOW_ORIGIN
+            }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+              req.body.mail
+            )}" > Click me!
+            </a>`,
           };
 
           transporter.sendMail(mailOptions, function (error, info) {
