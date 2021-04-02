@@ -37,4 +37,6 @@ router.post("/register", accountController.register);
 
 router.get("/verify-account", accountController.verifyAccount);
 
+router.post("/request-change-password", accountController.requestChangePass);
+
 module.exports = router;

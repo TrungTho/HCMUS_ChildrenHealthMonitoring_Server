@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const cloudinary = require("../middlewares/cloudinary.mdw");
+const nodemailer = require("nodemailer");
 
 module.exports = {
   //parameter func to compare array's element
@@ -67,5 +68,31 @@ module.exports = {
     }
 
     return uploadResponse;
+  },
+
+  sendMail: async function (emailContent) {
+    //send email confirm
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.CONTACT_EMAIL,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    var mailOptions = {
+      from: process.env.CONTACT_EMAIL,
+      to: emailContent.destination,
+      subject: emailContent.subject,
+      html: emailContent.html,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
   },
 };

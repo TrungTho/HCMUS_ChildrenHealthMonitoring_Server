@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
-const nodemailer = require("nodemailer");
 const userModel = require("../../../models/user.model");
 const cloudinary = require("../../../middlewares/cloudinary.mdw");
 const utilFuncs = require("../../../utils/util-function");
@@ -135,25 +134,14 @@ module.exports = accountController = {
             isDisable: 0,
             isVerified: 0,
           };
-          console.log(newUser);
+          // console.log(newUser);
 
           //add user data to db
           await userModel.add(newUser);
 
           //send email confirm
-          var transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-              user: process.env.CONTACT_EMAIL,
-              pass: process.env.EMAIL_PASSWORD,
-            },
-          });
-
-          let otp = Math.random().toString(36).substring(7);
-
-          var mailOptions = {
-            from: process.env.CONTACT_EMAIL,
-            to: req.body.mail,
+          await utilFuncs.sendMail({
+            destination: newUser.email,
             subject: "Children Health Monitoring confirm account",
             html: `Here your verify link:
             <a href="${
@@ -162,14 +150,6 @@ module.exports = accountController = {
               req.body.mail
             )}" > Click me!
             </a>`,
-          };
-
-          transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-              console.log(error);
-            } else {
-              console.log("Email sent: " + info.response);
-            }
           });
 
           res.json({ success: true });
@@ -183,6 +163,26 @@ module.exports = accountController = {
       }
     } else {
       res.status(406).send({ success: false, err_message: "existed email" });
+    }
+  },
+
+  requestChangePass: async function (req, res) {
+    try {
+      //get data from user input
+      const userEmail = req.body.email;
+
+      //get data from db to authen
+      const datum = userModel.getSingleByEmail(userEmail);
+      if (datum) {
+        //generate token with exp = 30 minutes
+        const resetPassToken = utilFuncs.encodedToken(userEmail, 0.5);
+
+        res.send({ success: true });
+      }
+
+      res.status(406).send({ success: false, err_message: "invalid email!" });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
     }
   },
 
@@ -210,6 +210,14 @@ module.exports = accountController = {
         return res.send({ success: true, user: datum });
       }
       res.send({ success: false, err_message: "invalid token" });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
+  template: async function (req, res) {
+    try {
+      res.send({ success: true });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
