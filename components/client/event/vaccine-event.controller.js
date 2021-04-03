@@ -60,6 +60,8 @@ module.exports = vaccineDiaryController = {
 
       //format log_date for client's usage
       data.log_date = moment(data.log_date, "YYYY-MM-DD").format("DD/MM/YYYY");
+      data.vaccine = data.vaccine.split(", ");
+      data.vaccineName = data.vaccineName.split(", ");
 
       //send data to client
       res.send({ success: true, eventInfor: data });
