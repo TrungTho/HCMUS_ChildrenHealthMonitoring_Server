@@ -2,6 +2,7 @@ const passport = require("passport");
 const JwtStrategy = require("passport-jwt").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const GooglePlusTokenStrategy = require("passport-google-plus-token");
+const FacebookTokenStrategy = require("passport-facebook-token");
 
 const { ExtractJwt } = require("passport-jwt");
 const bcrypt = require("bcryptjs");
@@ -83,9 +84,9 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        console.log("1", accessToken);
-        console.log("2", refreshToken);
-        console.log("3", profile);
+        // console.log("1", accessToken);
+        // console.log("2", refreshToken);
+        // console.log("3", profile);
 
         //check if user existed or not
         const datum = await userModel.getSingleByEmail(profile.emails[0].value);
@@ -109,8 +110,63 @@ passport.use(
             authType: "google",
           };
 
-          console.log("----------------");
-          console.log(newItem);
+          // console.log("----------------");
+          // console.log(newItem);
+
+          //add new user to db
+          await userModel.add(newItem);
+
+          //get user infor back from db
+          const userInfor = await userModel.getSingleByEmail(
+            profile.emails[0].value
+          );
+
+          //return to controller
+          done(null, userInfor);
+        }
+      } catch (error) {
+        done(error, false); //loi
+      }
+    }
+  )
+);
+
+passport.use(
+  new FacebookTokenStrategy(
+    {
+      clientID: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // console.log("1", accessToken);
+        // console.log("2", refreshToken);
+        // console.log("3", profile);
+
+        //check if user existed or not
+        const datum = await userModel.getSingleByEmail(profile.emails[0].value);
+
+        if (datum) {
+          //return user infor to client
+          return done(null, datum);
+        } else {
+          //first login by google => create new account
+          //create item has user's infor
+          const newItem = {
+            username: profile.emails[0].value.split("@")[0],
+            email: profile.emails[0].value,
+            password: "",
+            dob: new Date(),
+            permission: 0,
+            fullname: profile.displayName,
+            isDisable: 0,
+            isVerified: 0,
+            avatar: profile.photos[0].value,
+            authType: "facebook",
+          };
+
+          // console.log("----------------");
+          // console.log(newItem);
 
           //add new user to db
           await userModel.add(newItem);
