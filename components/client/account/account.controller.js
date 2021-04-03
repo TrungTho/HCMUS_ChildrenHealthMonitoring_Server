@@ -88,6 +88,31 @@ module.exports = accountController = {
     res.send({ userInfor: req.user });
   },
 
+  googleLogin: async function (req, res) {
+    try {
+      {
+        const token = utilFuncs.encodedToken(req.user.username, 8);
+
+        //res.setHeader("Authorization", token);
+        res.cookie("auth_token", token, {
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 8, //8 hours
+        });
+        res.send({
+          success: true,
+          userInfor: {
+            username: req.user.username,
+            fullname: req.user.fullname,
+            avatar: req.user.avatar,
+            email: req.user.email,
+          },
+        });
+      }
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
   login: async function (req, res) {
     if (req.user == "Unauthorized") {
     } else {

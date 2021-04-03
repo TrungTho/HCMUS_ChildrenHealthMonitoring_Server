@@ -16,6 +16,12 @@ router.post(
 );
 
 router.post(
+  "/login/google",
+  passport.authenticate("google-plus-token", { session: false }),
+  accountController.googleLogin
+);
+
+router.post(
   "/logout",
   passport.authenticate("jwt", { session: false }),
   accountController.logout
