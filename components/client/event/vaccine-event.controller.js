@@ -82,8 +82,8 @@ module.exports = vaccineDiaryController = {
         log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
         note: req.body.note,
         image: uploadResponse.url,
-        vaccine: req.body.vaccine,
-        vaccineName: req.body.vaccineName,
+        vaccine: req.body.vaccine.join(", "),
+        vaccineName: req.body.vaccineName.join(", "),
         doctor: req.body.doctor,
         isDel: 0,
       };
@@ -112,8 +112,8 @@ module.exports = vaccineDiaryController = {
         id_diary: req.query.id, //id of log in account
         log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
         note: req.body.note,
-        vaccine: req.body.vaccine,
-        vaccineName: req.body.vaccineName,
+        vaccine: req.body.vaccine.join(", "),
+        vaccineName: req.body.vaccineName.join(", "),
         doctor: req.body.doctor,
       };
 
