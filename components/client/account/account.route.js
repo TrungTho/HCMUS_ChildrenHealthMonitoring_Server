@@ -22,6 +22,12 @@ router.post(
 );
 
 router.post(
+  "/login/facebook",
+  passport.authenticate("facebook-token", { session: false }),
+  accountController.facebookLogin
+);
+
+router.post(
   "/logout",
   passport.authenticate("jwt", { session: false }),
   accountController.logout
