@@ -3,6 +3,7 @@ const JwtStrategy = require("passport-jwt").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const GooglePlusTokenStrategy = require("passport-google-plus-token");
 const FacebookTokenStrategy = require("passport-facebook-token");
+const utilFuncs = require("../utils/util-function");
 
 const { ExtractJwt } = require("passport-jwt");
 const bcrypt = require("bcryptjs");
@@ -103,7 +104,7 @@ passport.use(
             password: "",
             dob: new Date(),
             permission: 0,
-            fullname: profile.name.familyName,
+            fullname: profile.displayName,
             isDisable: 0,
             isVerified: 0,
             avatar: profile.photos[0].value,
@@ -121,6 +122,18 @@ passport.use(
             profile.emails[0].value
           );
 
+          //send email confirm
+          await utilFuncs.sendMail({
+            destination: newItem.email,
+            subject: "Children Health Monitoring confirm account",
+            html: `Here your verify link:
+<a href="${
+              process.env.ALLOW_ORIGIN
+            }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+              newItem.email
+            )}" > Click me!
+</a>`,
+          });
           //return to controller
           done(null, userInfor);
         }
@@ -175,6 +188,19 @@ passport.use(
           const userInfor = await userModel.getSingleByEmail(
             profile.emails[0].value
           );
+
+          //send email confirm
+          await utilFuncs.sendMail({
+            destination: newItem.email,
+            subject: "Children Health Monitoring confirm account",
+            html: `Here your verify link:
+  <a href="${
+    process.env.ALLOW_ORIGIN
+  }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+              newItem.email
+            )}" > Click me!
+  </a>`,
+          });
 
           //return to controller
           done(null, userInfor);
