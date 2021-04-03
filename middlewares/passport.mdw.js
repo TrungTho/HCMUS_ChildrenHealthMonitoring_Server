@@ -1,6 +1,8 @@
 const passport = require("passport");
 const JwtStrategy = require("passport-jwt").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
+const GooglePlusTokenStrategy = require("passport-google-plus-token");
+
 const { ExtractJwt } = require("passport-jwt");
 const bcrypt = require("bcryptjs");
 const userModel = require("../models/user.model");
@@ -71,6 +73,61 @@ passport.use(
       done(error, false);
     }
   })
+);
+
+passport.use(
+  new GooglePlusTokenStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        console.log("1", accessToken);
+        console.log("2", refreshToken);
+        console.log("3", profile);
+
+        //check if user existed or not
+        const datum = await userModel.getSingleByEmail(profile.emails[0].value);
+
+        if (datum) {
+          //return user infor to client
+          return done(null, datum);
+        } else {
+          //first login by google => create new account
+          //create item has user's infor
+          const newItem = {
+            username: profile.emails[0].value.split("@")[0],
+            email: profile.emails[0].value,
+            password: "",
+            dob: new Date(),
+            permission: 0,
+            fullname: profile.name.familyName,
+            isDisable: 0,
+            isVerified: 0,
+            avatar: profile.photos[0].value,
+            authType: "google",
+          };
+
+          console.log("----------------");
+          console.log(newItem);
+
+          //add new user to db
+          await userModel.add(newItem);
+
+          //get user infor back from db
+          const userInfor = await userModel.getSingleByEmail(
+            profile.emails[0].value
+          );
+
+          //return to controller
+          done(null, userInfor);
+        }
+      } catch (error) {
+        done(error, false); //loi
+      }
+    }
+  )
 );
 
 module.exports = passport;
