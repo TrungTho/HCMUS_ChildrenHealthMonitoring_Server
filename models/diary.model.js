@@ -54,4 +54,11 @@ module.exports = {
   setDelete(id) {
     return db.load(`update ${TABLE_NAME} set isDel=true where id=${id}`);
   },
+
+  //flip default notification via mail
+  flipDefaultMailing(id) {
+    return db.load(
+      `update ${TABLE_NAME} set defaultMail=not(defaultMail) where id=${id}`
+    );
+  },
 };
