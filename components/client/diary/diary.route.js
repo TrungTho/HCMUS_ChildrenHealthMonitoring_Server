@@ -8,6 +8,12 @@ router.get("/", diaryController.getAllDiaries);
 router.post("/change-avatar", userAuth, diaryController.changeDiaryAvatar);
 router.post("/delete-diary", userAuth, diaryController.deleteDiary);
 
+router.get(
+  "/change-default-mail-state",
+  userAuth,
+  diaryController.changeDefaultNotification
+);
+
 router.get("/time-line", userAuth, diaryController.getAllEventByTimeLine);
 
 router.get("/profile", userAuth, diaryController.getDiaryProfile);

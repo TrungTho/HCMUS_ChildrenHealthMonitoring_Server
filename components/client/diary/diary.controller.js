@@ -8,6 +8,15 @@ const utilFuncs = require("../../../utils/util-function");
 const diaryCustomModel = require("../../../models/diary-custom.model");
 
 module.exports = diaryController = {
+  changeDefaultNotification: async function (req, res) {
+    try {
+      await diaryModel.flipDefaultMailing(req.query.id);
+      res.send({ success: true });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
   changeDiaryAvatar: async function (req, res) {
     try {
       const fileUploaded = req.files.uploadImg;
