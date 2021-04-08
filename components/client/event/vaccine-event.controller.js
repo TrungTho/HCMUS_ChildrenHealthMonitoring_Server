@@ -54,6 +54,20 @@ module.exports = vaccineDiaryController = {
     }
   },
 
+  getVaccineAllocation: async function (req, res) {
+    try {
+      //get data depends on vaccine name
+      const data = await vaccineModel.getAllocationByVaccineName(
+        req.query.vaccineName
+      );
+      //split data to separate string
+      allocations = data.split(", ");
+      res.send({ success: true, allocations });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
   getEventDetail: async function (req, res) {
     try {
       const data = await diaryVaccineModel.getSingle(req.body.id);

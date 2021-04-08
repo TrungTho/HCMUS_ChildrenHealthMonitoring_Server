@@ -32,7 +32,7 @@ module.exports = {
   //get description by vaccine's name
   async getDescriptionByVaccineName(vaccineName) {
     const rows = await db.load(
-      `select description from ${TABLE_NAME} where vaccineName = ${vaccineName} `
+      `select description from ${TABLE_NAME} where vaccineName = '${vaccineName}' `
     );
     if (rows.length === 0) return null;
     return rows[0].description;
@@ -41,7 +41,7 @@ module.exports = {
   //get allocation by vaccine's name
   async getAllocationByVaccineName(vaccineName) {
     const rows = await db.load(
-      `select allocate from ${TABLE_NAME} where vaccineName = ${vaccineName} `
+      `select allocate from ${TABLE_NAME} where vaccineName = '${vaccineName}' `
     );
     if (rows.length === 0) return null;
     return rows[0].allocate;

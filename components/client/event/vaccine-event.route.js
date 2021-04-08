@@ -7,6 +7,10 @@ const router = express.Router();
 router.get("/", vaccineEventController.getAllEvent);
 router.get("/list-vaccine", vaccineEventController.getAllVaccine);
 router.get("/list-vaccine-name", vaccineEventController.getAllVaccineName);
+router.get(
+  "/list-allocation-of-vaccine",
+  vaccineEventController.getVaccineAllocation
+);
 
 router.post(
   "/detail",
