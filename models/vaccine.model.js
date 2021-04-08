@@ -35,7 +35,16 @@ module.exports = {
       `select description from ${TABLE_NAME} where vaccineName = ${vaccineName} `
     );
     if (rows.length === 0) return null;
-    return rows[0];
+    return rows[0].description;
+  },
+
+  //get allocation by vaccine's name
+  async getAllocationByVaccineName(vaccineName) {
+    const rows = await db.load(
+      `select allocate from ${TABLE_NAME} where vaccineName = ${vaccineName} `
+    );
+    if (rows.length === 0) return null;
+    return rows[0].allocate;
   },
 
   //get all kind of vaccine
