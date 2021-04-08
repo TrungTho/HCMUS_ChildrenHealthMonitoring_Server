@@ -4,6 +4,7 @@ const userModel = require("../../../models/user.model");
 const cloudinary = require("../../../middlewares/cloudinary.mdw");
 const utilFuncs = require("../../../utils/util-function");
 const jwt = require("jsonwebtoken");
+const diaryModel = require("../../../models/diary.model");
 
 module.exports = accountController = {
   changeAvatar: async function (req, res) {
@@ -310,6 +311,13 @@ module.exports = accountController = {
         await userModel.setVerified(userData.id);
         //get data just update
         const datum = await userModel.getSingle(userData.id);
+
+        //set all diaries of this user with default mail = true
+        const userDiaries = await diaryModel.getAllByUserId(datum.id);
+        for (item of userDiaries) {
+          diaryModel.flipDefaultMailing(item.id);
+        }
+
         return res.send({ success: true, user: datum });
       }
       res.send({ success: false, err_message: "invalid token" });
