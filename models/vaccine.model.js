@@ -49,7 +49,7 @@ module.exports = {
 
   //get all kind of vaccine
   getAllVaccineName() {
-    return db.load(`select DISTINCT vaccineName from ${TABLE_NAME}`);
+    return db.load(`select * from ${TABLE_NAME}`);
   },
 
   //fulltext search with querystring
