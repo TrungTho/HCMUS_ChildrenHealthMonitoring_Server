@@ -46,4 +46,28 @@ module.exports = testController = {
         return res.send({ success: false, error });
       });
   },
+
+  test1: async function (req, res) {
+    try {
+      res.send({ success: true });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
+  test2: async function (req, res) {
+    try {
+      res.send({ success: true });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
+  template: async function (req, res) {
+    try {
+      res.send({ success: true });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
 };

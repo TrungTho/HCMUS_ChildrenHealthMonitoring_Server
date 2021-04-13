@@ -10,4 +10,7 @@ router.post("/manual-mail", testController.manualMail);
 
 // router.get("/schedule-task", testController.scheduleSendThing);
 
+router.post("/test1", testController.test1);
+router.post("/test2", testController.test2);
+
 module.exports = router;
