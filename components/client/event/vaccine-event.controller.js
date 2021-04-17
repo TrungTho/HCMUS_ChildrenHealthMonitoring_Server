@@ -127,9 +127,7 @@ module.exports = vaccineDiaryController = {
         console.log(curDate.toDateString(), inputDate.toDateString());
 
         if (curDate.toDateString() === inputDate.toDateString()) {
-          //call API from mail server to add new task
           console.log("--------custom reminder-------");
-
           //prepare contents for task in mail server
           const diaryInfor = await diaryModel.getSingle(req.query.id);
           const userInfor = await userModel.getSingle(diaryInfor.id_user);
@@ -151,7 +149,6 @@ module.exports = vaccineDiaryController = {
 
           console.log("contents", contents);
 
-          axios({
           //call API from mail server to add new task
           await axios({
             method: "post",
@@ -161,7 +158,6 @@ module.exports = vaccineDiaryController = {
             withCredentials: true,
 
             data: {
-              eventId: req.query.id,
               eventId: ret.insertId,
 
               timeString: `${inputDate.getSeconds()} ${inputDate.getMinutes()} ${inputDate.getHours()} * * *`,
@@ -204,7 +200,13 @@ module.exports = vaccineDiaryController = {
         vaccine: req.body.vaccine.join(", "),
         vaccineName: req.body.vaccineName.join(", "),
         doctor: req.body.doctor,
+        isRemind: req.body.isRemind,
+        remindDate: new Date(req.body.remindDate),
+        isScheduled: false,
       };
+
+      //get current event's data to compare later
+      const oldEventData = await diaryVaccineModel.getSingle(req.body.id);
 
       //check if user want to change images or not
       if (req.body.isImageChange === "true") {
@@ -218,6 +220,115 @@ module.exports = vaccineDiaryController = {
 
       //add new diary to db
       await diaryVaccineModel.update(updatedEvent);
+
+      //check if isRemind change or not?
+      if (req.body.isReminderChange === "true") {
+        //check if custom reminder true/false
+        //if true => update task to send reminder
+        //if false => find & stop task in array task in mail server
+        if (req.body.isRemind === "true") {
+          console.log("remind=true");
+          //check reminder's date is current date or not
+          //if true => find & update task in array task
+          //if not => find & stop task in array task (if existed)
+          const curDate = new Date();
+          const inputDate = new Date(req.body.remindDate);
+
+          console.log(curDate.toDateString(), inputDate.toDateString());
+
+          if (curDate.toDateString() === inputDate.toDateString()) {
+            //call API from mail server to add new task
+            console.log("--------update custom reminder-------");
+
+            const diaryInfor = await diaryModel.getSingle(req.query.id);
+            const userInfor = await userModel.getSingle(diaryInfor.id_user);
+
+            const contents = {
+              clientFullname: userInfor.fullname,
+              clientEmail: userInfor.email,
+              diaryName: diaryInfor.fullname,
+              emailContents:
+                "<p><strong>" +
+                1 +
+                ". Vaccine " +
+                req.body.vaccineName.join(", ") +
+                "</strong>" +
+                " (Ngừa các bệnh: " +
+                req.body.vaccine.join(", ") +
+                ") </p>",
+            };
+
+            console.log("contents", contents);
+
+            await axios({
+              method: "post",
+              url:
+                process.env.MAIL_SERVER +
+                "/vaccine-notification-mail/update-custom-task",
+              withCredentials: true,
+
+              data: {
+                eventId: req.body.id,
+
+                timeString: `${inputDate.getSeconds()} ${inputDate.getMinutes()} ${inputDate.getHours()} * * *`,
+
+                contents,
+              },
+            })
+              .then(function (response) {
+                console.log(response);
+              })
+              .catch(function (error) {
+                console.log("error", error);
+                res.status(406).send({ success: false, err_message: error });
+              });
+          } else {
+            console.log(
+              "remind=true & not today => find & stop & destroy task"
+            );
+            //call mail sever api to stop task with eventId=req.body.id
+            await axios({
+              method: "post",
+              url:
+                process.env.MAIL_SERVER +
+                "/vaccine-notification-mail/destroy-custom-task",
+              withCredentials: true,
+
+              data: {
+                eventId: req.body.id,
+              },
+            })
+              .then(function (response) {
+                console.log(response);
+              })
+              .catch(function (error) {
+                console.log("error", error);
+                res.status(406).send({ success: false, err_message: error });
+              });
+          }
+        } else {
+          console.log("remind=false => find & stop task");
+          //call mail sever api to stop task with eventId=req.body.id
+          await axios({
+            method: "post",
+            url:
+              process.env.MAIL_SERVER +
+              "/vaccine-notification-mail/stop-custom-task",
+            withCredentials: true,
+
+            data: {
+              eventId: req.body.id,
+            },
+          })
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log("error", error);
+              res.status(406).send({ success: false, err_message: error });
+            });
+        }
+      }
 
       //get just updated datum in db to send to client
       const datum = await diaryVaccineModel.getSingle(req.body.id);
