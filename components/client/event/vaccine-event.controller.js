@@ -130,6 +130,7 @@ module.exports = vaccineDiaryController = {
           //call API from mail server to add new task
           console.log("--------custom reminder-------");
 
+          //prepare contents for task in mail server
           const diaryInfor = await diaryModel.getSingle(req.query.id);
           const userInfor = await userModel.getSingle(diaryInfor.id_user);
 
@@ -151,6 +152,8 @@ module.exports = vaccineDiaryController = {
           console.log("contents", contents);
 
           axios({
+          //call API from mail server to add new task
+          await axios({
             method: "post",
             url:
               process.env.MAIL_SERVER +
@@ -159,6 +162,7 @@ module.exports = vaccineDiaryController = {
 
             data: {
               eventId: req.query.id,
+              eventId: ret.insertId,
 
               timeString: `${inputDate.getSeconds()} ${inputDate.getMinutes()} ${inputDate.getHours()} * * *`,
 
