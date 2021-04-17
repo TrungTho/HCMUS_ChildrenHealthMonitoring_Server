@@ -29,7 +29,7 @@ module.exports = tipController = {
   searchPost: async function (req, res) {
     try {
       const data = await newsModel.searchAll(req.query.searchString);
-      res.send({ success: true });
+      res.send({ success: true, results: data });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }

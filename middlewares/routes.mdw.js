@@ -28,6 +28,10 @@ module.exports = function (app) {
     require("../components/client/handbook/recipe.route")
   );
   app.use(
+    "/handbook/news",
+    require("../components/client/handbook/news.route")
+  );
+  app.use(
     "/diary",
     passport.authenticate("jwt", { session: false }),
     require("../components/client/diary/diary.route")
