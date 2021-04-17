@@ -4,7 +4,7 @@ const userAuth = require("../../../middlewares/auth/user-diary-auth.mdw"); //mid
 const eventAuth = require("../../../middlewares/auth/vaccine-event-auth.mdw"); //middle to allow user access only their own diaries
 const router = express.Router();
 
-router.get("/", vaccineEventController.getAllEvent);
+router.get("/", userAuth, vaccineEventController.getAllEvent);
 router.get("/list-vaccine", vaccineEventController.getAllVaccine);
 router.get("/list-vaccine-name", vaccineEventController.getAllVaccineName);
 router.get(
