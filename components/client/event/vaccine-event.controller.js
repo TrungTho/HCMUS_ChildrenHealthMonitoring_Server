@@ -1,4 +1,6 @@
 const diaryVaccineModel = require("../../../models/diary-vaccine.model");
+const diaryModel = require("../../../models/diary.model");
+const userModel = require("../../../models/user.model");
 const moment = require("moment");
 const utilFuncs = require("../../../utils/util-function");
 const { updateLocale } = require("moment");
@@ -93,6 +95,8 @@ module.exports = vaccineDiaryController = {
         process.env.CLOUD_DIARY_VACCINE_TRACK_PRESET
       );
 
+      console.log(req.body);
+
       //create new event according to user input
       const newEvent = {
         id_diary: req.query.id,
@@ -104,7 +108,7 @@ module.exports = vaccineDiaryController = {
         doctor: req.body.doctor,
         isDel: 0,
         isRemind: req.body.isRemind,
-        remindDate: req.body.remindDate,
+        remindDate: new Date(req.body.remindDate),
         isScheduled: false,
       };
 
@@ -113,15 +117,20 @@ module.exports = vaccineDiaryController = {
 
       //check if custom reminder true/false => create task to send reminder
       if (req.body.isRemind === "true") {
+        console.log("remind=true");
         //check reminder's date is current date or not
         //if true => add to array task
         //if not => just add data to db and it will be processed later by mail server
         const curDate = new Date();
-        const inputDate = new Date(req.body.remindDate).setHours(0, 0, 0, 0);
-        if (curDate === inputDate) {
-          //call API from mail server to add new task
+        const inputDate = new Date(req.body.remindDate);
 
-          const diaryInfor = await diaryModel.getSingle(req.body.id_diary);
+        console.log(curDate.toDateString(), inputDate.toDateString());
+
+        if (curDate.toDateString() === inputDate.toDateString()) {
+          //call API from mail server to add new task
+          console.log("--------custom reminder-------");
+
+          const diaryInfor = await diaryModel.getSingle(req.query.id);
           const userInfor = await userModel.getSingle(diaryInfor.id_user);
 
           const contents = {
@@ -139,24 +148,28 @@ module.exports = vaccineDiaryController = {
               ") </p>",
           };
 
-          axios({
-            timeString: `${new Date(
-              req.body.remindTime
-            ).getSeconds()} ${new Date(
-              req.body.remindTime
-            ).getMinutes()} ${new Date(req.body.remindTime).getHours()} * * *`,
-            contents,
+          console.log("contents", contents);
 
+          axios({
             method: "post",
             url:
               process.env.MAIL_SERVER +
               "/vaccine-notification-mail/new-custom-task",
             withCredentials: true,
+
+            data: {
+              eventId: req.query.id,
+
+              timeString: `${inputDate.getSeconds()} ${inputDate.getMinutes()} ${inputDate.getHours()} * * *`,
+
+              contents,
+            },
           })
             .then(function (response) {
               console.log(response);
             })
             .catch(function (error) {
+              console.log("error", error);
               res.status(406).send({ success: false, err_message: error });
             });
         }
@@ -171,6 +184,7 @@ module.exports = vaccineDiaryController = {
       //send success message to client
       res.send({ success: true, eventInfor: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
