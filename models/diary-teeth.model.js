@@ -48,7 +48,7 @@ module.exports = {
 
   getLastestTeethState(id) {
     return db.load(
-      `select * from ${TABLE_NAME} where id_diary=${id} order by log_date limit 1`
+      `select * from ${TABLE_NAME} where id_diary=${id} order by log_date desc, id desc limit 1`
     );
   },
 
