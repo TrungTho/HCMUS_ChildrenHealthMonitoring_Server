@@ -72,6 +72,7 @@ module.exports = teethDiaryController = {
         id_diary: req.query.id,
         log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
         numberOfTeeth: req.body.numberOfTeeth,
+        eventTeethChange: req.body.eventTeethChange,
         note: req.body.note,
         image: uploadResponse.url,
         isDel: 0,
@@ -101,6 +102,7 @@ module.exports = teethDiaryController = {
         id_diary: req.query.id,
         log_date: moment(req.body.log_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
         numberOfTeeth: req.body.numberOfTeeth,
+        eventTeethChange: req.body.eventTeethChange,
         note: req.body.note,
         isDel: 0,
       };
