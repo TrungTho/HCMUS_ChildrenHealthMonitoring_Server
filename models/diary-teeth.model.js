@@ -46,6 +46,12 @@ module.exports = {
     );
   },
 
+  getLastestTeethState(id) {
+    return db.load(
+      `select * from ${TABLE_NAME} where id_diary=${id} order by log_date limit 1`
+    );
+  },
+
   //---------------------others update----------------------------
 
   //function to update avatar link with id and link

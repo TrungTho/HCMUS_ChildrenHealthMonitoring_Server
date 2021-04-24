@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.get("/", teethEventController.getAllEvent);
 
+router.get("/currentTeeth", teethEventController.getCurrentTeeth);
+
 router.post(
   "/detail",
   userAuth,

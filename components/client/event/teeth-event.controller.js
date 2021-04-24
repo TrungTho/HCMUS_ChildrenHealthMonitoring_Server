@@ -34,6 +34,17 @@ module.exports = teethDiaryController = {
     }
   },
 
+  getCurrentTeeth: async function (req, res) {
+    try {
+      const datum = await diaryTeethModel.getLastestTeethState(req.query.id);
+
+      //send data to client
+      res.send({ success: true, currentTeeth: datum });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
   getEventDetail: async function (req, res) {
     try {
       const data = await diaryTeethModel.getSingle(req.body.id);
