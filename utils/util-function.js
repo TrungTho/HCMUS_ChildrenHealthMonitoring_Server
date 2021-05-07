@@ -58,13 +58,14 @@ module.exports = {
     if (req.files) {
       fileUploaded = req.files.uploadImg;
 
-      //upload file to cloudinary
-      uploadResponse = await cloudinary.uploader.upload(
-        fileUploaded.tempFilePath,
-        {
+      for (const image of fileUploaded) {
+        //upload file to cloudinary
+        let tmpUpload = await cloudinary.uploader.upload(image.tempFilePath, {
           upload_preset: preset, //choose configed preset to store image
-        }
-      );
+        });
+
+        uploadResponse.url += tmpUpload.url + ", ";
+      }
     }
 
     return uploadResponse;

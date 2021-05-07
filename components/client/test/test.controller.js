@@ -49,6 +49,8 @@ module.exports = testController = {
 
   test1: async function (req, res) {
     try {
+      console.log("--------------test1--------------");
+      console.log(req.cookies);
       res.send({ success: true });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
