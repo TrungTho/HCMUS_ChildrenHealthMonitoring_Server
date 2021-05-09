@@ -45,12 +45,18 @@ router.post(
   accountController.updateProfile
 );
 
+router.post(
+  "/change-password",
+  passport.authenticate("jwt", { session: false }),
+  accountController.changePasswordWhenSignedIn
+);
+
 router.post("/register", accountController.register);
 
 router.get("/verify-account", accountController.verifyAccount);
 
-router.post("/request-change-password", accountController.requestChangePass);
+router.post("/request-reset-password", accountController.requestChangePass);
 
-router.post("/change-password", accountController.changePassword);
+router.post("/reset-password", accountController.changePassword);
 
 module.exports = router;

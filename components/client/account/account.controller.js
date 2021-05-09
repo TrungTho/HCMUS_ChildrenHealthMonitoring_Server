@@ -333,4 +333,44 @@ module.exports = accountController = {
       res.status(406).send({ success: false, err_message: error });
     }
   },
+
+  changePasswordWhenSignedIn: async function (req, res) {
+    try {
+      console.log("begin");
+      const { currentPassword, newPassword } = req.body;
+      const userPassInDb = await userModel.getPassByUsername(req.user.username);
+
+      const ret = bcrypt.compareSync(currentPassword, userPassInDb);
+
+      //check user exist and verify account
+      if (userPassInDb && bcrypt.compareSync(currentPassword, userPassInDb)) {
+        const userData = await userModel.getSingleByEmail(req.user.email);
+        console.log(userData);
+
+        //set new password for data
+        userData.password = bcrypt.hashSync(
+          newPassword,
+          parseInt(process.env.ACCOUNT_TIMEHASHPASS)
+        );
+        //update data in db
+        await userModel.update(userData);
+
+        //get data just update
+        const datum = await userModel.getSingle(userData.id);
+        return res.send({
+          success: true,
+          userInfor: {
+            username: datum.username,
+            fullname: datum.fullname,
+            avatar: datum.avatar,
+            email: datum.email,
+          },
+        });
+      }
+
+      res.status(406).send({ success: false, err_message: "invalid password" });
+    } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
 };
