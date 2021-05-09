@@ -168,12 +168,13 @@ module.exports = accountController = {
     //first check if user in token is user want to update profile or not?
     if (req.user.username === req.body.username) {
       try {
+        const userPass = await userModel.getPassByUsername(req.user.username);
         //check if password is valid or not
-        if (bcrypt.compareSync(req.body.password, req.user.password)) {
+        if (bcrypt.compareSync(req.body.password, userPass)) {
           const newUser = {
             id: req.user.id,
             username: req.user.username, //username cant be changed
-            password: req.user.password,
+            password: userPass,
             dob: moment(req.body.dob, "DD/MM/YYYY").format("YYYY-MM-DD"),
             fullname: req.body.fullname,
             email: req.body.mail,
