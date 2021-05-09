@@ -196,7 +196,7 @@ module.exports = accountController = {
         res.status(406).send({ success: false, err_message: error });
       }
     } else {
-      res.status(406).send({ success: false, err_message: "invalid token" });
+      res.status(406).send({ success: false, err_message: "invalid username" });
     }
   },
 
