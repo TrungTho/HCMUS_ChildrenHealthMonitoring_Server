@@ -227,7 +227,7 @@ module.exports = vaccineDiaryController = {
         //if true => update task to send reminder
         //if false => find & stop task in array task in mail server
         if (req.body.isRemind === "true") {
-          console.log("remind=true");
+          // console.log("remind=true");
           //check reminder's date is current date or not
           //if true => find & update task in array task
           //if not => find & stop task in array task (if existed)
@@ -236,6 +236,7 @@ module.exports = vaccineDiaryController = {
 
           console.log(curDate.toDateString(), inputDate.toDateString());
 
+          //check if remind date is today????
           if (curDate.toDateString() === inputDate.toDateString()) {
             //call API from mail server to add new task
             console.log("--------update custom reminder-------");
@@ -260,6 +261,7 @@ module.exports = vaccineDiaryController = {
 
             console.log("contents", contents);
 
+            //call mail server to update task in arrTask (if exist)
             await axios({
               method: "post",
               url:
@@ -280,7 +282,11 @@ module.exports = vaccineDiaryController = {
               })
               .catch(function (error) {
                 console.log("error", error);
-                res.status(406).send({ success: false, err_message: error });
+                return res.status(406).send({
+                  success: false,
+                  err_message:
+                    "error in when call mail server to update task!!!'",
+                });
               });
           } else {
             console.log(
@@ -303,10 +309,15 @@ module.exports = vaccineDiaryController = {
               })
               .catch(function (error) {
                 console.log("error", error);
-                res.status(406).send({ success: false, err_message: error });
+                return res.status(406).send({
+                  success: false,
+                  err_message:
+                    "error when call mail server to stop & destroy task",
+                });
               });
           }
         } else {
+          //if user change event from remind = true => remind = true
           console.log("remind=false => find & stop task");
           //call mail sever api to stop task with eventId=req.body.id
           await axios({
@@ -325,7 +336,10 @@ module.exports = vaccineDiaryController = {
             })
             .catch(function (error) {
               console.log("error", error);
-              res.status(406).send({ success: false, err_message: error });
+              return res.status(406).send({
+                success: false,
+                err_message: "error when call mail server to stop task",
+              });
             });
         }
       }
