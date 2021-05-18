@@ -140,10 +140,10 @@ module.exports = vaccineDiaryController = {
               "<p><strong>" +
               1 +
               ". Vaccine " +
-              req.body.vaccineName.join(", ") +
+              JSON.parse(req.body.vaccineName).join(", ") +
               "</strong>" +
               " (Ngừa các bệnh: " +
-              req.body.vaccine.join(", ") +
+              JSON.parse(req.body.vaccine).join(", ") +
               ") </p>",
           };
 
@@ -252,10 +252,10 @@ module.exports = vaccineDiaryController = {
                 "<p><strong>" +
                 1 +
                 ". Vaccine " +
-                req.body.vaccineName.join(", ") +
+                JSON.parse(req.body.vaccineName).join(", ") +
                 "</strong>" +
                 " (Ngừa các bệnh: " +
-                req.body.vaccine.join(", ") +
+                JSON.parse(req.body.vaccine).join(", ") +
                 ") </p>",
             };
 
