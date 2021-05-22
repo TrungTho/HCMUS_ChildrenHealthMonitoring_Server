@@ -51,24 +51,28 @@ module.exports = {
   },
 
   uploadImage: async function (req, preset) {
-    let fileUploaded = [],
-      uploadResponse = { url: "" };
+    try {
+      let fileUploaded = [];
+      let uploadResponse = { url: "" };
 
-    //check if req.file is existed or not
-    if (req.files) {
-      fileUploaded = req.files.uploadImg;
+      //check if req.file is existed or not
+      if (req.files) {
+        fileUploaded = fileUploaded.concat(req.files.uploadImg);
 
-      for (const image of fileUploaded) {
-        //upload file to cloudinary
-        let tmpUpload = await cloudinary.uploader.upload(image.tempFilePath, {
-          upload_preset: preset, //choose configed preset to store image
-        });
+        for (const image of fileUploaded) {
+          //upload file to cloudinary
+          let tmpUpload = await cloudinary.uploader.upload(image.tempFilePath, {
+            upload_preset: preset, //choose configed preset to store image
+          });
 
-        uploadResponse.url += tmpUpload.url + ", ";
+          uploadResponse.url += tmpUpload.url + ", ";
+        }
       }
-    }
 
-    return uploadResponse;
+      return uploadResponse;
+    } catch (error) {
+      console.log("error:", error);
+    }
   },
 
   sendMail: async function (emailContent) {
