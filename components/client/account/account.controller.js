@@ -147,7 +147,8 @@ module.exports = accountController = {
       res.cookie("auth_token", token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 8, //8 hours
-        sameSite: 'None'
+        sameSite: 'None',
+        secure: true,
       });
       res.send({
         success: true,
