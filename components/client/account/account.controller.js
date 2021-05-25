@@ -147,6 +147,7 @@ module.exports = accountController = {
       res.cookie("auth_token", token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 8, //8 hours
+        sameSite: 'None'
       });
       res.send({
         success: true,
@@ -239,11 +240,10 @@ module.exports = accountController = {
             destination: newUser.email,
             subject: "Children Health Monitoring confirm account",
             html: `Here your verify link:
-            <a href="${
-              process.env.ALLOW_ORIGIN
-            }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
-              req.body.mail
-            )}" > Click me!
+            <a href="${process.env.ALLOW_ORIGIN
+              }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+                req.body.mail
+              )}" > Click me!
             </a>`,
           });
 
