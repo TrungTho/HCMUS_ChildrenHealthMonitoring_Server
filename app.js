@@ -24,7 +24,7 @@ app.use(
 app.use(
   cors({
     origin: process.env.REACT_SERVER, //block all except this domain
-    credentials: true, //turn on cookie http through cors
+    credentials: true, //turn on cookie http through 
   })
 );
 
@@ -39,6 +39,6 @@ require("./middlewares/errors.mdw")(app); //mdw for err handling
 
 //lang nghe o cong
 const PORT = process.env.LISTENPORT;
-app.listen(PORT, () => {
+app.listen(PORT || 3000, () => {
   //console.log(`Example app listening at http://localhost:${PORT}`);
 });
