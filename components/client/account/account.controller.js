@@ -144,11 +144,11 @@ module.exports = accountController = {
       const token = utilFuncs.encodedToken(req.user.username, 8);
 
       //res.setHeader("Authorization", token);
-      res.cookie("auth_token", token, {
+      res.cookie(process.env.COOKIE_NAME, token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 8, //8 hours
-        sameSite: 'None',
-        secure: true,
+        // sameSite: 'None',
+        // secure: true,
       });
       res.send({
         success: true,
@@ -163,7 +163,17 @@ module.exports = accountController = {
   },
 
   logout: async function (req, res) {
-    res.clearCookie(process.env.COOKIE_NAME).send({ success: true });
+    try {
+      res.cookie(process.env.COOKIE_NAME, "invalid", {
+        httpOnly: true,
+        maxAge: 0, //8 hours
+        // sameSite: 'None',
+        // secure: true,
+      });
+      res.send({ success: true });
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   updateProfile: async function (req, res) {
@@ -241,10 +251,11 @@ module.exports = accountController = {
             destination: newUser.email,
             subject: "Children Health Monitoring confirm account",
             html: `Here your verify link:
-            <a href="${process.env.ALLOW_ORIGIN
-              }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
-                req.body.mail
-              )}" > Click me!
+            <a href="${
+              process.env.ALLOW_ORIGIN
+            }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+              req.body.mail
+            )}" > Click me!
             </a>`,
           });
 

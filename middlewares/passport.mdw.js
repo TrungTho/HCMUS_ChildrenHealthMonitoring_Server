@@ -42,6 +42,7 @@ passport.use(
         if (!datum) {
           return done(null, false); //return null if datum is not existed
         }
+        console.log("cookie valid!!!");
 
         done(null, datum); //return datum as user if everything true
       } catch (error) {
