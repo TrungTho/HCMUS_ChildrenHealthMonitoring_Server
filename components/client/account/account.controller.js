@@ -157,6 +157,7 @@ module.exports = accountController = {
           fullname: req.user.fullname,
           avatar: req.user.avatar,
           email: req.user.email,
+          permission: req.user.permission,
         },
       });
     }
