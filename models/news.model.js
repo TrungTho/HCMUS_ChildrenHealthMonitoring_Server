@@ -52,7 +52,7 @@ module.exports = {
   //fulltext search with querystring
   searchAll(querystring) {
     return db.load(
-      `SELECT * FROM ${TABLE_NAME} WHERE MATCH (shortdes, fulldes) AGAINST ('${querystring}' );`
+      `SELECT * FROM ${TABLE_NAME} WHERE MATCH (shortdes, fulldes) AGAINST ('${querystring}' ) and isApproved = true order by trendRank;`
     );
   },
 
