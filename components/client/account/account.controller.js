@@ -181,7 +181,7 @@ module.exports = accountController = {
     //first check if user in token is user want to update profile or not?
     if (req.user.username === req.body.username) {
       try {
-        const userPass = await userModel.getPassByUsername(req.user.username);
+        const userPass = null; //await userModel.getPassByUsername(req.user.username);
         //check if password is valid or not
         if (true || bcrypt.compareSync(req.body.password, userPass)) {
           //user dont need to send pass anymore
