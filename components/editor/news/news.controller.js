@@ -40,6 +40,7 @@ module.exports = newsController = {
         main_cover: uploadResponse.url,
         isApproved: 0,
         log_date: new Date(),
+        trendRank: req.body.trendRank,
       };
 
       //add new diary to db
@@ -72,6 +73,7 @@ module.exports = newsController = {
         id: req.body.id,
         shortDes: req.body.shortDes,
         fullDes: req.body.fullDes,
+        trendRank: req.body.trendRank,
         isApproved: 0,
       };
 
