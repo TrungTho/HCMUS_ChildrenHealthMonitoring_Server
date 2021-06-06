@@ -47,7 +47,7 @@ module.exports = {
 
   async getSingleByUsername(username) {
     const rows = await db.load(
-      `select id, username, email, dob, fullname, avatar, permission from ${TABLE_NAME} where username = "${username}" and isDisable = 0`
+      `select id, username, email, dob, fullname, avatar, permission, isDisable, isVerified from ${TABLE_NAME} where username = "${username}" and isDisable = 0`
     );
     if (rows.length === 0) return null;
     return rows[0];
@@ -55,7 +55,7 @@ module.exports = {
 
   async getSingleByEmail(email) {
     const rows = await db.load(
-      `select id, username, email, dob, fullname, avatar from ${TABLE_NAME} where email = "${email}" `
+      `select id, username, email, dob, fullname, avatar,permission, isDisable, isVerified from ${TABLE_NAME} where email = "${email}" and isDisable = 0`
     );
     if (rows.length === 0) return null;
     return rows[0];

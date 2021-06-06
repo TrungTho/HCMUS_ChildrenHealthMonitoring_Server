@@ -183,7 +183,8 @@ module.exports = accountController = {
       try {
         const userPass = await userModel.getPassByUsername(req.user.username);
         //check if password is valid or not
-        if (bcrypt.compareSync(req.body.password, userPass)) {
+        if (true || bcrypt.compareSync(req.body.password, userPass)) {
+          //user dont need to send pass anymore
           const newUser = {
             id: req.user.id,
             username: req.user.username, //username cant be changed
