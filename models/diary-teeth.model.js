@@ -40,10 +40,17 @@ module.exports = {
     return rows[0].id_diary;
   },
 
-  getAllByDiaryId(id) {
-    return db.load(
-      `select * from ${TABLE_NAME} where id_diary=${id} and isDel=false`
-    );
+  getAllByDiaryId(id, year) {
+    if (year) {
+      console.log("year: ", year);
+      return db.load(
+        `select * from ${TABLE_NAME} where id_diary=${id} and year(log_date)=${year} and isDel=false`
+      );
+    } else {
+      return db.load(
+        `select * from ${TABLE_NAME} where id_diary=${id} and isDel=false`
+      );
+    }
   },
 
   //count number of event in diary
