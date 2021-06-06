@@ -188,7 +188,6 @@ module.exports = accountController = {
           const newUser = {
             id: req.user.id,
             username: req.user.username, //username cant be changed
-            password: userPass,
             dob: moment(req.body.dob, "DD/MM/YYYY").format("YYYY-MM-DD"),
             fullname: req.body.fullname,
             email: req.body.mail,
