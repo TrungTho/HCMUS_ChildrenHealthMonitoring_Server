@@ -110,19 +110,43 @@ module.exports = diaryController = {
 
   getAllEventByTimeLine: async function (req, res) {
     try {
-      const vaccine_diaries = await diaryVaccineModel.getAllByDiaryId(
-        req.query.id
-      );
+      const filterField = req.query.filter.split("-");
 
-      const w_h_diaries = await diaryWeightHeightModel.getAllByDiaryId(
-        req.query.id
-      );
+      // console.log(filterField);
+      // console.log(req.query.isAscending);
+      // console.log("year", req.query.year);
 
-      const teeth_diaries = await diaryTeethModel.getAllByDiaryId(req.query.id);
+      let vaccine_diaries = [];
+      if (filterField.findIndex((filter) => filter === "vaccine") !== -1) {
+        vaccine_diaries = await diaryVaccineModel.getAllByDiaryId(
+          req.query.id,
+          parseInt(req.query.year)
+        );
+      }
 
-      const custom_diaries = await diaryCustomModel.getAllByDiaryId(
-        req.query.id
-      );
+      let w_h_diaries = [];
+      if (filterField.findIndex((filter) => filter === "wh") !== -1) {
+        w_h_diaries = await diaryWeightHeightModel.getAllByDiaryId(
+          req.query.id,
+          req.query.year
+        );
+      }
+
+      let teeth_diaries = [];
+      if (filterField.findIndex((filter) => filter === "teeth") !== -1) {
+        teeth_diaries = await diaryTeethModel.getAllByDiaryId(
+          req.query.id,
+          req.query.year
+        );
+      }
+
+      let custom_diaries = [];
+      if (filterField.findIndex((filter) => filter === "custom") !== -1) {
+        custom_diaries = await diaryCustomModel.getAllByDiaryId(
+          req.query.id,
+          req.query.year
+        );
+      }
 
       //join 3 arrays to one
       let dataDiaries = vaccine_diaries
@@ -131,7 +155,11 @@ module.exports = diaryController = {
         .concat(custom_diaries);
 
       //sort data
-      dataDiaries.sort(utilFuncs.compareDesc); //sort descending
+      if (req.query.isAscending === "true") {
+        dataDiaries.sort(utilFuncs.compareAsc);
+      } else {
+        dataDiaries.sort(utilFuncs.compareDesc); //sort descending
+      }
 
       //format log_date for client's usage
       dataDiaries.forEach((element) => {
