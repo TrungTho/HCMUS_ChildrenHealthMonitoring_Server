@@ -4,7 +4,7 @@ const TABLE_NAME = "diary_custom";
 module.exports = {
   //---------------------default query----------------------------
   getAll() {
-    return db.load(`select * from ${TABLE_NAME}  and isDel=false`);
+    return db.load(`select * from ${TABLE_NAME}  where isDel=false`);
   },
 
   add(newObj) {
@@ -22,6 +22,7 @@ module.exports = {
   },
 
   //---------------------others select----------------------------
+
   //get an single user by user id
   async getSingle(id) {
     const rows = await db.load(
@@ -44,6 +45,15 @@ module.exports = {
     return db.load(
       `select * from ${TABLE_NAME} where id_diary=${id} and isDel=false`
     );
+  },
+
+  //count number of event in diary
+  async countEventsByDiaryId(id) {
+    const rows = await db.load(
+      `select count(*) from ${TABLE_NAME} where id_diary=${id} and isDel=false`
+    );
+    if (rows.length === 0) return null;
+    return rows[0]["count(*)"];
   },
 
   //---------------------others update----------------------------

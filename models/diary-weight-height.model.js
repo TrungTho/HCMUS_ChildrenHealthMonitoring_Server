@@ -46,6 +46,15 @@ module.exports = {
     );
   },
 
+  //count number of event in diary
+  async countEventsByDiaryId(id) {
+    const rows = await db.load(
+      `select count(*) from ${TABLE_NAME} where id_diary=${id} and isDel=false`
+    );
+    if (rows.length === 0) return null;
+    return rows[0]["count(*)"];
+  },
+
   //---------------------others update----------------------------
   //function to update avatar link with id and link
   changeImage(id, link) {

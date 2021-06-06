@@ -27,8 +27,15 @@ module.exports = customDiaryController = {
         );
       });
 
+      const number = await diaryCustomModel.countEventsByDiaryId(req.query.id);
+      console.log(number);
+
       //send data to client
-      res.send({ success: true, events: data });
+      res.send({
+        success: true,
+        count: number,
+        events: data,
+      });
     } catch (error) {
       res.status(406).send({ success: false, err_message: error });
     }
