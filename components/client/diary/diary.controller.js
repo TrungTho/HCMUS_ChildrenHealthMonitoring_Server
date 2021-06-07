@@ -6,6 +6,7 @@ const moment = require("moment");
 const cloudinary = require("../../../middlewares/cloudinary.mdw");
 const utilFuncs = require("../../../utils/util-function");
 const diaryCustomModel = require("../../../models/diary-custom.model");
+const itemPerPage = 5;
 
 module.exports = diaryController = {
   changeDefaultNotification: async function (req, res) {
@@ -110,6 +111,7 @@ module.exports = diaryController = {
 
   getAllEventByTimeLine: async function (req, res) {
     try {
+      req.query.filter += "-";
       const filterField = req.query.filter.split("-");
 
       // console.log(filterField);
@@ -168,11 +170,25 @@ module.exports = diaryController = {
         );
       });
 
+      const totalPages =
+        Math.floor(dataDiaries.length / itemPerPage) +
+        (dataDiaries % itemPerPage === 0 ? 0 : 1);
+
+      //check paging
+      if (req.query.pageNo) {
+        dataDiaries = dataDiaries.slice(
+          parseInt(req.query.pageNo) * itemPerPage,
+          parseInt(req.query.pageNo) * itemPerPage + itemPerPage
+        );
+      }
+
       res.send({
         success: true,
+        totalPages,
         dataDiaries,
       });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
