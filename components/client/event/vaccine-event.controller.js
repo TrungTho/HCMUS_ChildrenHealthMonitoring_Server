@@ -107,7 +107,7 @@ module.exports = vaccineDiaryController = {
         vaccineName: JSON.parse(req.body.vaccineName).join(", "),
         doctor: req.body.doctor,
         isDel: 0,
-        isRemind: req.body.isRemind,
+        isRemind: req.body.isRemind === "true" ? 1 : 0,
         remindDate: new Date(req.body.remindDate),
         isScheduled: false,
       };
@@ -200,7 +200,7 @@ module.exports = vaccineDiaryController = {
         vaccine: JSON.parse(req.body.vaccine).join(", "),
         vaccineName: JSON.parse(req.body.vaccineName).join(", "),
         doctor: req.body.doctor,
-        isRemind: req.body.isRemind,
+        isRemind: req.body.isRemind === "true" ? 1 : 0,
         remindDate: new Date(req.body.remindDate),
         isScheduled: false,
       };
