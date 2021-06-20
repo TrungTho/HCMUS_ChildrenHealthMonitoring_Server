@@ -7,6 +7,14 @@ module.exports = {
     return db.load(`select * from ${TABLE_NAME}  where isApproved=true`);
   },
 
+  getAllWithPaging(pageNo, itemNo) {
+    return db.load(
+      `select * from ${TABLE_NAME} where isApproved=true limit ${
+        pageNo * itemNo
+      }, ${itemNo}`
+    );
+  },
+
   add(newObj) {
     return db.add(newObj, TABLE_NAME);
   },
@@ -54,6 +62,15 @@ module.exports = {
     return db.load(
       `SELECT * FROM ${TABLE_NAME} WHERE MATCH (shortdes, fulldes) AGAINST ('${querystring}' ) and isApproved = true order by trendRank;`
     );
+  },
+
+  //count all row
+  async countRows() {
+    const rows = await db.load(
+      `select count(*) from ${TABLE_NAME} where isApproved=true`
+    );
+    if (rows.length === 0) return null;
+    return rows[0]["count(*)"];
   },
 
   //---------------------others update----------------------------
