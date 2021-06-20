@@ -1,13 +1,29 @@
 const recipeModel = require("../../../models/recipe.model");
+const itemPerPage = 5;
 
 module.exports = tipController = {
   getAllPost: async function (req, res) {
     try {
-      const data = await recipeModel.getAll();
-
+      let data, totalPages;
+      if (req.query.pageNo) {
+        data = await recipeModel.getAllWithPaging(
+          parseInt(req.query.pageNo),
+          itemPerPage
+        );
+        // console.log("data: " + data);
+        const rowNo = parseInt(await recipeModel.countRows());
+        // console.log("row count: ", rowNo);
+        totalPages =
+          Math.floor(rowNo / itemPerPage) + (rowNo % itemPerPage === 0 ? 0 : 1);
+        // console.log("pages: " + totalPages);
+      } else {
+        data = await recipeModel.getAll();
+        totalPages = 0;
+      }
       //send data to client
-      res.send({ success: true, posts: data });
+      res.send({ success: true, totalPages, posts: data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
