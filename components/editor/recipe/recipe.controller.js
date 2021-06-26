@@ -27,17 +27,18 @@ module.exports = recipeController = {
 
   newPost: async function (req, res) {
     try {
-      //call global function to upload main_cover
-      const uploadResponse = await utilFuncs.uploadImage(
-        req,
-        process.env.CLOUD_POST_PRESET
-      );
+      // //call global function to upload main_cover
+      // const uploadResponse = await utilFuncs.uploadImage(
+      //   req,
+      //   process.env.CLOUD_POST_PRESET
+      // );
 
       //create new Post according to user input
       const newPost = {
         name: req.body.name,
         fullDes: req.body.fullDes,
-        main_cover: uploadResponse.url,
+        // main_cover: uploadResponse.url,
+        main_cover: req.body.uploadImg,
         isApproved: 0,
         log_date: new Date(),
       };
@@ -73,17 +74,18 @@ module.exports = recipeController = {
         name: req.body.name,
         fullDes: req.body.fullDes,
         isApproved: 0,
+        main_cover: req.body.uploadImg,
       };
 
-      //check if user want to change images or not
-      if (req.body.isImageChange === "true") {
-        const uploadResponse = await utilFuncs.uploadImage(
-          req,
-          process.env.CLOUD_POST_PRESET
-        );
+      // //check if user want to change images or not
+      // if (req.body.isImageChange === "true") {
+      //   const uploadResponse = await utilFuncs.uploadImage(
+      //     req,
+      //     process.env.CLOUD_POST_PRESET
+      //   );
 
-        updatedPost.main_cover = uploadResponse.url;
-      }
+      //   updatedPost.main_cover = uploadResponse.url;
+      // }
 
       //add new diary to db
       await recipeModel.update(updatedPost);
