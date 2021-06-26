@@ -68,6 +68,7 @@ module.exports = userController = {
             permission: 2, //editor user
             isDisable: 0,
             isVerified: 0,
+            authType: "local",
           };
           console.log(newUser);
 
