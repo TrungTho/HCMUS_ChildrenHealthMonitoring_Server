@@ -84,7 +84,7 @@ module.exports = newsController = {
           process.env.CLOUD_POST_PRESET
         );
 
-        updatedPost.image = uploadResponse.url;
+        updatedPost.main_cover = uploadResponse.url;
       }
 
       //add new diary to db
