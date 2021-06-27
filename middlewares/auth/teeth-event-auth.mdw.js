@@ -10,13 +10,13 @@ module.exports = async function DiaryAuth(req, res, next) {
     if (parseInt(req.query.id) !== eventIdDiary) {
       return res.status(403).send({
         success: false,
-        err_message: "invalid request3",
+        err_message: "access denied!! wrong user",
       });
     }
   } catch (error) {
     return res
       .status(403)
-      .send({ success: false, err_message: "invalid request" });
+      .send({ success: false, err_message: "access denied!! wrong user" });
   }
 
   //allow to access if this event belong to this diary

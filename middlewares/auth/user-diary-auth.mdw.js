@@ -8,12 +8,12 @@ module.exports = async function DiaryAuth(req, res, next) {
     if (req.user.id !== diaryInfor.id_user) {
       return res
         .status(403)
-        .send({ success: false, err_message: "invalid request" });
+        .send({ success: false, err_message: "access denied!! wrong user" });
     }
   } catch (error) {
     return res
       .status(403)
-      .send({ success: false, err_message: "invalid request" });
+      .send({ success: false, err_message: "access denied!! wrong user" });
   }
 
   //allow to access if this diary belong to this user

@@ -5,7 +5,7 @@ module.exports = function adminAuth(req, res, next) {
   } else {
     return res
       .status(403)
-      .send({ success: false, err_message: "invalid request" });
+      .send({ success: false, err_message: "access denied!! wrong user" });
   }
 
   next();
