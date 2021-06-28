@@ -75,6 +75,7 @@ module.exports = recipeController = {
         fullDes: req.body.fullDes,
         isApproved: 0,
         main_cover: req.body.uploadImg,
+        log_date: new Date(),
       };
 
       // //check if user want to change images or not

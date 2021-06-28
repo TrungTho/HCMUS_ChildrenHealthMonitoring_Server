@@ -76,6 +76,7 @@ module.exports = tipController = {
         shortDes: req.body.shortDes,
         fullDes: req.body.fullDes,
         main_cover: req.body.uploadImg,
+        log_date: new Date(),
         isApproved: 0,
       };
 

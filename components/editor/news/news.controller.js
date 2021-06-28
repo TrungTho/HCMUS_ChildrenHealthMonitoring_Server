@@ -76,6 +76,7 @@ module.exports = newsController = {
         fullDes: req.body.fullDes,
         trendRank: req.body.trendRank,
         main_cover: req.body.uploadImg,
+        log_date: new Date(),
         isApproved: 0,
       };
 
