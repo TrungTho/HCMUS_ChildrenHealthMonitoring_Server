@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get("/", weightHeightEventController.getAllEvent);
 router.get("/standard-params", weightHeightEventController.getStandardParam);
+router.get("/graph-data", weightHeightEventController.getGraphData);
 
 router.post(
   "/detail",

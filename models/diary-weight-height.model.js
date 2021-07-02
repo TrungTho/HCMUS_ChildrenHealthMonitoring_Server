@@ -44,11 +44,11 @@ module.exports = {
     if (year) {
       console.log("year: ", year);
       return db.load(
-        `select * from ${TABLE_NAME} where id_diary=${id} and year(log_date)=${year} and isDel=false`
+        `select * from ${TABLE_NAME} where id_diary=${id} and year(log_date)=${year} and isDel=false order by log_date`
       );
     } else {
       return db.load(
-        `select * from ${TABLE_NAME} where id_diary=${id} and isDel=false`
+        `select * from ${TABLE_NAME} where id_diary=${id} and isDel=false order by log_date`
       );
     }
   },

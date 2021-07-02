@@ -3,6 +3,15 @@ const weightHeightStandardModel = require("../../../models/weight-height-standar
 const moment = require("moment");
 const utilFuncs = require("../../../utils/util-function");
 const { updateLocale } = require("moment");
+const diaryModel = require("../../../models/diary.model");
+
+const monthDiff = function (d1, d2) {
+  var months;
+  months = (d2.getFullYear() - d1.getFullYear()) * 12;
+  months -= d1.getMonth();
+  months += d2.getMonth();
+  return months <= 0 ? 0 : months;
+};
 
 module.exports = weightHeightDiaryController = {
   deleteEvent: async function (req, res) {
@@ -61,6 +70,96 @@ module.exports = weightHeightDiaryController = {
       //send data to client
       res.send({ success: true, standardParams: data });
     } catch (error) {
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
+  getGraphData: async function (req, res) {
+    try {
+      const diaryInfo = await diaryModel.getSingle(req.query.id);
+      // console.log(diaryInfo);
+
+      if (diaryInfo) {
+        //get diary's events
+        const events = await diaryWeightHeightModel.getAllByDiaryId(
+          req.query.id
+        );
+        const monthAge = monthDiff(diaryInfo.dob, new Date()) + 1;
+
+        let diaryWeights = {};
+        let diaryHeights = {};
+        for (let item of events) {
+          let monthAge = monthDiff(
+            new Date(diaryInfo.dob),
+            new Date(item.log_date)
+          );
+          // console.log("--------------------------");
+          // // console.log(new Date());
+          // console.log(diaryInfo.dob);
+          // console.log(item.log_date);
+          // console.log(monthAge);
+          // console.log("--------------------------");
+          diaryWeights[monthAge] = item.weight;
+          diaryHeights[monthAge] = item.height;
+        }
+
+        //get standards
+        const weightStandards = await weightHeightStandardModel.getAllByOption(
+          "w",
+          diaryInfo.gender,
+          monthAge
+        );
+
+        const heightStandards = await weightHeightStandardModel.getAllByOption(
+          "h",
+          diaryInfo.gender,
+          monthAge
+        );
+
+        let weightData = [];
+        let heightData = [];
+
+        for (let item of weightStandards) {
+          let datum = {
+            month: item.month,
+            average_point: item.average_point,
+            lower_point: item.lower_point,
+            upper_point: item.upper_point,
+            real_value: diaryWeights[item.month],
+          };
+
+          weightData.push(datum);
+        }
+
+        for (let item of heightStandards) {
+          let datum = {
+            month: item.month,
+            average_point: item.average_point,
+            lower_point: item.lower_point,
+            upper_point: item.upper_point,
+            real_value: diaryHeights[item.month],
+          };
+
+          heightData.push(datum);
+        }
+
+        //send data to client
+        res.send({
+          success: true,
+          // weightData,
+          // heightData,
+          diaryHeights,
+          diaryWeights,
+        });
+      } else {
+        console.log("invalid id_diary");
+        res
+          .status(406)
+          .send({ success: false, err_message: "invalid id_diary" });
+        return;
+      }
+    } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
