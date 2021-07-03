@@ -38,7 +38,7 @@ require("./middlewares/routes.mdw")(app); //mdw for routing
 require("./middlewares/errors.mdw")(app); //mdw for err handling
 
 //lang nghe o cong
-const PORT = process.env.LISTENPORT;
+const PORT = process.env.PORT;
 app.listen(PORT || 3000, () => {
   //console.log(`Example app listening at http://localhost:${PORT}`);
 });
