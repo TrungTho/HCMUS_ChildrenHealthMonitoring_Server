@@ -241,6 +241,7 @@ module.exports = accountController = {
             permission: 0, //normal user
             isDisable: 0,
             isVerified: 0,
+            authType: "local",
           };
           // console.log(newUser);
 
@@ -262,6 +263,7 @@ module.exports = accountController = {
 
           res.json({ success: true });
         } catch (error) {
+          console.log(error);
           res.json({ success: false, err_message: error });
         }
       } else {
