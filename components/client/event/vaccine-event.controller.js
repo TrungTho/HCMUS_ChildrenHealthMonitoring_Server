@@ -87,6 +87,51 @@ module.exports = vaccineDiaryController = {
     }
   },
 
+  getInjectionOverview: async function (req, res) {
+    try {
+      //get all which the baby has to injected
+      const inoculates = await inoculateModel.getVaccineAmount();
+      let resData = {};
+      for (let item of inoculates) {
+        resData[item.vaccine.trim()] = {
+          totalAmount: item.amount,
+          injectedTime: 0,
+          injections: [],
+        };
+      }
+      // console.log(resData);
+      // //get all vaccine data that system has
+      // const vaccines = await vaccineModel.getAll();
+      // //change data from array to obj to access in O(n) complexity
+      // let vaccinesObject = {};
+      // for (let item of vaccines) {
+      //   vaccinesObject[item.vaccineName] = item.allocate;
+      // }
+
+      //get all vaccine event of this diary
+      const events = await diaryVaccineModel.getAllByDiaryId(req.query.id);
+
+      for (let item of events) {
+        let arrAllocations = item.vaccine.split(",");
+        for (let allocation of arrAllocations) {
+          // console.log(allocation.trim());
+          resData[allocation.trim()].injectedTime++;
+          resData[allocation.trim()].injections.push({
+            eventId: item.id,
+            vaccineName: item.vaccineName,
+            date: item.log_date,
+          });
+        }
+      }
+
+      //send data to client
+      res.send({ success: true, data: resData });
+    } catch (error) {
+      console.log(error);
+      res.status(406).send({ success: false, err_message: error });
+    }
+  },
+
   newEvent: async function (req, res) {
     try {
       //call global function to upload image and return url if existed

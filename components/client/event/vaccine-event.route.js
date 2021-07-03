@@ -11,6 +11,7 @@ router.get(
   "/list-allocation-of-vaccine",
   vaccineEventController.getVaccineAllocation
 );
+router.get("/overview", vaccineEventController.getInjectionOverview);
 
 router.post(
   "/detail",

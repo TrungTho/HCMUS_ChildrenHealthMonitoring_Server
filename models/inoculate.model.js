@@ -34,6 +34,13 @@ module.exports = {
     return db.load(`select DISTINCT vaccine from ${TABLE_NAME}`);
   },
 
+  //get all kind of vaccine
+  getVaccineAmount() {
+    return db.load(
+      `SELECT vaccine, count(vaccine) as amount FROM ${TABLE_NAME} group by vaccine;`
+    );
+  },
+
   //fulltext search with querystring
   searchAll(querystring) {
     return db.load(
