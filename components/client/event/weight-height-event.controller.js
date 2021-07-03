@@ -146,10 +146,10 @@ module.exports = weightHeightDiaryController = {
         //send data to client
         res.send({
           success: true,
-          // weightData,
-          // heightData,
-          diaryHeights,
-          diaryWeights,
+          weightData,
+          heightData,
+          // diaryHeights,
+          // diaryWeights,
         });
       } else {
         console.log("invalid id_diary");
