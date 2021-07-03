@@ -123,8 +123,7 @@ module.exports = weightHeightDiaryController = {
           let datum = {
             month: item.month,
             average_point: item.average_point,
-            lower_point: item.lower_point,
-            upper_point: item.upper_point,
+            std_area: [item.lower_point, item.upper_point],
             real_value: diaryWeights[item.month],
           };
 
@@ -135,8 +134,7 @@ module.exports = weightHeightDiaryController = {
           let datum = {
             month: item.month,
             average_point: item.average_point,
-            lower_point: item.lower_point,
-            upper_point: item.upper_point,
+            std_area: [item.lower_point, item.upper_point],
             real_value: diaryHeights[item.month],
           };
 
