@@ -169,7 +169,15 @@ module.exports = vaccineDiaryController = {
         const curDate = new Date();
         const inputDate = new Date(req.body.remindDate);
 
-        console.log(inputDate);
+        console.log(
+          inputDate +
+            "==>" +
+            inputDate.getHours() +
+            ":" +
+            inputDate.getMinutes() +
+            ":" +
+            inputDate.getSeconds()
+        );
         // console.log(curDate.toDateString(), inputDate.toDateString());
 
         if (curDate.toDateString() === inputDate.toDateString()) {
@@ -212,7 +220,7 @@ module.exports = vaccineDiaryController = {
             },
           })
             .then(function (response) {
-              // console.log(response);
+              console.log(response);
             })
             .catch(function (error) {
               console.log("error", error);
