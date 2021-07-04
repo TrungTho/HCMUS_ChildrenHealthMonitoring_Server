@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const cloudinary = require("../middlewares/cloudinary.mdw");
 const nodemailer = require("nodemailer");
+const weightHeightStandardModel = require("../models/weight-height-standard.model");
 
 module.exports = {
   //parameter func to compare array's element
@@ -48,6 +49,84 @@ module.exports = {
     return (
       today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
     );
+  },
+
+  weightStandardsForMale: {},
+  heightStandardsForMale: {},
+  weightStandardsForFemale: {},
+  heightStandardsForFemale: {},
+
+  //singleton for loading standards
+  getStandard: async function (type, gender) {
+    //check init
+    if (
+      !this.weightStandardsForFemale ||
+      Object.keys(this.heightStandardsForFemale).length === 0
+    ) {
+      await this.loadStandards();
+    }
+
+    if ((type === "w") & (gender === 1)) {
+      return this.weightStandardsForMale;
+    } else if ((type === "w") & (gender === 0)) {
+      return this.weightStandardsForFemale;
+    } else if ((type === "h") & (gender === 1)) {
+      return this.heightStandardsForMale;
+    } else if ((type === "h") & (gender === 0)) {
+      return this.heightStandardsForFemale;
+    }
+  },
+
+  loadStandards: async function () {
+    console.log("load standards from db");
+    //get standards
+    const weightForMale = await weightHeightStandardModel.getAllByOption(
+      "w",
+      0
+    );
+    const weightForFemale = await weightHeightStandardModel.getAllByOption(
+      "w",
+      1
+    );
+
+    const heightForMale = await weightHeightStandardModel.getAllByOption(
+      "h",
+      0
+    );
+    const heightForFemale = await weightHeightStandardModel.getAllByOption(
+      "h",
+      1
+    );
+    for (let item of weightForMale) {
+      this.weightStandardsForMale[item.month] = {
+        lower_point: item.lower_point,
+        average_point: item.average_point,
+        upper_point: item.upper_point,
+      };
+    }
+
+    for (let item of heightForMale) {
+      this.heightStandardsForMale[item.month] = {
+        lower_point: item.lower_point,
+        average_point: item.average_point,
+        upper_point: item.upper_point,
+      };
+    }
+
+    for (let item of weightForFemale) {
+      this.weightStandardsForFemale[item.month] = {
+        lower_point: item.lower_point,
+        average_point: item.average_point,
+        upper_point: item.upper_point,
+      };
+    }
+    for (let item of heightForFemale) {
+      this.heightStandardsForFemale[item.month] = {
+        lower_point: item.lower_point,
+        average_point: item.average_point,
+        upper_point: item.upper_point,
+      };
+    }
   },
 
   uploadImage: async function (req, preset) {
