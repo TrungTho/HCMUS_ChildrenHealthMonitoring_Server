@@ -140,7 +140,7 @@ module.exports = vaccineDiaryController = {
         process.env.CLOUD_DIARY_VACCINE_TRACK_PRESET
       );
 
-      console.log(req.body);
+      // console.log(req.body);
 
       //create new event according to user input
       const newEvent = {
@@ -169,7 +169,16 @@ module.exports = vaccineDiaryController = {
         const curDate = new Date();
         const inputDate = new Date(req.body.remindDate);
 
-        console.log(curDate.toDateString(), inputDate.toDateString());
+        console.log(
+          inputDate +
+            "==>" +
+            inputDate.getHours() +
+            ":" +
+            inputDate.getMinutes() +
+            ":" +
+            inputDate.getSeconds()
+        );
+        // console.log(curDate.toDateString(), inputDate.toDateString());
 
         if (curDate.toDateString() === inputDate.toDateString()) {
           console.log("--------custom reminder-------");
@@ -192,7 +201,7 @@ module.exports = vaccineDiaryController = {
               ") </p>",
           };
 
-          console.log("contents", contents);
+          // console.log("contents", contents);
 
           //call API from mail server to add new task
           await axios({
@@ -216,6 +225,7 @@ module.exports = vaccineDiaryController = {
             .catch(function (error) {
               console.log("error", error);
               res.status(406).send({ success: false, err_message: error });
+              return;
             });
         }
       }

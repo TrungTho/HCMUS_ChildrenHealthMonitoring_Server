@@ -147,7 +147,7 @@ module.exports = accountController = {
       res.cookie(process.env.COOKIE_NAME, token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 8, //8 hours
-        // sameSite: 'None',
+        // sameSite: "None",
         // secure: true,
       });
       res.send({
