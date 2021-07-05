@@ -7,6 +7,7 @@ module.exports = userController = {
       const data = await inoculateModel.getAll();
       res.send({ success: true, data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -16,6 +17,7 @@ module.exports = userController = {
       const data = await vaccineModel.getAll();
       res.send({ success: true, data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -25,6 +27,7 @@ module.exports = userController = {
       const datum = await inoculateModel.getSingle(req.query.id);
       res.send({ success: true, datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -34,6 +37,7 @@ module.exports = userController = {
       const datum = await vaccineModel.getSingle(req.query.id);
       res.send({ success: true, datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -55,6 +59,7 @@ module.exports = userController = {
       const datum = await inoculateModel.getSingle(ret.insertId);
       res.send({ success: true, infor: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -75,6 +80,7 @@ module.exports = userController = {
       const datum = await vaccineModel.getSingle(ret.insertId);
       res.send({ success: true, vaccineInfor: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -98,6 +104,7 @@ module.exports = userController = {
       //send datum to client
       res.send({ success: true, infor: updateItem });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -118,6 +125,7 @@ module.exports = userController = {
       //send datum to client
       res.send({ success: true, vaccineInfor: updateItem });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -130,6 +138,7 @@ module.exports = userController = {
       //send datum to client
       res.send({ success: true, ret });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -141,6 +150,7 @@ module.exports = userController = {
 
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -149,6 +159,7 @@ module.exports = userController = {
     try {
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },

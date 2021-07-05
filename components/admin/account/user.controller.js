@@ -11,6 +11,7 @@ module.exports = userController = {
       await userModel.flipDisable(userid);
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -29,6 +30,7 @@ module.exports = userController = {
       const data = await userModel.getAllBasisUser();
       res.send({ success: true, data: data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -38,6 +40,7 @@ module.exports = userController = {
       const data = await userModel.getAllEditor();
       res.send({ success: true, data: data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -103,6 +106,7 @@ module.exports = userController = {
 
           res.json({ success: true });
         } catch (error) {
+          console.log(error);
           res.json({ success: false, err_message: error });
         }
       } else {

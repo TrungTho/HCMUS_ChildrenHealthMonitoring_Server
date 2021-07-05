@@ -43,6 +43,7 @@ module.exports = postController = {
           break;
       }
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -63,6 +64,7 @@ module.exports = postController = {
       //send data to client
       res.send({ success: true, posts: allPosts });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -75,6 +77,7 @@ module.exports = postController = {
       //send data to client
       res.send({ success: true, tipPosts });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -99,6 +102,7 @@ module.exports = postController = {
       //send data to client
       res.send({ success: true, recipePosts });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -107,6 +111,7 @@ module.exports = postController = {
     try {
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },

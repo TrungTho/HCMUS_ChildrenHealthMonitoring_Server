@@ -35,6 +35,7 @@ module.exports = tipController = {
       //send data to client
       res.send({ success: true, postDetail: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -44,6 +45,7 @@ module.exports = tipController = {
       const data = await recipeModel.searchAll(req.query.searchString);
       res.send({ success: true, results: data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -52,6 +54,7 @@ module.exports = tipController = {
     try {
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },

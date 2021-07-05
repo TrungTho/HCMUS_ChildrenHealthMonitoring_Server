@@ -6,6 +6,7 @@ module.exports = diaryController = {
       const data = await diaryModel.adminGetAll();
       res.send({ success: true, diaries: data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -14,6 +15,7 @@ module.exports = diaryController = {
     try {
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },

@@ -34,6 +34,7 @@ module.exports = accountController = {
         });
       }
     } catch (error) {
+      console.log(error);
       res
         .status(406)
         .send({ success: false, err_message: error || "null image" });
@@ -80,6 +81,7 @@ module.exports = accountController = {
 
       res.send({ success: false, err_message: "invalid token" });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -110,6 +112,7 @@ module.exports = accountController = {
         });
       }
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -134,6 +137,7 @@ module.exports = accountController = {
         },
       });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -174,6 +178,7 @@ module.exports = accountController = {
       res.send({ success: true });
     } catch (error) {
       console.log(error);
+      console.log(error);
     }
   },
 
@@ -207,6 +212,7 @@ module.exports = accountController = {
             .send({ success: false, err_message: "wrong password" });
         }
       } catch (error) {
+        console.log(error);
         res.status(406).send({ success: false, err_message: error });
       }
     } else {
@@ -302,6 +308,7 @@ module.exports = accountController = {
 
       res.status(406).send({ success: false, err_message: "invalid email!" });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -338,6 +345,7 @@ module.exports = accountController = {
       }
       res.send({ success: false, err_message: "invalid token" });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -346,6 +354,7 @@ module.exports = accountController = {
     try {
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -386,6 +395,7 @@ module.exports = accountController = {
 
       res.status(406).send({ success: false, err_message: "invalid password" });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },

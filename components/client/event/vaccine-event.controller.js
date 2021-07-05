@@ -14,6 +14,7 @@ module.exports = vaccineDiaryController = {
       await diaryVaccineModel.setDelete(req.body.id);
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -35,6 +36,7 @@ module.exports = vaccineDiaryController = {
       //send data to client
       res.send({ success: true, events: data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -44,6 +46,7 @@ module.exports = vaccineDiaryController = {
       const data = await inoculateModel.getAllVaccine();
       res.send({ success: true, vaccines: data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -53,6 +56,7 @@ module.exports = vaccineDiaryController = {
       const data = await vaccineModel.getAllVaccineName();
       res.send({ success: true, vaccines: data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -67,6 +71,7 @@ module.exports = vaccineDiaryController = {
       allocations = data.split(", ");
       res.send({ success: true, allocations });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -83,6 +88,7 @@ module.exports = vaccineDiaryController = {
       //send data to client
       res.send({ success: true, eventInfor: data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -410,6 +416,7 @@ module.exports = vaccineDiaryController = {
       //send success message to client
       res.send({ success: true, eventInfor: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -418,6 +425,7 @@ module.exports = vaccineDiaryController = {
     try {
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
