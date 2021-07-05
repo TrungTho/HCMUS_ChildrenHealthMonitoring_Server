@@ -5,7 +5,7 @@ const MAX_MONTH_AGE = 12 * 20;
 module.exports = {
   //---------------------default query----------------------------
   getAll() {
-    return db.load(`select * from ${TABLE_NAME}`);
+    return db.load(`select * from ${TABLE_NAME} order by month`);
   },
 
   add(newObj) {
