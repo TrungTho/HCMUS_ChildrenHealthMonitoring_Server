@@ -15,15 +15,24 @@ router.post(
   accountController.login
 );
 
-router.post(
+router.get(
   "/login/google",
-  passport.authenticate("google-plus-token", { session: false }),
+  passport.authenticate("google", { session: false })
+);
+router.get(
+  "/login/google/callback",
+  passport.authenticate("google", { session: false }),
   accountController.googleLogin
 );
 
-router.post(
+router.get(
   "/login/facebook",
-  passport.authenticate("facebook-token", { session: false }),
+  passport.authenticate("facebook", { session: false })
+);
+
+router.get(
+  "/login/facebook/callback",
+  passport.authenticate("facebook", { session: false }),
   accountController.facebookLogin
 );
 
