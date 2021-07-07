@@ -17,7 +17,7 @@ router.post(
 
 router.get(
   "/login/google",
-  passport.authenticate("google", { session: false })
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
 router.get(
   "/login/google/callback",

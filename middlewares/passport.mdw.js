@@ -289,7 +289,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/account/login/google/callback",
+      callbackURL:
+        "https://children-health-monitor-server.herokuapp.com/account/login/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
