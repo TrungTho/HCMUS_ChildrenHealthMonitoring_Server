@@ -220,7 +220,8 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-      callbackURL: "/account/login/facebook/callback",
+      callbackURL:
+        "https://children-health-monitor-server.herokuapp.com/account/login/facebook/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
