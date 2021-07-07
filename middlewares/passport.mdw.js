@@ -3,6 +3,8 @@ const JwtStrategy = require("passport-jwt").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const GooglePlusTokenStrategy = require("passport-google-plus-token");
 const FacebookTokenStrategy = require("passport-facebook-token");
+const FacebookStrategy = require("passport-facebook").Strategy;
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const utilFuncs = require("../utils/util-function");
 
 const { ExtractJwt } = require("passport-jwt");
@@ -177,6 +179,144 @@ passport.use(
             isVerified: 0,
             avatar: profile.photos[0].value,
             authType: "facebook",
+          };
+
+          // console.log("----------------");
+          // console.log(newItem);
+
+          //add new user to db
+          await userModel.add(newItem);
+
+          //get user infor back from db
+          const userInfor = await userModel.getSingleByEmail(
+            profile.emails[0].value
+          );
+
+          //send email confirm
+          await utilFuncs.sendMail({
+            destination: newItem.email,
+            subject: "Children Health Monitoring confirm account",
+            html: `Here your verify link:
+  <a href="${
+    process.env.ALLOW_ORIGIN
+  }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+              newItem.email
+            )}" > Click me!
+  </a>`,
+          });
+
+          //return to controller
+          done(null, userInfor);
+        }
+      } catch (error) {
+        done(error, false); //loi
+      }
+    }
+  )
+);
+
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+      callbackURL: "/account/login/facebook/callback",
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // console.log("1", accessToken);
+        // console.log("2", refreshToken);
+        console.log("3", profile);
+
+        //check if user existed or not
+        const datum = await userModel.getSingleByEmail(profile.emails[0].value);
+
+        if (datum) {
+          //return user infor to client
+          return done(null, datum);
+        } else {
+          //first login by google => create new account
+          //create item has user's infor
+          const newItem = {
+            username: profile.emails[0].value.split("@")[0],
+            email: profile.emails[0].value,
+            password: "",
+            dob: new Date(),
+            permission: 0,
+            fullname: profile.displayName,
+            isDisable: 0,
+            isVerified: 0,
+            avatar: profile.photos[0].value,
+            authType: "facebook",
+          };
+
+          // console.log("----------------");
+          // console.log(newItem);
+
+          //add new user to db
+          await userModel.add(newItem);
+
+          //get user infor back from db
+          const userInfor = await userModel.getSingleByEmail(
+            profile.emails[0].value
+          );
+
+          //send email confirm
+          await utilFuncs.sendMail({
+            destination: newItem.email,
+            subject: "Children Health Monitoring confirm account",
+            html: `Here your verify link:
+  <a href="${
+    process.env.ALLOW_ORIGIN
+  }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+              newItem.email
+            )}" > Click me!
+  </a>`,
+          });
+
+          //return to controller
+          done(null, userInfor);
+        }
+      } catch (error) {
+        done(error, false); //loi
+      }
+    }
+  )
+);
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "/account/login/google/callback",
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // console.log("1", accessToken);
+        // console.log("2", refreshToken);
+        console.log("3", profile);
+
+        //check if user existed or not
+        const datum = await userModel.getSingleByEmail(profile.emails[0].value);
+
+        if (datum) {
+          //return user infor to client
+          return done(null, datum);
+        } else {
+          //first login by google => create new account
+          //create item has user's infor
+          const newItem = {
+            username: profile.emails[0].value.split("@")[0],
+            email: profile.emails[0].value,
+            password: "",
+            dob: new Date(),
+            permission: 0,
+            fullname: profile.displayName,
+            isDisable: 0,
+            isVerified: 0,
+            avatar: profile.photos[0].value,
+            authType: "google",
           };
 
           // console.log("----------------");

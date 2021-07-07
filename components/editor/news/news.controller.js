@@ -21,6 +21,7 @@ module.exports = newsController = {
       //send data to client
       res.send({ success: true, posts: data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -63,6 +64,7 @@ module.exports = newsController = {
       //send success message to client
       res.send({ success: true, postInfor: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -98,6 +100,7 @@ module.exports = newsController = {
       //send success message to client
       res.send({ success: true, postInfor: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -106,6 +109,7 @@ module.exports = newsController = {
     try {
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },

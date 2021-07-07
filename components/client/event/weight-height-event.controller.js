@@ -19,6 +19,7 @@ module.exports = weightHeightDiaryController = {
       await diaryWeightHeightModel.setDelete(req.body.id);
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -30,16 +31,59 @@ module.exports = weightHeightDiaryController = {
       //sort data by date descending
       data.sort(utilFuncs.compareAsc);
 
+      //for warning feature
+      const diaryInfo = await diaryModel.getSingle(req.query.id);
+      // console.log(diaryInfo);
+      const weightStandards = await utilFuncs.getStandard(
+        "w",
+        diaryInfo.gender
+      );
+
+      // console.log(weightStandards);
+      const heightStandards = await utilFuncs.getStandard(
+        "h",
+        diaryInfo.gender
+      );
+
       //format log_date for client's usage
       data.forEach((element) => {
+        let monthAge = monthDiff(diaryInfo.dob, element.log_date);
+        console.log(monthAge);
         element.log_date = moment(element.log_date, "YYYY-MM-DD").format(
           "DD/MM/YYYY"
         );
+
+        //for warning feature
+        let wState = 0;
+        let hState = 0;
+        if (weightStandards[monthAge]) {
+          if (element.weight < weightStandards[monthAge].lower_point) {
+            wState = -1;
+          } else if (element.weight > weightStandards[monthAge].upper_point) {
+            wState = 1;
+          }
+        }
+
+        if (heightStandards[monthAge]) {
+          if (element.height < heightStandards[monthAge].lower_point) {
+            hState = -1;
+          } else if (element.height > heightStandards[monthAge].upper_point) {
+            hState = 1;
+          }
+        }
+
+        element.warning = [wState, hState];
+        // console.log(monthAge, element.warning);
       });
 
       //send data to client
-      res.send({ success: true, events: data });
+      res.send({
+        success: true,
+        events: data,
+      });
     } catch (error) {
+      console.log(error);
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -56,6 +100,7 @@ module.exports = weightHeightDiaryController = {
       //send datum to client
       res.send({ success: true, eventInfor: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -70,6 +115,7 @@ module.exports = weightHeightDiaryController = {
       //send data to client
       res.send({ success: true, standardParams: data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -158,6 +204,7 @@ module.exports = weightHeightDiaryController = {
       }
     } catch (error) {
       console.log(error);
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -184,14 +231,51 @@ module.exports = weightHeightDiaryController = {
       //add new diary to db
       const ret = await diaryWeightHeightModel.add(newEvent);
 
+      //for warning feature
+      const diaryInfo = await diaryModel.getSingle(req.query.id);
+      let monthAge = monthDiff(diaryInfo.dob, new Date(newEvent.log_date));
+
       const datum = await diaryWeightHeightModel.getSingle(ret.insertId);
       datum.log_date = moment(datum.log_date, "YYYY-MM-DD").format(
         "DD/MM/YYYY"
       );
 
+      // console.log(diaryInfo);
+      const weightStandards = await utilFuncs.getStandard(
+        "w",
+        diaryInfo.gender
+      );
+
+      // console.log(weightStandards);
+      const heightStandards = await utilFuncs.getStandard(
+        "h",
+        diaryInfo.gender
+      );
+
+      let wState = 0;
+      let hState = 0;
+      if (weightStandards[monthAge] && newEvent.weight) {
+        if (newEvent.weight < weightStandards[monthAge].lower_point) {
+          wState = -1;
+        } else if (newEvent.weight > weightStandards[monthAge].upper_point) {
+          wState = 1;
+        }
+      }
+
+      if (heightStandards[monthAge] && newEvent.height) {
+        if (newEvent.height < heightStandards[monthAge].lower_point) {
+          hState = -1;
+        } else if (newEvent.height > heightStandards[monthAge].upper_point) {
+          hState = 1;
+        }
+      }
+
+      datum.warning = [wState, hState];
+
       //send success message to client
       res.send({ success: true, eventInfor: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -224,14 +308,56 @@ module.exports = weightHeightDiaryController = {
       //get just updated datum in db to send to client
       const datum = await diaryWeightHeightModel.getSingle(req.body.id);
 
+      //for warning feature
+      const diaryInfo = await diaryModel.getSingle(req.query.id);
+      let monthAge = monthDiff(diaryInfo.dob, new Date(updatedEvent.log_date));
+      console.log(monthAge);
+
       //format log_date for client's usage
       datum.log_date = moment(datum.log_date, "YYYY-MM-DD").format(
         "DD/MM/YYYY"
       );
 
+      // console.log(diaryInfo);
+      const weightStandards = await utilFuncs.getStandard(
+        "w",
+        diaryInfo.gender
+      );
+
+      // console.log(weightStandards);
+      const heightStandards = await utilFuncs.getStandard(
+        "h",
+        diaryInfo.gender
+      );
+
+      let wState = 0;
+      let hState = 0;
+      if (weightStandards[monthAge] && updatedEvent.weight) {
+        if (updatedEvent.weight < weightStandards[monthAge].lower_point) {
+          wState = -1;
+        } else if (
+          updatedEvent.weight > weightStandards[monthAge].upper_point
+        ) {
+          wState = 1;
+        }
+      }
+
+      if (heightStandards[monthAge] && updatedEvent.height) {
+        if (updatedEvent.height < heightStandards[monthAge].lower_point) {
+          hState = -1;
+        } else if (
+          updatedEvent.height > heightStandards[monthAge].upper_point
+        ) {
+          hState = 1;
+        }
+      }
+
+      datum.warning = [wState, hState];
+
       //send success message to client
       res.send({ success: true, eventInfor: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -240,6 +366,7 @@ module.exports = weightHeightDiaryController = {
     try {
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },

@@ -9,6 +9,7 @@ module.exports = customDiaryController = {
       await diaryCustomModel.setDelete(req.body.id);
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -37,6 +38,7 @@ module.exports = customDiaryController = {
         events: data,
       });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -53,6 +55,7 @@ module.exports = customDiaryController = {
       //send data to client
       res.send({ success: true, eventInfor: data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -87,6 +90,7 @@ module.exports = customDiaryController = {
       //send success message to client
       res.send({ success: true, eventInfor: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -126,6 +130,7 @@ module.exports = customDiaryController = {
       //send success message to client
       res.send({ success: true, eventInfor: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -134,6 +139,7 @@ module.exports = customDiaryController = {
     try {
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },

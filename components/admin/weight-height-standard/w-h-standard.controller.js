@@ -6,6 +6,7 @@ module.exports = userController = {
       await weightHeightStandardModel.del({ id: req.body.id });
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -15,6 +16,7 @@ module.exports = userController = {
       const data = await weightHeightStandardModel.getAll();
       res.send({ success: true, standards: data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -24,6 +26,7 @@ module.exports = userController = {
       const datum = await weightHeightStandardModel.getSingle(req.query.id);
       res.send({ success: true, standard: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -48,6 +51,7 @@ module.exports = userController = {
 
       res.send({ success: true, standard: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -70,6 +74,7 @@ module.exports = userController = {
 
       res.send({ success: true, standard: updateItem });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -78,6 +83,7 @@ module.exports = userController = {
     try {
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },

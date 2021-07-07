@@ -14,6 +14,7 @@ module.exports = diaryController = {
       await diaryModel.flipDefaultMailing(req.query.id);
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -43,6 +44,7 @@ module.exports = diaryController = {
         });
       }
     } catch (error) {
+      console.log(error);
       res
         .status(406)
         .send({ success: false, err_message: error || "null image" });
@@ -87,6 +89,7 @@ module.exports = diaryController = {
 
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -105,6 +108,7 @@ module.exports = diaryController = {
 
       res.send({ success: true, diaries: data });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -206,6 +210,7 @@ module.exports = diaryController = {
 
       res.send({ success: true, diaryInfor: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -237,6 +242,7 @@ module.exports = diaryController = {
       //send success message to client
       res.send({ success: true, diaryInfor: newDiary });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -267,6 +273,7 @@ module.exports = diaryController = {
       //send data to client
       res.send({ success: true, diaryInfor: datum });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
@@ -275,6 +282,7 @@ module.exports = diaryController = {
     try {
       res.send({ success: true });
     } catch (error) {
+      console.log(error);
       res.status(406).send({ success: false, err_message: error });
     }
   },
