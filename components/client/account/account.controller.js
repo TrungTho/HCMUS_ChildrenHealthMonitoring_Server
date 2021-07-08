@@ -181,6 +181,7 @@ module.exports = accountController = {
           fullname: userInfor.fullname,
           avatar: userInfor.avatar,
           email: userInfor.email,
+          permission: userInfor.permission,
         },
       });
     } catch (e) {
@@ -252,6 +253,7 @@ module.exports = accountController = {
           fullname: userInfor.fullname,
           avatar: userInfor.avatar,
           email: userInfor.email,
+          permission: userInfor.permission,
         },
       });
     } catch (e) {
