@@ -19,10 +19,16 @@ router.get(
   "/login/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
+
 router.get(
   "/login/google/callback",
   passport.authenticate("google", { session: false }),
   accountController.googleLogin
+);
+
+router.post(
+  "/login/google/google-from-fe",
+  accountController.googleLoginFe
 );
 
 router.get(
