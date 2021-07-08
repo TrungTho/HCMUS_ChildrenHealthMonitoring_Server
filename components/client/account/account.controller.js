@@ -188,6 +188,77 @@ module.exports = accountController = {
     }
   },
 
+  facebookLoginFe: async function (req, res) {
+    try {
+      const profile = req.body.profile;
+      console.log("3", profile);
+
+      //check if user existed or not
+      const datum = await userModel.getSingleByEmail(profile.email);
+
+      if (datum) {
+        //return user infor to client
+      } else {
+        //first login by google => create new account
+        //create item has user's infor
+        const newItem = {
+          username: profile.email.split("@")[0],
+          email: profile.email,
+          password: "",
+          dob: new Date(),
+          permission: 0,
+          fullname: profile.name,
+          isDisable: 0,
+          isVerified: 0,
+          avatar: profile.imageUrl,
+          authType: "google",
+        };
+
+        // console.log("----------------");
+        // console.log(newItem);
+
+        //add new user to db
+        await userModel.add(newItem);
+
+        //get user infor back from db
+
+        //send email confirm
+        await utilFuncs.sendMail({
+          destination: newItem.email,
+          subject: "Children Health Monitoring confirm account",
+          html: `Here your verify link:
+          <a href="${process.env.ALLOW_ORIGIN
+            }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+              newItem.email
+            )}" > Click me!
+            </a>`,
+        });
+      }
+
+      const userInfor = await userModel.getSingleByEmail(
+        profile.email
+      );
+      const token = utilFuncs.encodedToken(userInfor.username, 8);
+
+      //res.setHeader("Authorization", token);
+      res.cookie("auth_token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 8, //8 hours
+      });
+      res.send({
+        success: true,
+        userInfor: {
+          username: userInfor.username,
+          fullname: userInfor.fullname,
+          avatar: userInfor.avatar,
+          email: userInfor.email,
+        },
+      });
+    } catch (e) {
+      throw e;
+    }
+  },
+
   facebookLogin: async function (req, res) {
     try {
       // return res.send(req.user);

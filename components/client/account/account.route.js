@@ -31,6 +31,11 @@ router.post(
   accountController.googleLoginFe
 );
 
+router.post(
+  "/login/google/facebook-from-fe",
+  accountController.facebookLoginFe
+);
+
 router.get(
   "/login/facebook",
   passport.authenticate("facebook", { session: false })
