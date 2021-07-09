@@ -55,6 +55,7 @@ const prepareContentMail = async function (req, newItem) {
                             }/auth/${utilFuncs.encodedTokenWithoutExpiration(
     newItem.email
   )}/verify-successful"
+
                               style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #88d8b0; display: inline-block;">Confirm
                               Account
                             </a>
@@ -300,8 +301,8 @@ module.exports = accountController = {
           fullname: profile.name,
           isDisable: 0,
           isVerified: 0,
-          avatar: profile.imageUrl,
-          authType: "google",
+          avatar: profile.picture.data.url,
+          authType: "facebook",
         };
 
         // console.log("----------------");
@@ -320,26 +321,28 @@ module.exports = accountController = {
           subject: "Children Health Monitoring confirm account",
           html: mailContent,
         });
-
-        const userInfor = await userModel.getSingleByEmail(profile.email);
-        const token = utilFuncs.encodedToken(userInfor.username, 8);
-
-        //res.setHeader("Authorization", token);
-        res.cookie("auth_token", token, {
-          httpOnly: true,
-          maxAge: 1000 * 60 * 60 * 8, //8 hours
-        });
-        res.send({
-          success: true,
-          userInfor: {
-            username: userInfor.username,
-            fullname: userInfor.fullname,
-            avatar: userInfor.avatar,
-            email: userInfor.email,
-            permission: userInfor.permission,
-          },
-        });
       }
+
+      const userInfor = await userModel.getSingleByEmail(profile.email);
+      const token = utilFuncs.encodedToken(userInfor.username, 8);
+
+      //res.setHeader("Authorization", token);
+      res.cookie("auth_token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 8, //8 hours
+        sameSite: "None",
+        secure: true,
+      });
+      res.send({
+        success: true,
+        userInfor: {
+          username: userInfor.username,
+          fullname: userInfor.fullname,
+          avatar: userInfor.avatar,
+          email: userInfor.email,
+          permission: userInfor.permission,
+        },
+      });
     } catch (e) {
       throw e;
     }

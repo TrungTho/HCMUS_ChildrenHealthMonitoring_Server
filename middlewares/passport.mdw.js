@@ -335,7 +335,8 @@ passport.use(
             destination: newItem.email,
             subject: "Children Health Monitoring confirm account",
             html: `Here your verify link:
-                <a href="${process.env.ALLOW_ORIGIN
+                <a href="${
+                  process.env.ALLOW_ORIGIN
                 }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
               newItem.email
             )}" > Click me!

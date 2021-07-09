@@ -26,7 +26,6 @@ router.get(
   accountController.googleLogin
 );
 
-
 router.post("/login/google/google-from-fe", accountController.googleLoginFe);
 
 router.post(
