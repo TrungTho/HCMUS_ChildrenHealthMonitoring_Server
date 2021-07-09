@@ -130,11 +130,10 @@ passport.use(
             destination: newItem.email,
             subject: "Children Health Monitoring confirm account",
             html: `Here your verify link:
-<a href="${
-              process.env.ALLOW_ORIGIN
-            }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
-              newItem.email
-            )}" > Click me!
+<a href="${process.env.ALLOW_ORIGIN
+              }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+                newItem.email
+              )}" > Click me!
 </a>`,
           });
           //return to controller
@@ -197,11 +196,10 @@ passport.use(
             destination: newItem.email,
             subject: "Children Health Monitoring confirm account",
             html: `Here your verify link:
-  <a href="${
-    process.env.ALLOW_ORIGIN
-  }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
-              newItem.email
-            )}" > Click me!
+  <a href="${process.env.ALLOW_ORIGIN
+              }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+                newItem.email
+              )}" > Click me!
   </a>`,
           });
 
@@ -220,7 +218,8 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-      callbackURL: "/account/login/facebook/callback",
+      callbackURL:
+        "https://children-health-monitor-server.herokuapp.com/account/login/facebook/callback",
       profileFields: ["id", "emails", "name"],
     },
     async (accessToken, refreshToken, profile, done) => {
@@ -267,11 +266,10 @@ passport.use(
             destination: newItem.email,
             subject: "Children Health Monitoring confirm account",
             html: `Here your verify link:
-  <a href="${
-    process.env.ALLOW_ORIGIN
-  }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
-              newItem.email
-            )}" > Click me!
+  <a href="${process.env.ALLOW_ORIGIN
+              }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+                newItem.email
+              )}" > Click me!
   </a>`,
           });
 
@@ -290,7 +288,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/account/login/google/callback",
+      callbackURL:
+        "https://children-health-monitor-server.herokuapp.com/account/login/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -336,8 +335,7 @@ passport.use(
             destination: newItem.email,
             subject: "Children Health Monitoring confirm account",
             html: `Here your verify link:
-                <a href="${
-                  process.env.ALLOW_ORIGIN
+                <a href="${process.env.ALLOW_ORIGIN
                 }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
               newItem.email
             )}" > Click me!

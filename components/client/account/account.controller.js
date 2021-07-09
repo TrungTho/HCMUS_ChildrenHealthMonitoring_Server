@@ -190,6 +190,8 @@ module.exports = accountController = {
         res.cookie("auth_token", token, {
           httpOnly: true,
           maxAge: 1000 * 60 * 60 * 8, //8 hours
+          sameSite: "None",
+          secure: true,
         });
         res.send({
           success: true,
@@ -241,6 +243,7 @@ module.exports = accountController = {
 
         //get user infor back from db
 
+
         const mailContent = await prepareContentMail(req, newItem);
 
         //send email confirm
@@ -258,6 +261,9 @@ module.exports = accountController = {
       res.cookie("auth_token", token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 8, //8 hours
+        sameSite: "None",
+        secure: true,
+
       });
       res.send({
         success: true,
@@ -308,12 +314,9 @@ module.exports = accountController = {
 
         //get user infor back from db
 
+
         const mailContent = await prepareContentMail(req, newItem);
 
-        //send email confirm
-        await utilFuncs.sendMail({
-          destination: newItem.email,
-          subject: "Children Health Monitoring confirm account",
           html: mailContent,
         });
 
@@ -336,6 +339,7 @@ module.exports = accountController = {
           },
         });
       }
+
     } catch (e) {
       throw e;
     }
@@ -350,6 +354,8 @@ module.exports = accountController = {
       res.cookie("auth_token", token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 8, //8 hours
+        sameSite: "None",
+        secure: true,
       });
       res.send({
         success: true,
@@ -375,8 +381,8 @@ module.exports = accountController = {
       res.cookie(process.env.COOKIE_NAME, token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 8, //8 hours
-        // sameSite: "None",
-        // secure: true,
+        sameSite: "None",
+        secure: true,
       });
       res.send({
         success: true,
@@ -396,8 +402,8 @@ module.exports = accountController = {
       res.cookie(process.env.COOKIE_NAME, "invalid", {
         httpOnly: true,
         maxAge: 0, //8 hours
-        // sameSite: 'None',
-        // secure: true,
+        sameSite: "None",
+        secure: true,
       });
       res.send({ success: true });
     } catch (error) {
