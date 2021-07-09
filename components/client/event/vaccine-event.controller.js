@@ -121,12 +121,14 @@ module.exports = vaccineDiaryController = {
         let arrAllocations = item.vaccine.split(",");
         for (let allocation of arrAllocations) {
           // console.log(allocation.trim());
-          resData[allocation.trim()].injectedTime++;
-          resData[allocation.trim()].injections.push({
-            eventId: item.id,
-            vaccineName: item.vaccineName,
-            date: item.log_date,
-          });
+          if (resData[allocation.trim()]) {
+            resData[allocation.trim()].injectedTime++;
+            resData[allocation.trim()].injections.push({
+              eventId: item.id,
+              vaccineName: item.vaccineName,
+              date: item.log_date,
+            });
+          }
         }
       }
 

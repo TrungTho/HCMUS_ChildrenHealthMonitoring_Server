@@ -245,7 +245,7 @@ module.exports = accountController = {
 
         //send email confirm
         await utilFuncs.sendMail({
-          destination: newUser.email,
+          destination: newItem.email,
           subject: "Children Health Monitoring confirm account",
           html: mailContent,
         });
@@ -312,7 +312,7 @@ module.exports = accountController = {
 
         //send email confirm
         await utilFuncs.sendMail({
-          destination: newUser.email,
+          destination: newItem.email,
           subject: "Children Health Monitoring confirm account",
           html: mailContent,
         });
