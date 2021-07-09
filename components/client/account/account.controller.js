@@ -54,6 +54,7 @@ const prepareContentMail = async function (req, newItem) {
     }/auth/${utilFuncs.encodedTokenWithoutExpiration(
       newItem.email
     )}/verify-successful"
+
                               style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #88d8b0; display: inline-block;">Confirm
                               Account
                             </a>
@@ -188,6 +189,8 @@ module.exports = accountController = {
         res.cookie("auth_token", token, {
           httpOnly: true,
           maxAge: 1000 * 60 * 60 * 8, //8 hours
+          sameSite: "None",
+          secure: true,
         });
         res.send({
           success: true,
@@ -256,6 +259,8 @@ module.exports = accountController = {
       res.cookie("auth_token", token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 8, //8 hours
+        sameSite: "None",
+        secure: true,
       });
       res.send({
         success: true,
@@ -348,6 +353,8 @@ module.exports = accountController = {
       res.cookie("auth_token", token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 8, //8 hours
+        sameSite: "None",
+        secure: true,
       });
       res.send({
         success: true,
@@ -373,8 +380,8 @@ module.exports = accountController = {
       res.cookie(process.env.COOKIE_NAME, token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 8, //8 hours
-        // sameSite: "None",
-        // secure: true,
+        sameSite: "None",
+        secure: true,
       });
       res.send({
         success: true,
@@ -394,8 +401,8 @@ module.exports = accountController = {
       res.cookie(process.env.COOKIE_NAME, "invalid", {
         httpOnly: true,
         maxAge: 0, //8 hours
-        // sameSite: 'None',
-        // secure: true,
+        sameSite: "None",
+        secure: true,
       });
       res.send({ success: true });
     } catch (error) {
