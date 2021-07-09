@@ -50,11 +50,10 @@ const prepareContentMail = async function (req, newItem) {
                       <table border="0" cellspacing="0" cellpadding="0">
                         <tr>
                           <td align="center" style="border-radius: 3px;" bgcolor="#88d8b0">
-                            <a target="_blank" href="${
-                              process.env.REACT_SERVER
-                            }/auth/${utilFuncs.encodedTokenWithoutExpiration(
-    newItem.email
-  )}/verify-successful"
+                            <a target="_blank" href="${process.env.REACT_SERVER
+    }/auth/${utilFuncs.encodedTokenWithoutExpiration(
+      newItem.email
+    )}/verify-successful"
                               style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #88d8b0; display: inline-block;">Confirm
                               Account
                             </a>
@@ -76,11 +75,10 @@ const prepareContentMail = async function (req, newItem) {
               <td bgcolor="#ffffff" align="left"
                 style="padding: 20px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                 <p style="margin: 0;"><a href="#" target="_blank"
-                    style="color: #88d8b0;">${
-                      process.env.REACT_SERVER
-                    }/auth/${utilFuncs.encodedTokenWithoutExpiration(
-    newItem.email
-  )}/verify-successful</a></p>
+                    style="color: #88d8b0;">${process.env.REACT_SERVER
+    }/auth/${utilFuncs.encodedTokenWithoutExpiration(
+      newItem.email
+    )}/verify-successful</a></p>
               </td>
             </tr>
             <tr>
@@ -296,8 +294,8 @@ module.exports = accountController = {
           fullname: profile.name,
           isDisable: 0,
           isVerified: 0,
-          avatar: profile.imageUrl,
-          authType: "google",
+          avatar: profile.picture.data.url,
+          authType: "facebook",
         };
 
         // console.log("----------------");
@@ -316,26 +314,26 @@ module.exports = accountController = {
           subject: "Children Health Monitoring confirm account",
           html: mailContent,
         });
-
-        const userInfor = await userModel.getSingleByEmail(profile.email);
-        const token = utilFuncs.encodedToken(userInfor.username, 8);
-
-        //res.setHeader("Authorization", token);
-        res.cookie("auth_token", token, {
-          httpOnly: true,
-          maxAge: 1000 * 60 * 60 * 8, //8 hours
-        });
-        res.send({
-          success: true,
-          userInfor: {
-            username: userInfor.username,
-            fullname: userInfor.fullname,
-            avatar: userInfor.avatar,
-            email: userInfor.email,
-            permission: userInfor.permission,
-          },
-        });
       }
+
+      const userInfor = await userModel.getSingleByEmail(profile.email);
+      const token = utilFuncs.encodedToken(userInfor.username, 8);
+
+      //res.setHeader("Authorization", token);
+      res.cookie("auth_token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 8, //8 hours
+      });
+      res.send({
+        success: true,
+        userInfor: {
+          username: userInfor.username,
+          fullname: userInfor.fullname,
+          avatar: userInfor.avatar,
+          email: userInfor.email,
+          permission: userInfor.permission,
+        },
+      });
     } catch (e) {
       throw e;
     }
