@@ -100,6 +100,8 @@ module.exports = accountController = {
         res.cookie("auth_token", token, {
           httpOnly: true,
           maxAge: 1000 * 60 * 60 * 8, //8 hours
+          sameSite: "None",
+          secure: true,
         });
         res.send({
           success: true,
@@ -156,23 +158,24 @@ module.exports = accountController = {
           destination: newItem.email,
           subject: "Children Health Monitoring confirm account",
           html: `Here your verify link:
-          <a href="${process.env.ALLOW_ORIGIN
-            }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
-              newItem.email
-            )}" > Click me!
+          <a href="${
+            process.env.ALLOW_ORIGIN
+          }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+            newItem.email
+          )}" > Click me!
             </a>`,
         });
       }
 
-      const userInfor = await userModel.getSingleByEmail(
-        profile.email
-      );
+      const userInfor = await userModel.getSingleByEmail(profile.email);
       const token = utilFuncs.encodedToken(userInfor.username, 8);
 
       //res.setHeader("Authorization", token);
       res.cookie("auth_token", token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 8, //8 hours
+        sameSite: "None",
+        secure: true,
       });
       res.send({
         success: true,
@@ -228,23 +231,24 @@ module.exports = accountController = {
           destination: newItem.email,
           subject: "Children Health Monitoring confirm account",
           html: `Here your verify link:
-          <a href="${process.env.ALLOW_ORIGIN
-            }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
-              newItem.email
-            )}" > Click me!
+          <a href="${
+            process.env.ALLOW_ORIGIN
+          }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+            newItem.email
+          )}" > Click me!
             </a>`,
         });
       }
 
-      const userInfor = await userModel.getSingleByEmail(
-        profile.email
-      );
+      const userInfor = await userModel.getSingleByEmail(profile.email);
       const token = utilFuncs.encodedToken(userInfor.username, 8);
 
       //res.setHeader("Authorization", token);
       res.cookie("auth_token", token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 8, //8 hours
+        sameSite: "None",
+        secure: true,
       });
       res.send({
         success: true,
@@ -270,6 +274,8 @@ module.exports = accountController = {
       res.cookie("auth_token", token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 8, //8 hours
+        sameSite: "None",
+        secure: true,
       });
       res.send({
         success: true,
@@ -316,8 +322,8 @@ module.exports = accountController = {
       res.cookie(process.env.COOKIE_NAME, "invalid", {
         httpOnly: true,
         maxAge: 0, //8 hours
-        // sameSite: 'None',
-        // secure: true,
+        sameSite: "None",
+        secure: true,
       });
       res.send({ success: true });
     } catch (error) {
@@ -403,10 +409,11 @@ module.exports = accountController = {
             destination: newUser.email,
             subject: "Children Health Monitoring confirm account",
             html: `Here your verify link:
-            <a href="${process.env.ALLOW_ORIGIN
-              }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
-                req.body.mail
-              )}" > Click me!
+            <a href="${
+              process.env.ALLOW_ORIGIN
+            }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+              req.body.mail
+            )}" > Click me!
             </a>`,
           });
 
