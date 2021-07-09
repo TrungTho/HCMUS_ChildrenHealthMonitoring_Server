@@ -6,6 +6,96 @@ const utilFuncs = require("../../../utils/util-function");
 const jwt = require("jsonwebtoken");
 const diaryModel = require("../../../models/diary.model");
 
+const prepareContentMail = async function (req, newItem) {
+  return `
+
+  <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr>
+        <td bgcolor="#88d8b0" align="center">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+            <tr>
+              <td align="center" valign="top" style="padding: 40px 10px 40px 10px;"> </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td bgcolor="#88d8b0" align="center" style="padding: 0px 10px 0px 10px;">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+            <tr>
+              <td bgcolor="#ffffff" align="center" valign="top"
+                style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
+                <h1 style="font-size: 48px; font-weight: 400; margin: 2;">Xác minh tài khoản</h1> <img
+                  src="https://i.ibb.co/6JzRmrk/logo.png" width="60" height="60" style="display: block; border: 0px;" />
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+            <tr>
+              <td bgcolor="#ffffff" align="left"
+                style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                <p style="margin: 0;">Vui lòng nhấn vào nút bên dưới để xác thực tài khoản của bạn.</p>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#ffffff" align="left">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
+                      <table border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td align="center" style="border-radius: 3px;" bgcolor="#88d8b0">
+                            <a target="_blank" href="${
+                              process.env.REACT_SERVER
+                            }/auth/${utilFuncs.encodedTokenWithoutExpiration(
+    newItem.email
+  )}/verify-successful"
+                              style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #88d8b0; display: inline-block;">Confirm
+                              Account
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#ffffff" align="left"
+                style="padding: 0px 30px 0px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                <p style="margin: 0;">Hoặc dán đường dẫn bên dưới vào trình duyệt để xác minh:</p>
+              </td>
+            </tr> <!-- COPY -->
+            <tr>
+              <td bgcolor="#ffffff" align="left"
+                style="padding: 20px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                <p style="margin: 0;"><a href="#" target="_blank"
+                    style="color: #88d8b0;">${
+                      process.env.REACT_SERVER
+                    }/auth/${utilFuncs.encodedTokenWithoutExpiration(
+    newItem.email
+  )}/verify-successful</a></p>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#ffffff" align="left"
+                style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                <p style="margin: 0;">Xin cảm ơn,<br>CHM team</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>`;
+};
+
 module.exports = accountController = {
   changeAvatar: async function (req, res) {
     try {
@@ -153,17 +243,13 @@ module.exports = accountController = {
 
         //get user infor back from db
 
+        const mailContent = await prepareContentMail(req, newItem);
+
         //send email confirm
         await utilFuncs.sendMail({
           destination: newItem.email,
           subject: "Children Health Monitoring confirm account",
-          html: `Here your verify link:
-          <a href="${
-            process.env.ALLOW_ORIGIN
-          }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
-            newItem.email
-          )}" > Click me!
-            </a>`,
+          html: mailContent,
         });
       }
 
@@ -226,40 +312,34 @@ module.exports = accountController = {
 
         //get user infor back from db
 
+        const mailContent = await prepareContentMail(req, newItem);
+
         //send email confirm
         await utilFuncs.sendMail({
           destination: newItem.email,
           subject: "Children Health Monitoring confirm account",
-          html: `Here your verify link:
-          <a href="${
-            process.env.ALLOW_ORIGIN
-          }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
-            newItem.email
-          )}" > Click me!
-            </a>`,
+          html: mailContent,
+        });
+
+        const userInfor = await userModel.getSingleByEmail(profile.email);
+        const token = utilFuncs.encodedToken(userInfor.username, 8);
+
+        //res.setHeader("Authorization", token);
+        res.cookie("auth_token", token, {
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 8, //8 hours
+        });
+        res.send({
+          success: true,
+          userInfor: {
+            username: userInfor.username,
+            fullname: userInfor.fullname,
+            avatar: userInfor.avatar,
+            email: userInfor.email,
+            permission: userInfor.permission,
+          },
         });
       }
-
-      const userInfor = await userModel.getSingleByEmail(profile.email);
-      const token = utilFuncs.encodedToken(userInfor.username, 8);
-
-      //res.setHeader("Authorization", token);
-      res.cookie("auth_token", token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 8, //8 hours
-        sameSite: "None",
-        secure: true,
-      });
-      res.send({
-        success: true,
-        userInfor: {
-          username: userInfor.username,
-          fullname: userInfor.fullname,
-          avatar: userInfor.avatar,
-          email: userInfor.email,
-          permission: userInfor.permission,
-        },
-      });
     } catch (e) {
       throw e;
     }
@@ -403,18 +483,13 @@ module.exports = accountController = {
 
           //add user data to db
           await userModel.add(newUser);
+          const mailContent = await prepareContentMail(req, newUser);
 
           //send email confirm
           await utilFuncs.sendMail({
             destination: newUser.email,
             subject: "Children Health Monitoring confirm account",
-            html: `Here your verify link:
-            <a href="${
-              process.env.ALLOW_ORIGIN
-            }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
-              req.body.mail
-            )}" > Click me!
-            </a>`,
+            html: mailContent,
           });
 
           res.json({ success: true });

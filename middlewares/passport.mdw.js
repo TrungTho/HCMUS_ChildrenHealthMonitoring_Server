@@ -336,9 +336,9 @@ passport.use(
             subject: "Children Health Monitoring confirm account",
             html: `Here your verify link:
                 <a href="${process.env.ALLOW_ORIGIN
-              }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
-                newItem.email
-              )}" > Click me!
+                }/account/verify-account?verify_token=${utilFuncs.encodedTokenWithoutExpiration(
+              newItem.email
+            )}" > Click me!
                 </a>`,
           });
 
